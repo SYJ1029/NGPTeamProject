@@ -1,8 +1,9 @@
 #version 330 core
 
-in vec3 fragColor; // Vertex Shader¿¡¼­ Àü´Ş¹ŞÀº »ö»ó
+in vec3 fragColor; // Vertex Shaderì—ì„œ ì „ë‹¬ë°›ì€ ìƒ‰ìƒ
 in vec3 Normal;
-in vec3 FragPos; // Vertex Shader¿¡¼­ Àü´Ş¹ŞÀ½
+in vec3 FragPos; // Vertex Shaderì—ì„œ ì „ë‹¬ë°›ìŒ
+in vec2 TexCoord;
 
 out vec4 color;
 
@@ -11,8 +12,11 @@ uniform vec3 viewPos;
 uniform vec3 lightColor;
 uniform vec3 objectColor;
 
-uniform float ambientLight; // È¯°æ±¤ °­µµ
-uniform float alpha;        // Åõ¸íµµ¸¦ À§ÇÑ À¯´ÏÆû º¯¼ö
+uniform float ambientLight; // í™˜ê²½ê´‘ ê°•ë„
+uniform float alpha;        // íˆ¬ëª…ë„ë¥¼ ìœ„í•œ ìœ ë‹ˆí¼ ë³€ìˆ˜
+
+uniform sampler2D outTexture;
+uniform bool useTexture;
 
 void main()
 {
@@ -23,7 +27,7 @@ void main()
     // Ambient lighting
     vec3 ambient = ambientLight * lightColor;
 
-    // Diffuse lighting (Á¶¸í ¹æÇâ °íÁ¤)
+    // Diffuse lighting (ì¡°ëª… ë°©í–¥ ê³ ì •)
     float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse = diff * lightColor;
 
@@ -37,7 +41,12 @@ void main()
     vec3 specular = specularLight * lightColor;
 
     // Combine results with the object's original color
-    vec3 result = (ambient + diffuse + specular) * fragColor; // Á¶¸í°ú ¿ø·¡ »ö»ó °áÇÕ
-    color = vec4(result, alpha);
+    vec3 result = (ambient + diffuse + specular) * fragColor; // ì¡°ëª…ê³¼ ì›ë˜ ìƒ‰ìƒ ê²°í•©
+    if (useTexture) {
+        color = texture(outTexture, TexCoord) * vec4(result, 1.0);
+    }
+    else {
+        color = vec4(result, alpha);
+    }
     //color = vec4(norm * 0.5 + 0.5, 1.0);
 }
