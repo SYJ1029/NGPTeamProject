@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "CameraAndLight.h"
 
 glm::vec3 cameraPos = glm::vec3(5.0f, 5.0f, 5.001f); // 카메라 위치

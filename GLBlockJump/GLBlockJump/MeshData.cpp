@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "MeshData.h"
 
 const GLfloat cubeVertices[8][3] = {

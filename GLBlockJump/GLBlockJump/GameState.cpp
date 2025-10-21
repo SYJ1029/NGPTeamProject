@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "GameState.h"
 
 float char_angle[3] = { 0.0f, 0.0f, 0.0f };

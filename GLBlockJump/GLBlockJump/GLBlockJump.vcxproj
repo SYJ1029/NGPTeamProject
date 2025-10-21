@@ -73,16 +73,16 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(ProjectDir)External\glew;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)External\freeglut\include;$(SolutionDir)External;$(SolutionDir)External\glew\include;$(SolutionDir)External\glm;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(ProjectDir)External\glew;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)External\freeglut\include;$(SolutionDir)External;$(SolutionDir)External\glew\include;$(SolutionDir)External\glm;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(ProjectDir)External\glew;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)External\freeglut\include;$(SolutionDir)External;$(SolutionDir)External\glew\include;$(SolutionDir)External\glm;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir)External\glew;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)External\freeglut\include;$(SolutionDir)External;$(SolutionDir)External\glew\include;$(SolutionDir)External\glm;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
