@@ -18,10 +18,6 @@ extern bool jumpable;
 extern bool infjump;
 extern bool game_end;
 
-
-extern int before_mouse_x;
-extern int before_mouse_y;
-
 bool checkCollision(float ax, float ay, float az, float bx, float by, float bz);
 void setting();
 void input_block_pos(int i, float x, float y, float z);

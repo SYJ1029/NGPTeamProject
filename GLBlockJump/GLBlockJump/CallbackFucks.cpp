@@ -152,15 +152,6 @@ void TimerFunction(int value)
     glutPostRedisplay();
     glutTimerFunc(10, TimerFunction, 1);
 }
-void Mouse(int button, int state, int x, int y)
-{
-    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-    }
-    if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
-    }
-    if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN) {
-    }
-}
 void Motion(int x, int y)
 {
     // x와 y의 변화량 계산
@@ -245,7 +236,7 @@ void KeyboardUp(unsigned char key, int x, int y) {
     }
 }
 
-
+/*
 void SpecialInput(int key, int x, int y) {
     switch (key) {
     case GLUT_KEY_LEFT:  // ← 키
@@ -263,3 +254,14 @@ void SpecialInput(int key, int x, int y) {
     }
     glutPostRedisplay();  // 입력 후 다시 그리기
 }
+
+void Mouse(int button, int state, int x, int y)
+{
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+    }
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
+    }
+    if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN) {
+    }
+}
+*/

@@ -33,16 +33,16 @@ void main(int argc, char** argv)
     InitBuffer();
     init();
 
-    glutDisplayFunc(drawScene);
-    glutTimerFunc(10, TimerFunction, 1);
-    glutReshapeFunc(Reshape);
-
-    glutMouseFunc(Mouse);
     glutMotionFunc(Motion);
     glutPassiveMotionFunc(Motion); // 클릭 없이 이동
     glutKeyboardFunc(Keyboard);
     glutKeyboardUpFunc(KeyboardUp);   // 키 떼짐 처리
-    glutSpecialFunc(SpecialInput);
+    //glutMouseFunc(Mouse);
+    //glutSpecialFunc(SpecialInput);
+
+    glutTimerFunc(10, TimerFunction, 1);
+    glutReshapeFunc(Reshape);
+    glutDisplayFunc(drawScene);
 
     glutMainLoop();
 }
