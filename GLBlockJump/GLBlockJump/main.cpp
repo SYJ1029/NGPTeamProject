@@ -36,6 +36,7 @@ void main(int argc, char** argv)
     glutDisplayFunc(drawScene);
     glutTimerFunc(10, TimerFunction, 1);
     glutReshapeFunc(Reshape);
+
     glutMouseFunc(Mouse);
     glutMotionFunc(Motion);
     glutPassiveMotionFunc(Motion); // 클릭 없이 이동
