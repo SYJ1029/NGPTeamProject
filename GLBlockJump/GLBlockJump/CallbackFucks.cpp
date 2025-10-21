@@ -66,8 +66,27 @@ void TimerFunction(int value)
     y_speed -= GRAVITY;
     jumpable = infjump;
 
+	OBB charOBB;
+	charOBB.center = glm::vec3(char_pos[0], char_pos[1], char_pos[2]);
+	charOBB.halfSize = glm::vec3(0.5f, 0.5f, 0.5f);
+    glm::mat4 rotMat = glm::yawPitchRoll(
+        char_angle[1],  // yaw (Y축)
+        char_angle[0],  // pitch (X축)
+        char_angle[2]   // roll (Z축)
+    );
+    charOBB.axis[0] = glm::normalize(glm::vec3(rotMat[0])); // X축
+    charOBB.axis[1] = glm::normalize(glm::vec3(rotMat[1])); // Y축
+    charOBB.axis[2] = glm::normalize(glm::vec3(rotMat[2])); // Z축
+
+    OBB boxOBB;
+    boxOBB.halfSize = glm::vec3(0.5f, 0.5f, 0.5f);
+	boxOBB.axis[0] = { 1, 0, 0 };
+	boxOBB.axis[1] = { 0, 1, 0 };
+	boxOBB.axis[2] = { 0, 0, 1 };
+
     for (int i = 0; i < count_block; i++) {
-        if (checkCollision(char_pos[0], char_pos[1], char_pos[2], blocks_pos[i][0], blocks_pos[i][1], blocks_pos[i][2])) {
+		boxOBB.center = glm::vec3(blocks_pos[i][0], blocks_pos[i][1], blocks_pos[i][2]);
+        if (CheckOBBCollision(charOBB, boxOBB)) {
             if ((char_pos[1] + y_speed) < blocks_pos[i][1] + 1.0f && char_pos[1] >= blocks_pos[i][1]) {
                 char_pos[1] = blocks_pos[i][1] + 1.0f;
                 y_speed = 0;
@@ -87,7 +106,8 @@ void TimerFunction(int value)
         }
     }
     for (int i = 0; i < count_moving_block; i++) {
-        if (checkCollision(char_pos[0], char_pos[1], char_pos[2], moving_blocks_pos[i][0], moving_blocks_pos[i][1], moving_blocks_pos[i][2])) {
+        boxOBB.center = glm::vec3(moving_blocks_pos[i][0], moving_blocks_pos[i][1], moving_blocks_pos[i][2]);
+        if (CheckOBBCollision(charOBB, boxOBB)) {
             if ((char_pos[1] + y_speed) < moving_blocks_pos[i][1] + 1.0f && char_pos[1] >= moving_blocks_pos[i][1]) {
                 char_pos[1] = moving_blocks_pos[i][1] + 1.0f;
                 y_speed = 0;
