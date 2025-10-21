@@ -21,3 +21,9 @@ extern const GLfloat floorNormal[4][3];
 extern const GLfloat floor_color[4][3];
 extern const GLfloat texfloor[4][2];
 extern const GLuint sq_index[6];
+
+struct OBB {
+    glm::vec3 center;      // 중심 좌표
+    glm::vec3 halfSize;    // 각 축 방향 절반 크기 (width/2, height/2, depth/2)
+    glm::vec3 axis[3];     // 로컬 축 (X, Y, Z) ? 회전 포함
+};

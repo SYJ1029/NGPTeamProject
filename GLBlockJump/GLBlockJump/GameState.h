@@ -2,6 +2,7 @@
 #define GAME_STATE_H
 
 #include "stdafx.h"
+#include "MeshData.h"
 
 extern float char_angle[3];
 extern float char_pos[3];
@@ -26,5 +27,6 @@ void setting();
 void input_block_pos(int i, float x, float y, float z);
 void input_moving_block_pos(int i, float x, float y, float z, int vx, int vy, int vz);
 void place_platform(int& curr, const glm::vec3& v, int dx, int dy, int dz);
+bool CheckOBBCollision(const OBB& A, const OBB& B);
 
 #endif
