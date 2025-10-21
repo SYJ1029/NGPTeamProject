@@ -1,3 +1,6 @@
+#include "stdafx.h"
+
+
 #include "MeshData.h"
 #include "ShaderUtils.h"
 #include "BufferInit.h"
