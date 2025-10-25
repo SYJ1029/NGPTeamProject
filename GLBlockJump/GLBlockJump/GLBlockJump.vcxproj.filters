@@ -4,7 +4,7 @@
     <ClCompile Include="BufferInit.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="CallbackFucks.cpp">
+    <ClCompile Include="CallbackFuncs.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="CameraAndLight.cpp">

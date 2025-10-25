@@ -137,7 +137,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BufferInit.cpp" />
-    <ClCompile Include="CallbackFucks.cpp" />
+    <ClCompile Include="CallbackFuncs.cpp" />
     <ClCompile Include="CameraAndLight.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="main.cpp" />
