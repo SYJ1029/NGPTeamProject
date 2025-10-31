@@ -15,5 +15,13 @@ private:
 public:
     bool isGrounded{ true };
     PlayerInputs inputs{};
+
+	virtual void Init(float newPos[3]) override;
+
+	void Update();
+
+    void Release();
+
+	bool CheckCollision(const Object& other);
 };
 

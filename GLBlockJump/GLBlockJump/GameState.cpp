@@ -1,4 +1,6 @@
 #include "GameState.h"
+#include "Object.h"
+#include "Player.h"
 
 float char_angle[3] = { 0.0f, 0.0f, 0.0f };
 float char_pos[3] = { 0.0f, 10.0f, 0.0f };

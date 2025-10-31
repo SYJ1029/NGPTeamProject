@@ -26,4 +26,14 @@
 #include <WinSock2.h>
 #include <WS2tcpip.h>
 
+// 소켓 구조체 관련
+#include "PacketStruct.h"
+
+// 게임 진행 상태 Enums
+#include "StateEnums.h"
+
 #define GRAVITY 0.01f
+
+#pragma comment(lib, "ws2_32.lib")
+#pragma comment(lib, "freeglut.lib")
+#pragma comment(lib, "glew32.lib")

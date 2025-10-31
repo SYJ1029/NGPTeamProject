@@ -24,5 +24,7 @@ public:
 	void update();
 
 	void Release();
+
+	bool CheckCollision(const Object& other);
 };
 

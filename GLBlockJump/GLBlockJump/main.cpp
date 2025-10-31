@@ -1,3 +1,5 @@
+#include "stdafx.h"
+
 #include "MeshData.h"
 #include "ShaderUtils.h"
 #include "BufferInit.h"
@@ -6,6 +8,10 @@
 #include "GameState.h"
 #include "CallbackFuncs.h"
 #include "Render.h"
+
+#include "Object.h"
+#include "Player.h"
+
 
 int window_w = 600;
 int window_h = 600;

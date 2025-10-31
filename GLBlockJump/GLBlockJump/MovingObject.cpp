@@ -32,5 +32,8 @@ void MovingObject::Release()
 
 }
 
-
+bool MovingObject::CheckCollision(const Object& other)
+{
+	return false;
+}
 
