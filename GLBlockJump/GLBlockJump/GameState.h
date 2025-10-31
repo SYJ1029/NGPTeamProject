@@ -2,13 +2,16 @@
 #define GAME_STATE_H
 
 #include "stdafx.h"
+#include "StateMacro.h"
 #include "MeshData.h"
+#include "Object.h"
+#include "Player.h"
 
 extern float char_angle[3];
 extern float char_pos[3];
 extern int go_v[4];
 extern int count_block;
-extern float blocks_pos[10000][3];
+//extern float blocks_pos[10000][3];
 extern int count_moving_block;
 extern float moving_blocks_pos[10000][3];
 extern float moving_blocks_chng_pos[10000][3];
@@ -19,10 +22,10 @@ extern bool infjump;
 extern bool game_end;
 
 bool checkCollision(float ax, float ay, float az, float bx, float by, float bz);
-void setting();
-void input_block_pos(int i, float x, float y, float z);
+void setting(std::vector<Object>&, std::vector<MovingObject>& j, std::array<Player, MAX_PLAYER>&);
+void input_block_pos(Object&, int i, float x, float y, float z);
 void input_moving_block_pos(int i, float x, float y, float z, int vx, int vy, int vz);
-void place_platform(int& curr, const glm::vec3& v, int dx, int dy, int dz);
+void place_platform(std::vector<Object>&, int& curr, const glm::vec3& v, int dx, int dy, int dz);
 bool CheckOBBCollision(const OBB& A, const OBB& B);
 
 #endif

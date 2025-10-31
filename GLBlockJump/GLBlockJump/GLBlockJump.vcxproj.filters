@@ -31,6 +31,15 @@
     <ClCompile Include="Render.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="MovingObject.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BufferInit.h">
@@ -62,6 +71,21 @@
     </ClInclude>
     <ClInclude Include="TextureUtils.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="PacketStruct.h">
+      <Filter>PacketStructs</Filter>
+    </ClInclude>
+    <ClInclude Include="StateEnums.h">
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="StateMacro.h">
+      <Filter>State</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -95,6 +119,15 @@
     </Filter>
     <Filter Include="리소스 파일">
       <UniqueIdentifier>{a02b1982-4535-45f8-be5d-a14f92834670}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects">
+      <UniqueIdentifier>{4a4d2dac-1eb9-40e0-b2db-5893fa68c358}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PacketStructs">
+      <UniqueIdentifier>{bc3deb99-8c22-4376-b420-db97a6033a29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State">
+      <UniqueIdentifier>{fb466566-1c0d-4a11-bb58-1be06a08a20c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
