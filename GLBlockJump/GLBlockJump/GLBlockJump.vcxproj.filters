@@ -84,6 +84,9 @@
     <ClInclude Include="StateEnums.h">
       <Filter>State</Filter>
     </ClInclude>
+    <ClInclude Include="StateMacro.h">
+      <Filter>State</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="sea.jpg">

@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "StateMacro.h"
 
 #include "MeshData.h"
 #include "ShaderUtils.h"
@@ -17,11 +18,18 @@ int window_w = 600;
 int window_h = 600;
 GLint width, height;
 
+
+//const int MAX_PLAYER{ 3 };
+std::vector<Object> Objects;
+std::vector<MovingObject> MoveObjects;
+
+std::array<Player, MAX_PLAYER> players;
+
 void main(int argc, char** argv)
 {
     projection = glm::perspective(glm::radians(45.0f), (float)window_w / window_h, 0.1f, 1000.0f);
     srand(time(NULL));
-    setting();
+    setting(Objects, MoveObjects, players);
     for (int i = 0; i < 10000; i++) {
         for (int j = 0; j < 3; j++) {
             moving_blocks_chng_pos[i][j] = 0;

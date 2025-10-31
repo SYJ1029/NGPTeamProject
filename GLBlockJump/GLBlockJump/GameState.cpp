@@ -119,10 +119,12 @@ void input_moving_block_pos(int i, float x, float y, float z, int vx, int vy, in
     moving_blocks_vec[i][2] = vz;
 }
 
-void place_platform(int& curr, const glm::vec3& v, int dx, int dy, int dz) {
+void place_platform(Object& obj, int& curr, const glm::vec3& v, int dx, int dy, int dz) {
     for (int y = 0; y < dy; ++y) {
         for (int x = 0; x < dx; ++x) {
             for (int z = 0; z < dz; ++z) {
+				float newPos[3]{ v.x + (float)x, v.y + (float)y, v.z + (float)z };
+                obj.Init(newPos);
                 input_block_pos(curr++, v.x + (float)x, v.y + (float)y, v.z + (float)z);
                 //std::cout << "block #" << curr << " (" << v.x + (float)x << ", " << v.y + (float)y << ", " << v.z + (float)z << ")\n";
             }
@@ -130,24 +132,27 @@ void place_platform(int& curr, const glm::vec3& v, int dx, int dy, int dz) {
     }
 }
 
-void setting()
+void setting(std::vector<Object>& staticObj, std::vector<MovingObject>& dynamicObj, std::array<Player, MAX_PLAYER>& players)
 {
     int curr_block_count{};
     int curr_moving_count{};
 
-    place_platform(curr_block_count, glm::vec3{ 0.0f, 0.0f, 0.0f }, 5, 1, 5);
+    staticObj.resize(200);
+	dynamicObj.resize(50);
+
+    place_platform(staticObj[curr_block_count], curr_block_count, glm::vec3{0.0f, 0.0f, 0.0f}, 5, 1, 5);
 
     for (int i = 0; i < 6; ++i) {
-        place_platform(curr_block_count, glm::vec3{ 7.0f + float(i * 6), float(i), 1.0f }, 3, 1, 3);
+        place_platform(staticObj[curr_block_count], curr_block_count, glm::vec3{ 7.0f + float(i * 6), float(i), 1.0f }, 3, 1, 3);
     }
 
-    place_platform(curr_block_count, glm::vec3{ 45.0f, 5.0f, 0.0f }, 5, 1, 5);
+    place_platform(staticObj[curr_block_count], curr_block_count, glm::vec3{ 45.0f, 5.0f, 0.0f }, 5, 1, 5);
 
     for (int i = 0; i < 6; ++i) {
-        place_platform(curr_block_count, glm::vec3{ 46.0f, 5.0f + (float)i, 10.0f + (float)i * 6 }, 3, 1, 1);
+        place_platform(staticObj[curr_block_count], curr_block_count, glm::vec3{ 46.0f, 5.0f + (float)i, 10.0f + (float)i * 6 }, 3, 1, 1);
     }
 
-    place_platform(curr_block_count, glm::vec3{ 45.0f, 10.0f, 45.0f }, 5, 1, 5);
+    place_platform(staticObj[curr_block_count], curr_block_count, glm::vec3{ 45.0f, 10.0f, 45.0f }, 5, 1, 5);
 
     input_moving_block_pos(curr_moving_count++, 43.0f, 14.0f, 47.0f, 0.0f, 1.0f, 0.0f);
 
@@ -157,7 +162,7 @@ void setting()
 
     input_moving_block_pos(curr_moving_count++, 25.0f, 19.0f, 42.0f, 0.0f, 0.0f, 1.0f);
 
-    place_platform(curr_block_count, glm::vec3{ 25.0f, 19.0f, 32.0f }, 1, 1, 3);
+    place_platform(staticObj[curr_block_count], curr_block_count, glm::vec3{ 25.0f, 19.0f, 32.0f }, 1, 1, 3);
 
     input_block_pos(curr_block_count++, 18.0f, 19.0f, 33.0f);
     input_block_pos(curr_block_count++, 18.0f, 20.0f, 27.0f);
@@ -179,7 +184,7 @@ void setting()
     input_block_pos(curr_block_count++, 8.0f, 46.0f, 41.0f);
     input_block_pos(curr_block_count++, 3.0f, 48.0f, 42.0f);
 
-    place_platform(curr_block_count, glm::vec3{ 0.0f, 50.0f, 45.0f }, 5, 1, 5);
+    place_platform(staticObj[curr_block_count], curr_block_count, glm::vec3{ 0.0f, 50.0f, 45.0f }, 5, 1, 5);
 
     count_block = curr_block_count;
     count_moving_block = curr_moving_count;

@@ -5,6 +5,10 @@
 #include <stdio.h>
 #include <iostream>
 
+// C++ STL 자료구조 라이브러리
+#include <vector>
+#include <array>
+
 // OpenGL 관련 라이브러리
 #include <GL/glew.h>
 #include <GL/freeglut.h>

@@ -17,10 +17,10 @@ MovingObject::~MovingObject()
 {
 }
 
-void MovingObject::Init(float newPos[3])
-{
-	Object::Init(newPos);
-}
+//void MovingObject::Init(float newPos[3])
+//{
+//	Object::Init(newPos);
+//}
 
 void MovingObject::update() 
 {

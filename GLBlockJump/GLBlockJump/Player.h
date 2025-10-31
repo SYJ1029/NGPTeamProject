@@ -4,11 +4,11 @@
 
 
 
-
 class Player :
     public Object
 {
 private:
+    int id = 0;
     float moveSpeed[3]{ 0.0f };
     float rotation[3]{ 0.0f };
     float jumpSpeed{ 0.2f };
@@ -24,4 +24,5 @@ public:
 
 	bool CheckCollision(const Object& other);
 };
+
 
