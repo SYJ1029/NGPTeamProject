@@ -2,6 +2,14 @@
 #include "CallbackFuncs.h"
 #include "CameraAndLight.h"
 #include "GameState.h"
+#include "Object.h"
+#include "Player.h"
+
+
+extern std::vector<Object> Objects;
+extern std::vector<MovingObject> MoveObjects;
+
+extern std::array<Player, MAX_PLAYER> players;
 
 void TimerFunction(int value)
 {
@@ -85,19 +93,20 @@ void TimerFunction(int value)
 	boxOBB.axis[2] = { 0, 0, 1 };
 
     for (int i = 0; i < count_block; i++) {
-		boxOBB.center = glm::vec3(blocks_pos[i][0], blocks_pos[i][1], blocks_pos[i][2]);
+		boxOBB.center = Objects[i].GetPosVec3();
         if (CheckOBBCollision(charOBB, boxOBB)) {
-            if ((char_pos[1] + y_speed) < blocks_pos[i][1] + 1.0f && char_pos[1] >= blocks_pos[i][1]) {
-                char_pos[1] = blocks_pos[i][1] + 1.0f;
+            float blockPos[3]{ Objects[i].GetPosVec3().x, Objects[i].GetPosVec3().y, Objects[i].GetPosVec3().z};
+            if ((char_pos[1] + y_speed) < blockPos[1] + 1.0f && char_pos[1] >= blockPos[1]) {
+                char_pos[1] = blockPos[1] + 1.0f;
                 y_speed = 0;
                 jumpable = 1;
             }
-            else if ((char_pos[1] + y_speed) > blocks_pos[i][1] - 1.0f && char_pos[1] <= blocks_pos[i][1]) {
-                char_pos[1] = blocks_pos[i][1] - 1.0f;
+            else if ((char_pos[1] + y_speed) > blockPos[1] - 1.0f && char_pos[1] <= blockPos[1]) {
+                char_pos[1] = blockPos[1] - 1.0f;
                 y_speed = 0;
             }
 
-            if ((!game_end) && ((blocks_pos[i][1] >= 50) && (count_block - i <= 25))) {
+            if ((!game_end) && ((blockPos[1] >= 50) && (count_block - i <= 25))) {
                 std::cout << "Congratulations! You Win! \npress \"q\" to quit the game.\n";
                 game_end = true;
             }

@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "StateMacro.h"
 
 #include "MeshData.h"
 #include "ShaderUtils.h"
@@ -20,10 +19,11 @@ GLint width, height;
 
 
 //const int MAX_PLAYER{ 3 };
-std::vector<Object> Objects;
-std::vector<MovingObject> MoveObjects;
 
-std::array<Player, MAX_PLAYER> players;
+extern std::vector<Object> Objects;
+extern std::vector<MovingObject> MoveObjects;
+
+extern std::array<Player, MAX_PLAYER> players;
 
 void main(int argc, char** argv)
 {

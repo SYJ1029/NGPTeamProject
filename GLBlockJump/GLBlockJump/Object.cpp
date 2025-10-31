@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "Object.h"
 
 
@@ -17,4 +16,11 @@ void Object::Init(float newPos[3])
 }
 
 
+glm::vec3 Object::GetPosVec3()
+{
+	return glm::vec3(pos[0], pos[1], pos[2]);
+}
 
+
+std::vector<Object> Objects;
+std::vector<MovingObject> MoveObjects;

@@ -25,4 +25,5 @@ public:
 	bool CheckCollision(const Object& other);
 };
 
+extern std::array<Player, MAX_PLAYER> players;
 

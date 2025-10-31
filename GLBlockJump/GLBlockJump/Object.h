@@ -1,4 +1,7 @@
 #pragma once
+
+#include "stdafx.h"
+
 class Object
 {
 protected:
@@ -8,6 +11,8 @@ public:
 	Object();
 	~Object();
 	virtual void Init(float newPos[3]);
+
+	glm::vec3 GetPosVec3();
 };
 
 class MovingObject : public Object
@@ -26,5 +31,9 @@ public:
 	void Release();
 
 	bool CheckCollision(const Object& other);
+
+	
 };
 
+extern std::vector<Object> Objects;
+extern std::vector<MovingObject> MoveObjects;

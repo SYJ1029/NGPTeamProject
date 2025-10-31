@@ -36,7 +36,8 @@
 // 게임 진행 상태 Enums
 #include "StateEnums.h"
 
-#define GRAVITY 0.01f
+// 고정된 초기 값들에 대한 매크로 모음
+#include "StateMacro.h"
 
 #pragma comment(lib, "ws2_32.lib")
 #pragma comment(lib, "freeglut.lib")
