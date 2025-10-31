@@ -6,7 +6,7 @@
 #include "Player.h"
 
 
-extern std::vector<Object> Objects;
+extern std::vector<Object> staticObjects;
 extern std::vector<MovingObject> MoveObjects;
 
 extern std::array<Player, MAX_PLAYER> players;
@@ -93,9 +93,9 @@ void TimerFunction(int value)
 	boxOBB.axis[2] = { 0, 0, 1 };
 
     for (int i = 0; i < count_block; i++) {
-		boxOBB.center = Objects[i].GetPosVec3();
+		boxOBB.center = staticObjects[i].GetPosVec3();
         if (CheckOBBCollision(charOBB, boxOBB)) {
-            float blockPos[3]{ Objects[i].GetPosVec3().x, Objects[i].GetPosVec3().y, Objects[i].GetPosVec3().z};
+            float blockPos[3]{ staticObjects[i].GetPosVec3().x, staticObjects[i].GetPosVec3().y, staticObjects[i].GetPosVec3().z};
             if ((char_pos[1] + y_speed) < blockPos[1] + 1.0f && char_pos[1] >= blockPos[1]) {
                 char_pos[1] = blockPos[1] + 1.0f;
                 y_speed = 0;

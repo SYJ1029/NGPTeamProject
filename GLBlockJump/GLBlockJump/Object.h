@@ -35,5 +35,5 @@ public:
 	
 };
 
-extern std::vector<Object> Objects;
+extern std::vector<Object> staticObjects;
 extern std::vector<MovingObject> MoveObjects;

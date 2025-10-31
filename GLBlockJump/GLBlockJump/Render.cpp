@@ -6,7 +6,7 @@
 #include "BufferInit.h"
 #include "TextureUtils.h"
 
-extern std::vector<Object> Objects;
+extern std::vector<Object> staitcObjects;
 extern std::vector<MovingObject> MoveObjects;
 
 
@@ -97,7 +97,7 @@ GLvoid drawScene()
 
     for (int i = 0; i < count_block; i++) {
         glm::mat4 model2 = glm::mat4(1.0f);
-        model2 = glm::translate(model2, Objects[i].GetPosVec3());
+        model2 = glm::translate(model2, staticObjects[i].GetPosVec3());
         unsigned int modelLocation2 = glGetUniformLocation(shaderProgramID, "modelTransform");
         glUniformMatrix4fv(modelLocation2, 1, GL_FALSE, glm::value_ptr(model2));
 
