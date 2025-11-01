@@ -19,15 +19,14 @@ class MovingObject : public Object
 {
 private:
 	int dir[3]{ 0,0,0 };
-	float moveSpeed{ 3.0f };
+	float speed{ 0.03f };
 	float changedLength[3]{ 0.0f, 0.0f, 0.0f };
 	float limit{ 5.0f };
 public:
 	MovingObject();
 	~MovingObject();
 
-	void SetPosVec3(float newPos[3]);
-	void SetDirVec3(int newDir[3]);
+	void Init(float newPos[3], int newDir[3]);
 
 	void Update();
 

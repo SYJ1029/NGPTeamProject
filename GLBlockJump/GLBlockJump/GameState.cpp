@@ -109,12 +109,11 @@ void input_block_pos(Object& obj, int i, float x, float y, float z) {
 
     obj.Init(newPos);
 }
-void input_moving_block_pos(MovingObject& move_obj, int i, float x, float y, float z, int vx, int vy, int vz) {
+void input_moving_block_pos(MovingObject& move_obj, float x, float y, float z, int vx, int vy, int vz) {
     float newPos[3]{ x, y, z };
-    int newDir[3]{ vx, vy,vz };
+    int newDir[3]{ vx, vy, vz };
 
-    move_obj.SetPosVec3(newPos);
-    move_obj.SetDirVec3(newDir);
+    move_obj.Init(newPos, newDir);
 }
 
 void place_platform(std::vector<Object>& staticObj, int& curr, const glm::vec3& v, int dx, int dy, int dz) {
@@ -151,13 +150,13 @@ void setting(std::vector<Object>& staticObj, std::vector<MovingObject>& dynamicO
 
     place_platform(staticObj, curr_block_count, glm::vec3{ 45.0f, 10.0f, 45.0f }, 5, 1, 5);
 
-    input_moving_block_pos(dynamicObj[curr_moving_count], curr_moving_count++, 43.0f, 14.0f, 47.0f, 0, 1, 0);
+    input_moving_block_pos(dynamicObj[curr_moving_count++], 43.0f, 14.0f, 47.0f, 0, 1, 0);
 
     input_block_pos(staticObj[curr_block_count], curr_block_count++, 40.0f, 18.0f, 47.0f);
     input_block_pos(staticObj[curr_block_count], curr_block_count++, 34.0f, 18.0f, 50.0f);
     input_block_pos(staticObj[curr_block_count], curr_block_count++, 28.0f, 19.0f, 47.0f);
 
-    input_moving_block_pos(dynamicObj[curr_moving_count], curr_moving_count++, 25.0f, 19.0f, 42.0f, 0, 0, 1);
+    input_moving_block_pos(dynamicObj[curr_moving_count++], 25.0f, 19.0f, 42.0f, 0, 0, 1);
 
     place_platform(staticObj, curr_block_count, glm::vec3{ 25.0f, 19.0f, 32.0f }, 1, 1, 3);
 

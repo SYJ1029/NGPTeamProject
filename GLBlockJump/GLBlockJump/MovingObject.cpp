@@ -11,15 +11,12 @@ MovingObject::~MovingObject()
 {
 }
 
-void MovingObject::SetPosVec3(float newPos[3])
+void MovingObject::Init(float newPos[3], int newDir[3])
 {
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 3; i++) {
 		pos[i] = newPos[i];
-}
-void MovingObject::SetDirVec3(int newDir[3])
-{
-	for (int i = 0; i < 3; i++)
 		dir[i] = newDir[i];
+	}
 }
 
 void MovingObject::Update() 
@@ -28,7 +25,7 @@ void MovingObject::Update()
 
 	for (int i = 0; i < 3; i++) {
 		if (dir[i] != 0) {
-			distance = dir[i] * 0.03f;
+			distance = dir[i] * speed;
 
 			pos[i] += distance;
 			changedLength[i] += distance;
@@ -38,17 +35,6 @@ void MovingObject::Update()
 			}
 		}
 	}
-}
-
-
-void MovingObject::Release()
-{
-
-}
-
-bool MovingObject::CheckCollision(const Object& other)
-{
-	return false;
 }
 
 glm::ivec3 MovingObject::GetDirVec3()
