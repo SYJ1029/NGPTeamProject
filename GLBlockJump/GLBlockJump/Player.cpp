@@ -30,6 +30,11 @@ void Player::Update()
         pos[0] -= right.x * moveSpeed[0];
         pos[2] -= right.z * moveSpeed[2];
     }
+
+    if (inputs.jump && isGrounded) {
+        isGrounded = false;
+        moveSpeed[1] = jumpSpeed;
+	}
 }
 
 void Player::Release()

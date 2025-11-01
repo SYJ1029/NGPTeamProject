@@ -9,7 +9,7 @@ class Player :
 {
 private:
     int id = 0;
-    float moveSpeed[3]{ 0.0f }; // [0,1,2] 순으로 x,y,z축 이동 속도일 경우 y축 이동 속도는 jumpSpeed와 같음(즉, moveSpeed[1]은 사용되지 않음)
+    float moveSpeed[3]{ 0.0f };
     float rotation[3]{ 0.0f };
     float jumpSpeed{ 0.2f };
 public:
