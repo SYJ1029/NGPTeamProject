@@ -23,4 +23,3 @@ glm::vec3 Object::GetPosVec3()
 
 
 std::vector<Object> staticObjects;
-std::vector<MovingObject> MoveObjects;

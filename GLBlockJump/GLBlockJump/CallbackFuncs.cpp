@@ -6,8 +6,8 @@
 #include "Player.h"
 
 
-extern std::vector<Object> staticObjects;
-extern std::vector<MovingObject> MoveObjects;
+//extern std::vector<Object> staticObjects;
+//extern std::vector<MovingObject> MoveObjects;
 
 extern std::array<Player, MAX_PLAYER> players;
 
@@ -115,27 +115,27 @@ void TimerFunction(int value)
         }
     }
     for (int i = 0; i < count_moving_block; i++) {
-        boxOBB.center = glm::vec3(moving_blocks_pos[i][0], moving_blocks_pos[i][1], moving_blocks_pos[i][2]);
+        boxOBB.center = MoveObjects[i].GetPosVec3();
         if (CheckOBBCollision(charOBB, boxOBB)) {
-            if ((char_pos[1] + y_speed) < moving_blocks_pos[i][1] + 1.0f && char_pos[1] >= moving_blocks_pos[i][1]) {
-                char_pos[1] = moving_blocks_pos[i][1] + 1.0f;
+            if ((char_pos[1] + y_speed) < MoveObjects[i].GetPosVec3().y + 1.0f && char_pos[1] >= MoveObjects[i].GetPosVec3().y) {
+                char_pos[1] = MoveObjects[i].GetPosVec3().y + 1.0f;
                 y_speed = 0;
                 jumpable = 1;
             }
-            else if ((char_pos[1] + y_speed) > moving_blocks_pos[i][1] - 1.0f && char_pos[1] <= moving_blocks_pos[i][1]) {
-                char_pos[1] = moving_blocks_pos[i][1] - 1.0f;
+            else if ((char_pos[1] + y_speed) > MoveObjects[i].GetPosVec3().y - 1.0f && char_pos[1] <= MoveObjects[i].GetPosVec3().y) {
+                char_pos[1] = MoveObjects[i].GetPosVec3().y - 1.0f;
                 y_speed = 0;
             }
 
             for (int j = 0; j < 3; j++) {
-                char_pos[j] += moving_blocks_vec[i][j] * 0.03f;
+                char_pos[j] += MoveObjects[i].GetDirVec3()[j] * 0.03f;
             }
             break;
         }
     }
 
     for (int i = 0; i < count_moving_block; i++) {
-        for (int j = 0; j < 3; j++) {
+   /*     for (int j = 0; j < 3; j++) {
             if (moving_blocks_vec[i][j] != 0) {
                 moving_blocks_chng_pos[i][j] += moving_blocks_vec[i][j] * 0.03f;
                 moving_blocks_pos[i][j] += moving_blocks_vec[i][j] * 0.03f;
@@ -143,7 +143,9 @@ void TimerFunction(int value)
                 if (moving_blocks_chng_pos[i][j] >= 5.0f) moving_blocks_vec[i][j] *= -1;
                 else if (moving_blocks_chng_pos[i][j] <= -5.0f) moving_blocks_vec[i][j] *= -1;
             }
-        }
+
+        }*/
+        MoveObjects[i].Update();
     }
 
     char_pos[1] += y_speed;

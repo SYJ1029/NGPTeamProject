@@ -24,7 +24,7 @@ extern bool game_end;
 bool checkCollision(float ax, float ay, float az, float bx, float by, float bz);
 void setting(std::vector<Object>&, std::vector<MovingObject>& j, std::array<Player, MAX_PLAYER>&);
 void input_block_pos(Object&, int i, float x, float y, float z);
-void input_moving_block_pos(int i, float x, float y, float z, int vx, int vy, int vz);
+void input_moving_block_pos(MovingObject&, int i, float x, float y, float z, int vx, int vy, int vz);
 void place_platform(std::vector<Object>&, int& curr, const glm::vec3& v, int dx, int dy, int dz);
 bool CheckOBBCollision(const OBB& A, const OBB& B);
 
