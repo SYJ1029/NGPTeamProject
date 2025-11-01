@@ -8,7 +8,7 @@ class Player :
     public Object
 {
 private:
-    int id = 0;
+    int ID = 0;
     float moveSpeed[3]{ 0.0f };
     float rotation[3]{ 0.0f };
     float jumpSpeed{ 0.2f };
@@ -16,7 +16,7 @@ public:
     bool isGrounded{ true };
     PlayerInputs inputs{};
 
-	virtual void Init(float newPos[3]) override;
+	virtual void Init(float newPos[3], uint8_t id);
 
 	void Update();
 

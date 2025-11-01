@@ -1,9 +1,10 @@
 #include "Player.h"
 #include "StateMacro.h"
 
-void Player::Init(float newPos[3])
+void Player::Init(float newPos[3], uint8_t id)
 {
 	Object::Init(newPos);
+	ID = id;
 }
 
 void Player::Update()
