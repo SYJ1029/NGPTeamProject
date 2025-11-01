@@ -16,7 +16,7 @@ void Object::Init(float newPos[3])
 }
 
 
-glm::vec3 Object::GetPosVec3()
+glm::vec3 Object::GetPosVec3() const
 {
 	return glm::vec3(pos[0], pos[1], pos[2]);
 }

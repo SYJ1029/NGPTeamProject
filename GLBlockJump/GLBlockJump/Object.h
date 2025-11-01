@@ -12,7 +12,7 @@ public:
 	~Object();
 	virtual void Init(float newPos[3]);
 
-	glm::vec3 GetPosVec3();
+	glm::vec3 GetPosVec3() const ;
 };
 
 class MovingObject : public Object

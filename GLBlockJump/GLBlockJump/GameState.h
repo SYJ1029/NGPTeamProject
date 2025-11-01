@@ -26,6 +26,5 @@ void setting(std::vector<Object>&, std::vector<MovingObject>& j, std::array<Play
 void input_block_pos(Object&, int i, float x, float y, float z);
 void input_moving_block_pos(MovingObject&, int i, float x, float y, float z, int vx, int vy, int vz);
 void place_platform(std::vector<Object>&, int& curr, const glm::vec3& v, int dx, int dy, int dz);
-bool CheckOBBCollision(const OBB& A, const OBB& B);
 
 #endif

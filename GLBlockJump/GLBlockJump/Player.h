@@ -1,8 +1,7 @@
 #pragma once
 #include "PacketStruct.h"
 #include "Object.h"
-
-
+#include "MeshData.h" 
 
 class Player :
     public Object
