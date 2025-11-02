@@ -18,6 +18,10 @@ int window_h = 600;
 GLint width, height;
 
 
+// 서버 포트 및 버퍼 크기 정의
+#define SERVERPORT 9000
+#define BUFSIZE    512
+
 //const int MAX_PLAYER{ 3 };
 
 //extern std::vector<Object> staticObjects;
@@ -27,6 +31,23 @@ extern std::array<Player, MAX_PLAYER> players;
 
 int main(int argc, char** argv)
 {
+    const char* SERVERIP;
+    SERVERIP = argv[1];
+    if (argc < 2) {
+        SERVERIP = "127.0.0.1";
+    }
+    WSADATA wsa;
+    if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
+        return 1;
+    SOCKET sock = socket(AF_INET, SOCK_STREAM, 0);
+
+    struct sockaddr_in serveraddr;
+    memset(&serveraddr, 0, sizeof(serveraddr));
+    serveraddr.sin_family = AF_INET;
+    inet_pton(AF_INET, SERVERIP, &serveraddr.sin_addr);
+    serveraddr.sin_port = htons(SERVERPORT);
+    connect(sock, (struct sockaddr*)&serveraddr, sizeof(serveraddr));
+
     projection = glm::perspective(glm::radians(45.0f), (float)window_w / window_h, 0.1f, 1000.0f);
     srand(time(NULL));
     setting(staticObjects, MoveObjects, players);
