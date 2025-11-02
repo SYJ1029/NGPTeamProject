@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "SocketError.h"
 
 #include "MeshData.h"
 #include "ShaderUtils.h"
@@ -32,21 +33,47 @@ extern std::array<Player, MAX_PLAYER> players;
 int main(int argc, char** argv)
 {
     const char* SERVERIP;
-    SERVERIP = argv[1];
-    if (argc < 2) {
+    if (argc < 2)
         SERVERIP = "127.0.0.1";
-    }
+    else
+        SERVERIP = argv[1];
+
+    int retval;
+
     WSADATA wsa;
-    if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
-        return 1;
+    retval = WSAStartup(MAKEWORD(2, 2), &wsa);
+    if (retval != 0) {
+        err_display("WSAStartup()");
+    }
+
     SOCKET sock = socket(AF_INET, SOCK_STREAM, 0);
+    if (sock == INVALID_SOCKET) {
+        err_display("socket()");
+        WSACleanup();
+    }
 
     struct sockaddr_in serveraddr;
     memset(&serveraddr, 0, sizeof(serveraddr));
     serveraddr.sin_family = AF_INET;
-    inet_pton(AF_INET, SERVERIP, &serveraddr.sin_addr);
+
+    retval = inet_pton(AF_INET, SERVERIP, &serveraddr.sin_addr);
+    if (retval <= 0) {
+        if (retval == 0)
+            printf("[오류] 잘못된 IP 주소 형식입니다: %s\n", SERVERIP);
+        else
+            err_display("inet_pton()");
+        closesocket(sock);
+        WSACleanup();
+    }
+
     serveraddr.sin_port = htons(SERVERPORT);
-    connect(sock, (struct sockaddr*)&serveraddr, sizeof(serveraddr));
+
+    retval = connect(sock, (struct sockaddr*)&serveraddr, sizeof(serveraddr));
+    if (retval == SOCKET_ERROR) {
+        err_display("connect()");
+        closesocket(sock);
+        WSACleanup();
+    }
 
     projection = glm::perspective(glm::radians(45.0f), (float)window_w / window_h, 0.1f, 1000.0f);
     srand(time(NULL));
@@ -80,4 +107,6 @@ int main(int argc, char** argv)
     glutDisplayFunc(drawScene);
 
     glutMainLoop();
+    closesocket(sock);
+    WSACleanup();
 }
