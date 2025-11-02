@@ -162,6 +162,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Render.cpp" />
     <ClCompile Include="ShaderUtils.cpp" />
+    <ClCompile Include="SockeError.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="TextureUtils.cpp" />
   </ItemGroup>
@@ -180,6 +181,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="Render.h" />
     <ClInclude Include="ShaderUtils.h" />
+    <ClInclude Include="SocketError.h" />
     <ClInclude Include="StateEnums.h" />
     <ClInclude Include="StateMacro.h" />
     <ClInclude Include="stb_image.h" />
