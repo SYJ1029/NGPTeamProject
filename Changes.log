@@ -24,8 +24,11 @@ Object 추가, 충돌처리 적용 완료
 - 충돌 처리 성공 이라는 가정하에 위의 멤버 함수를 이용해 pos를 변환한 다음에 일시적인 1차원 배열을 만들어 거기에 대입하여 사용하는 방식으로 바꾸었음
 - 현재 계획에서 Bounding Box를 클래스가 가지는 계획이 아니므로 Object 내부에 추가하지 않고 구현
 
-<<<202118 이현석 2025-11-01>>>
+<<<202118 이현석 2025-11-01>>> (Due: 2025-11-02, Finished D-1)
 
+Player class 함수 구현
+
+[세부 수정 사항]
 1. Player class의 Update() 함수 구현
  - WASD 입력 시 플레이어 회전방향 기준 해당 방향으로 이동
  - 스페이스바 입력 시 isGrounded면 점프
@@ -39,3 +42,15 @@ Object 추가, 충돌처리 적용 완료
 4. Player class의 CheckCollision() 구현
 
 5. GameState에 있던 CheckOBBCollision() 함수 Player에서 사용하려면 상호 include 돼버려서 MeshData로 옮김
+
+<<<202118 이현석 2025-11-02>>> (Due: 2025-11-03, Finished D-1)
+
+Client Socket 생성
+
+[세부 수정 사항]
+1. Client에서 Server 접근용 소켓 관련 코드 작성
+- 윈속 초기화
+- 소켓 생성
+- connect
+
+2. 소켓 에러 함수 err_quit, err_display 생성. 클라이언트 소켓 코드에 적용
