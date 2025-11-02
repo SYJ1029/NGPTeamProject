@@ -1,0 +1,41 @@
+<<<202118 송영준 2025-11-01>>>
+
+Object 추가, 충돌처리 적용 완료
+
+[세부 수정 사항]
+1. Object 생성과 Init과 같은 틀을 작성
+
+2. std::vector로 선언한 동적, 정적 오브젝트와 array로 생성한 Player를 Object.h와 Player.h에 extern으로 생성
+- 사용할 때는 extern을 붙여서 가지고 오거나 하면 됨
+
+2. setting, input_block_pos, place_platform의 매개변수를 수정(위에서 선언한 컨테이너들을 직접적으로 사용하는 구조가 아님)
+
+3. setting 함수에서 staticObj, dynamicObj의 형태로 자료구조를 매개변수로 받아 사용하게 만들었음
+
+4. input_block_pos의 내용을 Object안에 들어가도록 수정
+
+5. place_platform의 내용을 vector 내부를 가리키게 바꿔서 Object 여럿 생성
+
+6. Object 내부에 GetPosVec3추가(pos를 glm::vec3로 변환해서 반환)
+- 이에따라 Object에서 추가적인 include가 발생하였음
+- 필요 시 클래스 내부가 아니라 외부에서 변환하도록 수정
+
+7. check_Collision의 경우 정적 오브젝트와의 충돌 책임이 Player에 있다고 여겼기에 함수 자체를 분리하지는 않았다
+- 충돌 처리 성공 이라는 가정하에 위의 멤버 함수를 이용해 pos를 변환한 다음에 일시적인 1차원 배열을 만들어 거기에 대입하여 사용하는 방식으로 바꾸었음
+- 현재 계획에서 Bounding Box를 클래스가 가지는 계획이 아니므로 Object 내부에 추가하지 않고 구현
+
+<<<202118 이현석 2025-11-01>>>
+
+1. Player class의 Update() 함수 구현
+ - WASD 입력 시 플레이어 회전방향 기준 해당 방향으로 이동
+ - 스페이스바 입력 시 isGrounded면 점프
+ - 자유낙하 구현
+
+2. Player class의 Init()에서 id까지 할당하도록 수정
+
+3. Object class의 GetPosVec3() 함수 const로 변경
+ (CheckCollision(const Object& other);처럼 인자가 const면 const 함수만 호출 가능)
+
+4. Player class의 CheckCollision() 구현
+
+5. GameState에 있던 CheckOBBCollision() 함수 Player에서 사용하려면 상호 include 돼버려서 MeshData로 옮김
