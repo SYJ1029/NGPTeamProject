@@ -11,9 +11,9 @@
 #include <array>
 
 // OpenGL 관련 라이브러리
-#include <GL/glew.h>
-#include <GL/freeglut.h>
-#include <GL/freeglut_ext.h>
+//#include <GL/glew.h>
+//#include <GL/freeglut.h>
+//#include <GL/freeglut_ext.h>
 
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
@@ -42,5 +42,5 @@
 #include "CollisionManager.h"
 
 #pragma comment(lib, "ws2_32.lib")
-#pragma comment(lib, "freeglut.lib")
-#pragma comment(lib, "glew32.lib")
+//#pragma comment(lib, "freeglut.lib")
+//#pragma comment(lib, "glew32.lib")
