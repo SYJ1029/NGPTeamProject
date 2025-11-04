@@ -189,9 +189,11 @@
     <ClInclude Include="TextureUtils.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\gold.png" />
+    <Image Include="redstone.png" />
     <Image Include="sea.jpg" />
-    <Image Include="texture.bmp" />
-    <Image Include="texture1.png" />
+    <Image Include="stone.bmp" />
+    <Image Include="diamond.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

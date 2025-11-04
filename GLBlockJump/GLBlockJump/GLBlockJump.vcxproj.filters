@@ -98,10 +98,16 @@
     <Image Include="sea.jpg">
       <Filter>리소스 파일</Filter>
     </Image>
-    <Image Include="texture.bmp">
+    <Image Include="stone.bmp">
       <Filter>리소스 파일</Filter>
     </Image>
-    <Image Include="texture1.png">
+    <Image Include="diamond.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="..\gold.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="redstone.png">
       <Filter>리소스 파일</Filter>
     </Image>
   </ItemGroup>

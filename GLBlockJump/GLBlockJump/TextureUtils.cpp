@@ -7,8 +7,8 @@ GLuint vboTexCube, vboTexFloor, vboTexSLB, vboTexELB;
 void InitTexture()
 {
     std::string texFileNames[3] = {
-        "texture.bmp",
-        "texture1.png",
+        "stone.bmp",
+        "diamond.png",
         "sea.jpg"
     };
 
