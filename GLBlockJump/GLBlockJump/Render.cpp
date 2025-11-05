@@ -178,13 +178,6 @@ void init() {
     // 깊이 테스트 활성화
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);  // 가까운 객체가 보이도록 설정 (기본값)
-
-    /*
-    // 은면 제거 활성화
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);  // 뒷면을 제거 (기본 설정)
-    glFrontFace(GL_CCW);  // 시계 반대 방향을 앞면으로 설정 (기본 설정)
-    */
 }
 
 GLvoid Reshape(int w, int h)
