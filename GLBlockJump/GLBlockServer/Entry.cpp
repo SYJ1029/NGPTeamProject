@@ -7,7 +7,7 @@
 
 
 
-SOCKET CreateSocket()
+SOCKET CreateListenSocket()
 {
 	// 家南 积己窃荐
 	SOCKET listen_sock = socket(AF_INET, SOCK_STREAM, 0);
@@ -38,5 +38,11 @@ int main()
 	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
 		return 1;
 
-	SOCKET serverSocket = CreateSocket();
+	SOCKET listen_sock = CreateListenSocket();
+
+
+	// 家南 摧扁
+	closesocket(listen_sock);
+	// 扩加 辆丰
+	WSACleanup();
 }

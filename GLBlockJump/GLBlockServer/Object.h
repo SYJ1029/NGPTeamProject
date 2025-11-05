@@ -10,7 +10,7 @@ protected:
 public:
 	Object();
 	~Object();
-	virtual void Init(float newPos[3]);
+	virtual void Init(const std::array<float, 3>& newPos);
 
 	glm::vec3 GetPosVec3() const;
 };
@@ -26,7 +26,7 @@ public:
 	MovingObject();
 	~MovingObject();
 
-	void Init(float newPos[3], int newDir[3]);
+	void Init(const std::array<float, 3>& newPos, const std::array<int, 3>& newDir);
 
 	void Update();
 

@@ -11,15 +11,15 @@ MovingObject::~MovingObject()
 {
 }
 
-void MovingObject::Init(float newPos[3], int newDir[3])
+void MovingObject::Init(const std::array<float, 3>& newPos, const std::array<int, 3>& newDir)
 {
+	Object::Init(newPos);
 	for (int i = 0; i < 3; i++) {
-		pos[i] = newPos[i];
 		dir[i] = newDir[i];
 	}
 }
 
-void MovingObject::Update() 
+void MovingObject::Update()
 {
 	float distance = 0.0f;
 

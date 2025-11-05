@@ -135,16 +135,6 @@ void TimerFunction(int value)
     }
 
     for (int i = 0; i < count_moving_block; i++) {
-   /*     for (int j = 0; j < 3; j++) {
-            if (moving_blocks_vec[i][j] != 0) {
-                moving_blocks_chng_pos[i][j] += moving_blocks_vec[i][j] * 0.03f;
-                moving_blocks_pos[i][j] += moving_blocks_vec[i][j] * 0.03f;
-
-                if (moving_blocks_chng_pos[i][j] >= 5.0f) moving_blocks_vec[i][j] *= -1;
-                else if (moving_blocks_chng_pos[i][j] <= -5.0f) moving_blocks_vec[i][j] *= -1;
-            }
-
-        }*/
         MoveObjects[i].Update();
     }
 

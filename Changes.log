@@ -24,6 +24,16 @@ Object 추가, 충돌처리 적용 완료
 - 충돌 처리 성공 이라는 가정하에 위의 멤버 함수를 이용해 pos를 변환한 다음에 일시적인 1차원 배열을 만들어 거기에 대입하여 사용하는 방식으로 바꾸었음
 - 현재 계획에서 Bounding Box를 클래스가 가지는 계획이 아니므로 Object 내부에 추가하지 않고 구현
 
+<<<202118 김준호 2025-11-01>>>
+
+Moving Object 추가
+
+[세부 수정 사항]
+
+1. MovingObject의 초기화는 void Init(float newPos[3], int newDir[3]); 으로 방향도 필요하기 때문에 새로 만들어서 오버로딩으로 구현. 
+GetPosVec3()는 Object로부터 상속받고, 추가적으로 GetDirVec3(); 를 구현.
+CallbackFuncs.cpp의 움직이는 코드를 Update()에 옮김.
+
 <<<202118 이현석 2025-11-01>>> (Due: 2025-11-02, Finished D-1)
 
 Player class 함수 구현
@@ -78,3 +88,19 @@ Server Socket 생성
 클라이언트와 서버의 코드가 중복되는 부분이 상당히 많음
 - 이를 고려하여 lib나 dll로 공통된 코드를 라이브버리 파일로 만들고 이를 클라이언트와 서버가 가져와서 사용하는 방식은 어떨까 싶음
 
+<<<2021184008 김준호 2025-11-05>>>
+
+1. Server Socket에 코드 보완
+
+	closesocket(listen_sock);
+	// 윈속 종료
+	WSACleanup();
+
+2. initWorld 코드 작성하면서 object가 하나씩 밀리는 현상 해결
+3. 초기 위치 설정할 때, 인자로 하는 newPos의 타입을 const std::array<float, 3>& newPos 로 전체 오브젝트 클래스 변경
+(단순히 {0.0f, 0.0f, 0.0f}의 방식으로 초기화하기 위함)
+4. 그에 따라 input_block_pos(), input_moving_block_pos() 함수를 없애고 클래스의 Init함수로 초기화하는 방식으로 변경함
+
+****추후 고려사항****
+플레이어의 텍스처를 바인딩하여 적용할 때, 
+현재 방식처럼 배열로 텍스처를 넣어서 적용할지, 오브젝트 클래스에 텍스처 이미지 파일 정보를 넣어 Init할 때 적용할지 고민됨.

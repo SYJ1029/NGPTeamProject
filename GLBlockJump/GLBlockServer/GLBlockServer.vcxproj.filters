@@ -45,6 +45,9 @@
     <ClCompile Include="CollisionManager.cpp">
       <Filter>Collision</Filter>
     </ClCompile>
+    <ClCompile Include="InitWorld.cpp">
+      <Filter>Entry</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Object.h">
@@ -73,6 +76,9 @@
     </ClInclude>
     <ClInclude Include="CollisionManager.h">
       <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="InitWorld.h">
+      <Filter>Entry</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

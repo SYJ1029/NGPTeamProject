@@ -1,55 +1,10 @@
-#include "GameState.h"
-#include "Object.h"
-#include "Player.h"
+#include "InitWorld.h"
 
-float char_angle[3] = { 0.0f, 0.0f, 0.0f };
-float char_pos[3] = { 0.0f, 10.0f, 0.0f };
-
+int count_block = 0;
+int count_moving_block = 0;
 const std::array<float, 3> player1_start_pos = { 0.0f, 10.0f, 0.0f };
 const std::array<float, 3> player2_start_pos = { 1.0f, 10.0f, 0.0f };
 const std::array<float, 3> player3_start_pos = { 2.0f, 10.0f, 0.0f };
-
-int go_v[4] = { 0,0,0,0 };
-int count_block = 0;
-int count_moving_block = 0;
-
-float y_speed = 0.0f;
-bool jumpable;
-bool infjump = false;
-bool game_end = false ;
-
-int before_mouse_x = 300;
-int before_mouse_y = 300;
-
-bool checkCollision(float ax, float ay, float az, float bx, float by, float bz) {
-    // 정육면체의 상대적 경계값
-    float min_x = -0.5f, max_x = 0.5f;
-    float min_y = -0.5f, max_y = 0.5f;
-    float min_z = -0.5f, max_z = 0.5f;
-
-    // A의 이동 후 경계
-    float a_min_x = ax + min_x;
-    float a_max_x = ax + max_x;
-    float a_min_y = ay + min_y;
-    float a_max_y = ay + max_y;
-    float a_min_z = az + min_z;
-    float a_max_z = az + max_z;
-
-    // B의 이동 후 경계
-    float b_min_x = bx + min_x;
-    float b_max_x = bx + max_x;
-    float b_min_y = by + min_y;
-    float b_max_y = by + max_y;
-    float b_min_z = bz + min_z;
-    float b_max_z = bz + max_z;
-
-    // 충돌 판정 (AABB 충돌 검사)
-    bool x_overlap = (a_min_x <= b_max_x) && (a_max_x >= b_min_x);
-    bool y_overlap = (a_min_y <= b_max_y) && (a_max_y >= b_min_y);
-    bool z_overlap = (a_min_z <= b_max_z) && (a_max_z >= b_min_z);
-
-    return x_overlap && y_overlap && z_overlap;
-}
 
 void place_platform(std::vector<Object>& staticObj, int& curr, const glm::vec3& v, int dx, int dy, int dz) {
 
@@ -102,8 +57,8 @@ void setting(std::vector<Object>& staticObj, std::vector<MovingObject>& dynamicO
     place_platform(staticObj, curr_block_count, glm::vec3{ 25.0f, 19.0f, 32.0f }, 1, 1, 3);
 
     staticObj[curr_block_count++].Init({ 18.0f, 19.0f, 33.0f });
-    //staticObj[curr_block_count++].Init({ 18.0f, 20.0f, 27.0f });
     staticObj[curr_block_count++].Init({ 18.0f, 20.0f, 27.0f });
+    //staticObj[curr_block_count++].Init({ 18.0f, 20.0f, 27.0f });
     staticObj[curr_block_count++].Init({ 14.0f, 21.0f, 23.0f });
     staticObj[curr_block_count++].Init({ 9.5f, 22.5f, 18.5f });
     staticObj[curr_block_count++].Init({ 5.0f, 24.0f, 18.0f });
@@ -113,12 +68,10 @@ void setting(std::vector<Object>& staticObj, std::vector<MovingObject>& dynamicO
     staticObj[curr_block_count++].Init({ 15.0f, 30.0f, 27.0f });
     staticObj[curr_block_count++].Init({ 12.0f, 32.0f, 33.0f });
     staticObj[curr_block_count++].Init({ 10.0f, 34.5f, 36.0f });
-
     staticObj[curr_block_count++].Init({ 7.5f, 36.0f, 38.0f });
     staticObj[curr_block_count++].Init({ 5.0f, 38.0f, 41.0f });
     staticObj[curr_block_count++].Init({ 4.0f, 40.0f, 45.0f });
     staticObj[curr_block_count++].Init({ 3.5f, 42.0f, 48.5f });
-
     staticObj[curr_block_count++].Init({ 7.0f, 44.0f, 46.0f });
     staticObj[curr_block_count++].Init({ 8.0f, 46.0f, 41.0f });
     staticObj[curr_block_count++].Init({ 3.0f, 48.0f, 42.0f });

@@ -15,13 +15,13 @@ public:
     bool isGrounded{ true };
     PlayerInputs inputs{};
 
-	virtual void Init(float newPos[3], uint8_t id);
+    virtual void Init(const std::array<float, 3>& newPos, uint8_t id);
 
-	void Update();
+    void Update();
 
     void Release();
 
-	bool CheckCollision(const Object& other);
+    bool CheckCollision(const Object& other);
 };
 
 extern std::array<Player, MAX_PLAYER> players;

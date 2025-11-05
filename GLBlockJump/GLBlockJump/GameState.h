@@ -9,13 +9,12 @@
 
 extern float char_angle[3];
 extern float char_pos[3];
+extern const std::array<float, 3> player1_start_pos;
+extern const std::array<float, 3> player2_start_pos;
+extern const std::array<float, 3> player3_start_pos;
 extern int go_v[4];
 extern int count_block;
-//extern float blocks_pos[10000][3];
 extern int count_moving_block;
-extern float moving_blocks_pos[10000][3];
-extern float moving_blocks_chng_pos[10000][3];
-extern int moving_blocks_vec[10000][3];
 extern float y_speed;
 extern bool jumpable;
 extern bool infjump;
@@ -23,8 +22,6 @@ extern bool game_end;
 
 bool checkCollision(float ax, float ay, float az, float bx, float by, float bz);
 void setting(std::vector<Object>&, std::vector<MovingObject>& j, std::array<Player, MAX_PLAYER>&);
-void input_block_pos(Object&, int i, float x, float y, float z);
-void input_moving_block_pos(MovingObject&, int i, float x, float y, float z, int vx, int vy, int vz);
 void place_platform(std::vector<Object>&, int& curr, const glm::vec3& v, int dx, int dy, int dz);
 
 #endif

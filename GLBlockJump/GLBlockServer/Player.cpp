@@ -2,7 +2,7 @@
 #include "CollisionManager.h"
 #include "StateMacro.h"
 
-void Player::Init(float newPos[3], uint8_t id)
+void Player::Init(const std::array<float, 3>& newPos, uint8_t id)
 {
 	Object::Init(newPos);
 	ID = id;

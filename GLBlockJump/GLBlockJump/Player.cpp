@@ -1,10 +1,11 @@
 #include "Player.h"
+//#include "CollisionManager.h"
 #include "StateMacro.h"
 
-void Player::Init(float newPos[3], uint8_t id)
+void Player::Init(const std::array<float, 3>& newPos, uint8_t id)
 {
-	Object::Init(newPos);
-	ID = id;
+    Object::Init(newPos);
+    ID = id;
 }
 
 void Player::Update()
@@ -37,11 +38,11 @@ void Player::Update()
     if (inputs.jump && isGrounded) {
         isGrounded = false;
         moveSpeed[1] = jumpSpeed;
-	}
+    }
 
     //ÀÚÀ¯³«ÇÏ
     moveSpeed[1] -= GRAVITY;
-	pos[1] += moveSpeed[1];
+    pos[1] += moveSpeed[1];
 }
 
 void Player::Release()
@@ -76,7 +77,7 @@ bool Player::CheckCollision(const Object& other)
     if (CheckOBBCollision(PlayerOBB, boxOBB)) {
         return true;
     }
-	return false;
+    return false;
 }
 
 std::array<Player, MAX_PLAYER> players;
