@@ -2,9 +2,7 @@
 
 int count_block = 0;
 int count_moving_block = 0;
-const std::array<float, 3> player1_start_pos = { 0.0f, 10.0f, 0.0f };
-const std::array<float, 3> player2_start_pos = { 1.0f, 10.0f, 0.0f };
-const std::array<float, 3> player3_start_pos = { 2.0f, 10.0f, 0.0f };
+
 
 void place_platform(std::vector<Object>& staticObj, int& curr, const glm::vec3& v, int dx, int dy, int dz) {
 
@@ -27,9 +25,7 @@ void setting(std::vector<Object>& staticObj, std::vector<MovingObject>& dynamicO
     dynamicObj.resize(50);
 
     // 플레이어 초기 위치
-    players[player_count++].Init(player1_start_pos, player_count);
-    players[player_count++].Init(player2_start_pos, player_count);
-    players[player_count++].Init(player3_start_pos, player_count);
+    InitPlayer(players);
 
     // 블럭들 초기 위치
     place_platform(staticObj, curr_block_count, glm::vec3{ 0.0f, 0.0f, 0.0f }, 5, 1, 5);

@@ -41,6 +41,8 @@
 //서버용 충돌 관리
 #include "CollisionManager.h"
 
+
+
 #pragma comment(lib, "ws2_32.lib")
 //#pragma comment(lib, "freeglut.lib")
 //#pragma comment(lib, "glew32.lib")

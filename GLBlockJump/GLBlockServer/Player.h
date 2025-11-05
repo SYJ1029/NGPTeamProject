@@ -1,10 +1,11 @@
 #pragma once
-#include "PacketStruct.h"
 #include "Object.h"
+#include "PacketStruct.h"
 //#include "MeshData.h" 
 
-class Player :
-    public Object
+class Object;
+
+class Player : public Object
 {
 private:
     int ID = 0;
@@ -12,6 +13,8 @@ private:
     float rotation[3]{ 0.0f };
     float jumpSpeed{ 0.2f };
 public:
+    Player() {}
+    ~Player() {}
     bool isGrounded{ true };
     PlayerInputs inputs{};
 

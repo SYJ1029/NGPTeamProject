@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="Entry.cpp" />
+    <ClCompile Include="InitPlayer.cpp" />
     <ClCompile Include="InitWorld.cpp" />
     <ClCompile Include="MovingObject.cpp" />
     <ClCompile Include="Object.cpp" />

@@ -1,9 +1,19 @@
+#include "Object.h"
+#include "Player.h"
+
 #include "stdafx.h"
+#include "InitWorld.h"
+
 
 // 소켓 전송 오류 관리
 #include "SocketError.h"
 
 #include "ServerMacro.h"
+
+
+extern std::vector<Object> staticObjects;
+extern std::vector<MovingObject> MoveObjects;
+extern std::array<Player, MAX_PLAYER> players;
 
 
 
@@ -33,6 +43,9 @@ SOCKET CreateListenSocket()
 
 int main()
 {
+	// 월드 기본 정보 생성
+	setting(staticObjects, MoveObjects, players);
+
 	// 윈속 초기화
 	WSADATA wsa;
 	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
