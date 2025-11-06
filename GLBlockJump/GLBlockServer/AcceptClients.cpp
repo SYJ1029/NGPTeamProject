@@ -25,7 +25,6 @@ int ConnectSocket(SOCKET& listen_sock)
 
 		for (int i = 0; i < MAX_CLIENTS; i++)
 		{
-			//반복문을 통해 2개의 클라리언트 소켓을 하나의 배열 안에 받음
 			client_param[i].sock = accept(listen_sock, (struct sockaddr*)&clientaddr, &addrlen);
 			if (client_param[i].sock == INVALID_SOCKET) {
 				err_quit("accept()"); // err_display()에서 err_quit()로 변경, 오류 시 종료
