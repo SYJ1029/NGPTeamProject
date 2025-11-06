@@ -57,7 +57,7 @@
     <ClCompile Include="InitPlayer.cpp">
       <Filter>Init</Filter>
     </ClCompile>
-    <ClCompile Include="ConnectClients.cpp">
+    <ClCompile Include="AcceptClients.cpp">
       <Filter>Network</Filter>
     </ClCompile>
   </ItemGroup>
@@ -92,7 +92,7 @@
     <ClInclude Include="InitWorld.h">
       <Filter>Init</Filter>
     </ClInclude>
-    <ClInclude Include="ConnectClients.h">
+    <ClInclude Include="AcceptClients.h">
       <Filter>Network</Filter>
     </ClInclude>
   </ItemGroup>

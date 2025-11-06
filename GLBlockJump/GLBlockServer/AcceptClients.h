@@ -9,7 +9,9 @@
 struct ThreadParam
 {
 	SOCKET sock;
-	int id; // id는 곧 자기가 접근할 spArray의 인덱스
+	unsigned int id; // id는 곧 자기가 접근할 spArray의 인덱스
 };
 
 int ConnectSocket(SOCKET& listen_sock);
+
+DWORD WINAPI ProcessServer(LPVOID arg);

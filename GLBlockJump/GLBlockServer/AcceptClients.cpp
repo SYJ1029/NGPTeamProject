@@ -1,7 +1,15 @@
-#include "ConnectClients.h"
+#include "AcceptClients.h"
+
+
+DWORD WINAPI ProcessServer(LPVOID arg)
+{
+	return 0;
+}
+
 
 int ConnectSocket(SOCKET& listen_sock)
 {
+	int retval = 0;
 	// 데이터 통신에 사용할 변수
 	ThreadParam client_param[MAX_CLIENTS];
 	struct sockaddr_in clientaddr;
@@ -31,5 +39,25 @@ int ConnectSocket(SOCKET& listen_sock)
 			// id 설정
 			client_param[i].id = i;
 		}
+
+		for (int i = 0; i < MAX_CLIENTS; i++) {
+			// 쓰레드 생성 없이 전송(게임 시작 이전에 쓰레드를 만들면서 할 필요가 없음)
+
+			WORD len = htons(sizeof(UINT));
+			retval = send(client_param[i].sock, (char*)(&len), sizeof(WORD), 0);
+			if (retval == SOCKET_ERROR) { err_quit("send()"); }
+
+			std::cout << "길이 보냈음 " << std::endl;
+
+			UINT nid = htonl(client_param[i].id);
+			retval = send(client_param[i].sock, (char*)&nid, sizeof(UINT), 0);
+			if (retval == SOCKET_ERROR) { err_quit("send()"); }
+
+			std::cout << "ID 보냈음 " << std::endl;
+
+			
+		}
 	}
 }
+
+

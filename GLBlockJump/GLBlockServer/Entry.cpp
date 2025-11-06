@@ -11,7 +11,7 @@
 #include "ServerMacro.h"
 
 // 연결 관리
-#include "ConnectClients.h"
+#include "AcceptClients.h"
 
 
 extern std::vector<Object> staticObjects;
