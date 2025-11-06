@@ -25,6 +25,9 @@
     <Filter Include="Init">
       <UniqueIdentifier>{61be0bfc-83bb-4c60-ae0d-785a9d27d23e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Network">
+      <UniqueIdentifier>{e5eb5e25-40c4-4fea-8f80-666097284a9d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entry.cpp">
@@ -53,6 +56,9 @@
     </ClCompile>
     <ClCompile Include="InitPlayer.cpp">
       <Filter>Init</Filter>
+    </ClCompile>
+    <ClCompile Include="ConnectClients.cpp">
+      <Filter>Network</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -85,6 +91,9 @@
     </ClInclude>
     <ClInclude Include="InitWorld.h">
       <Filter>Init</Filter>
+    </ClInclude>
+    <ClInclude Include="ConnectClients.h">
+      <Filter>Network</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

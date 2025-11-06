@@ -10,6 +10,9 @@
 
 #include "ServerMacro.h"
 
+// 楷搬 包府
+#include "ConnectClients.h"
+
 
 extern std::vector<Object> staticObjects;
 extern std::vector<MovingObject> MoveObjects;
@@ -53,6 +56,7 @@ int main()
 
 	SOCKET listen_sock = CreateListenSocket();
 
+	ConnectSocket(listen_sock);
 
 	// 家南 摧扁
 	closesocket(listen_sock);

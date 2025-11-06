@@ -29,6 +29,10 @@ GLint width, height;
 //extern std::vector<MovingObject> MoveObjects;
 //extern std::array<Player, MAX_PLAYER> players;
 
+//간이 연결을 위한 IP
+char* SERVERIP = (char*)"127.0.0.1";
+
+
 int main(int argc, char** argv)
 {
     const char* SERVERIP;
