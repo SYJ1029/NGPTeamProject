@@ -129,3 +129,16 @@ Server Socket 생성
 
 
 * 금요일에 계획서 수정할거임
+
+<<<2021182031 이현석 2025-11-07>>>
+Set Player + CallbackFuncs에 Player 설정
+
+1. 3개 Player 전부 화면에 나타나게 했으며 각자 해당되는 텍스쳐 할당함.
+
+2. CallbackFuncs에 있던 char_pos 등 구버전 변수 사용하던거 전부 Player 클래스 변수/함수로 변경
+
+3. gl 이벤트 발생시 Player[MyID].inputs 수정으로 변경. 
+	MyID은 전역변수로 선언되어있음, 서버에서 id 할당 받으면 클라이언트에서 해당 오브젝트의 inputs를 수정함.
+
+4. TimerFunction에서 모든 Player Update, 충돌검사 수행함.
+
