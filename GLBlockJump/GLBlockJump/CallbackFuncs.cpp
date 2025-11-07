@@ -15,9 +15,9 @@ void TimerFunction(int value)
 {
     // A의 이동 및 회전 변환 계산
     glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(char_pos[0], char_pos[1], char_pos[2]));
-    model = glm::rotate(model, glm::radians(char_angle[1]), glm::vec3(0.0, -1.0, 0.0));
-    model = glm::rotate(model, glm::radians(char_angle[0]), glm::vec3(1.0, 0.0, 0.0));
+    model = glm::translate(model, players[0].GetPosVec3());
+    model = glm::rotate(model, glm::radians(players[0].GetRotationY()), glm::vec3(0.0, -1.0, 0.0));
+    model = glm::rotate(model, glm::radians(players[0].GetRotationX()), glm::vec3(1.0, 0.0, 0.0));
 
     // 초기 점 (A에서 z+1 위치)
     glm::vec4 initialPoint = glm::vec4(0.0f, 3.0f, -5.0f, 1.0f);
@@ -43,67 +43,20 @@ void TimerFunction(int value)
 
 
     // char_angle[1] 기준 회전 행렬 계산
-    glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), glm::radians(-char_angle[1]), glm::vec3(0.0f, 1.0f, 0.0f));
-
-    // 전방(forward) 및 우측(right) 벡터 계산
-    glm::vec3 forward = glm::vec3(0.0f, 0.0f, -1.0f); // 기본 전방 방향
-    glm::vec3 right = glm::vec3(1.0f, 0.0f, 0.0f);    // 기본 우측 방향
-    forward = glm::normalize(glm::vec3(rotation * glm::vec4(forward, 0.0f))); // 회전된 전방 벡터
-    right = glm::normalize(glm::vec3(rotation * glm::vec4(right, 0.0f)));     // 회전된 우측 벡터
-
-    // 이동 거리
-    float moveSpeed = 0.1f;
-
-    if (go_v[0]) { // 앞으로 이동
-        char_pos[0] -= forward.x * moveSpeed;
-        char_pos[2] -= forward.z * moveSpeed;
-    }
-    if (go_v[1]) {// 뒤로 이동
-        char_pos[0] += forward.x * moveSpeed;
-        char_pos[2] += forward.z * moveSpeed;
-    }
-    if (go_v[2]) { // 왼쪽 이동
-        char_pos[0] += right.x * moveSpeed;
-        char_pos[2] += right.z * moveSpeed;
-    }
-    if (go_v[3]) { // 오른쪽 이동
-        char_pos[0] -= right.x * moveSpeed;
-        char_pos[2] -= right.z * moveSpeed;
-    }
-
-    y_speed -= GRAVITY;
-    jumpable = infjump;
-
-	OBB charOBB;
-	charOBB.center = glm::vec3(char_pos[0], char_pos[1], char_pos[2]);
-	charOBB.halfSize = glm::vec3(0.5f, 0.5f, 0.5f);
-    glm::mat4 rotMat = glm::yawPitchRoll(
-        char_angle[1],  // yaw (Y축)
-        char_angle[0],  // pitch (X축)
-        char_angle[2]   // roll (Z축)
-    );
-    charOBB.axis[0] = glm::normalize(glm::vec3(rotMat[0])); // X축
-    charOBB.axis[1] = glm::normalize(glm::vec3(rotMat[1])); // Y축
-    charOBB.axis[2] = glm::normalize(glm::vec3(rotMat[2])); // Z축
-
-    OBB boxOBB;
-    boxOBB.halfSize = glm::vec3(0.5f, 0.5f, 0.5f);
-	boxOBB.axis[0] = { 1, 0, 0 };
-	boxOBB.axis[1] = { 0, 1, 0 };
-	boxOBB.axis[2] = { 0, 0, 1 };
+    glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), glm::radians(-players[0].GetRotationY()), glm::vec3(0.0f, 1.0f, 0.0f));
+	players[0].Update();
 
     for (int i = 0; i < count_block; i++) {
-		boxOBB.center = staticObjects[i].GetPosVec3();
-        if (CheckOBBCollision(charOBB, boxOBB)) {
+        if (players[0].CheckCollision(staticObjects[i])) {
             float blockPos[3]{ staticObjects[i].GetPosVec3().x, staticObjects[i].GetPosVec3().y, staticObjects[i].GetPosVec3().z};
-            if ((char_pos[1] + y_speed) < blockPos[1] + 1.0f && char_pos[1] >= blockPos[1]) {
-                char_pos[1] = blockPos[1] + 1.0f;
-                y_speed = 0;
-                jumpable = 1;
+            if ((players[0].GetPosY() + players[0].GetMoveSpeedY()) < blockPos[1] + 1.0f && players[0].GetPosY() >= blockPos[1]) {
+               players[0].SetPosY(blockPos[1] + 1.0f);
+               players[0].SetMoveSpeedY(0);
+               jumpable = 1;
             }
-            else if ((char_pos[1] + y_speed) > blockPos[1] - 1.0f && char_pos[1] <= blockPos[1]) {
-                char_pos[1] = blockPos[1] - 1.0f;
-                y_speed = 0;
+            else if ((players[0].GetPosY() + players[0].GetMoveSpeedY()) > blockPos[1] - 1.0f && players[0].GetPosY() <= blockPos[1]) {
+                players[0].SetPosY(blockPos[1] - 1.0f);
+                players[0].SetMoveSpeedY(0);
             }
 
             if ((!game_end) && ((blockPos[1] >= 50) && (count_block - i <= 25))) {
@@ -115,21 +68,19 @@ void TimerFunction(int value)
         }
     }
     for (int i = 0; i < count_moving_block; i++) {
-        boxOBB.center = MoveObjects[i].GetPosVec3();
-        if (CheckOBBCollision(charOBB, boxOBB)) {
-            if ((char_pos[1] + y_speed) < MoveObjects[i].GetPosVec3().y + 1.0f && char_pos[1] >= MoveObjects[i].GetPosVec3().y) {
-                char_pos[1] = MoveObjects[i].GetPosVec3().y + 1.0f;
-                y_speed = 0;
+        if (players[0].CheckCollision(MoveObjects[i])) {
+            if ((players[0].GetPosY() + players[0].GetMoveSpeedY()) < MoveObjects[i].GetPosVec3().y + 1.0f && players[0].GetPosY() >= MoveObjects[i].GetPosVec3().y) {
+                players[0].SetPosY(MoveObjects[i].GetPosVec3().y + 1.0f);
+                players[0].SetMoveSpeedY(0);
                 jumpable = 1;
             }
-            else if ((char_pos[1] + y_speed) > MoveObjects[i].GetPosVec3().y - 1.0f && char_pos[1] <= MoveObjects[i].GetPosVec3().y) {
+            else if ((char_pos[1] + players[0].GetMoveSpeedY()) > MoveObjects[i].GetPosVec3().y - 1.0f && players[0].GetPosY() <= MoveObjects[i].GetPosVec3().y) {
                 char_pos[1] = MoveObjects[i].GetPosVec3().y - 1.0f;
-                y_speed = 0;
+                players[0].SetMoveSpeedY(0);
             }
-
-            for (int j = 0; j < 3; j++) {
-                char_pos[j] += MoveObjects[i].GetDirVec3()[j] * 0.03f;
-            }
+			players[0].SetPosX(players[0].GetPosX() + MoveObjects[i].GetDirVec3().x * 0.03f);
+			players[0].SetPosY(players[0].GetPosY() + MoveObjects[i].GetDirVec3().y * 0.03f);
+			players[0].SetPosZ(players[0].GetPosZ() + MoveObjects[i].GetDirVec3().z * 0.03f);
             break;
         }
     }
@@ -160,14 +111,14 @@ void Motion(int x, int y)
     float deltaY = static_cast<float>(y - before_mouse_y);
 
     // 변화량을 char_angle에 반영
-    char_angle[1] += deltaX * 0.8f; // x 이동량에 비례하여 y축 회전 각도 변경
-    char_angle[0] += deltaY * 0.1f; // y 이동량에 비례하여 x축 회전 각도 변경
+	players[0].SetRotationY(players[0].GetRotationY() + deltaX * 0.8f);
+	players[0].SetRotationX(players[0].GetRotationX() + deltaY * 0.1f);
 
     // 각도 범위 제한 (360도 이상, -360도 이하로 가지 않도록 처리)
-    for (int i = 0; i < 2; i++) {
-        if (char_angle[i] > 360.0f) char_angle[i] -= 360.0f;
-        if (char_angle[i] < -360.0f) char_angle[i] += 360.0f;
-    }
+	if (players[0].GetRotationX() > 360.0f) players[0].SetRotationX(players[0].GetRotationX() - 360.0f);
+	if (players[0].GetRotationX() < -360.0f) players[0].SetRotationX(players[0].GetRotationX() + 360.0f);
+	if (players[0].GetRotationY() > 360.0f) players[0].SetRotationY(360.0f);
+	if (players[0].GetRotationY() < -360.0f) players[0].SetRotationY(-360.0f);
 
     // 현재 마우스 위치를 저장하여 다음 호출에서 비교
     before_mouse_x = x;
