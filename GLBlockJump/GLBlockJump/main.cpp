@@ -28,7 +28,7 @@ GLint width, height;
 //extern std::vector<Object> staticObjects;
 //extern std::vector<MovingObject> MoveObjects;
 //extern std::array<Player, MAX_PLAYER> players;
-
+UINT MyID;
 
 int main(int argc, char** argv)
 {
@@ -77,7 +77,7 @@ int main(int argc, char** argv)
     
     UINT id = -1;
     WORD len = 0;
-    /*
+    
     retval = recv(sock, (char*)&len, sizeof(WORD), MSG_WAITALL);
     if (retval == SOCKET_ERROR || retval == 0) { err_display("recv()"); return -1; }
 
@@ -87,7 +87,8 @@ int main(int argc, char** argv)
     if (retval == SOCKET_ERROR || retval == 0) { err_display("recv()"); return -1; }
     
     id = ntohl(id);
-    */
+    
+	MyID = id;
     printf("이 클라이언트의 ID는 %d\n\n", id);
 
     projection = glm::perspective(glm::radians(45.0f), (float)window_w / window_h, 0.1f, 1000.0f);

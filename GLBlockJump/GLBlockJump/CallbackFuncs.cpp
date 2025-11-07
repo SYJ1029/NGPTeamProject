@@ -13,11 +13,12 @@ extern std::array<Player, MAX_PLAYER> players;
 
 void TimerFunction(int value)
 {
+    extern UINT MyID;
     // A의 이동 및 회전 변환 계산
     glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, players[0].GetPosVec3());
-    model = glm::rotate(model, glm::radians(players[0].GetRotationY()), glm::vec3(0.0, -1.0, 0.0));
-    model = glm::rotate(model, glm::radians(players[0].GetRotationX()), glm::vec3(1.0, 0.0, 0.0));
+    model = glm::translate(model, players[MyID].GetPosVec3());
+    model = glm::rotate(model, glm::radians(players[MyID].GetRotationY()), glm::vec3(0.0, -1.0, 0.0));
+    model = glm::rotate(model, glm::radians(players[MyID].GetRotationX()), glm::vec3(1.0, 0.0, 0.0));
 
     // 초기 점 (A에서 z+1 위치)
     glm::vec4 initialPoint = glm::vec4(0.0f, 3.0f, -5.0f, 1.0f);
@@ -98,19 +99,20 @@ void TimerFunction(int value)
 }
 void Motion(int x, int y)
 {
+    extern UINT MyID;
     // x와 y의 변화량 계산
     float deltaX = static_cast<float>(x - before_mouse_x);
     float deltaY = static_cast<float>(y - before_mouse_y);
 
     // 변화량을 char_angle에 반영
-	players[0].SetRotationY(players[0].GetRotationY() + deltaX * 0.8f);
-	players[0].SetRotationX(players[0].GetRotationX() + deltaY * 0.1f);
+	players[MyID].SetRotationY(players[MyID].GetRotationY() + deltaX * 0.8f);
+	players[MyID].SetRotationX(players[MyID].GetRotationX() + deltaY * 0.1f);
 
     // 각도 범위 제한 (360도 이상, -360도 이하로 가지 않도록 처리)
-	if (players[0].GetRotationX() > 360.0f) players[0].SetRotationX(players[0].GetRotationX() - 360.0f);
-	if (players[0].GetRotationX() < -360.0f) players[0].SetRotationX(players[0].GetRotationX() + 360.0f);
-	if (players[0].GetRotationY() > 360.0f) players[0].SetRotationY(360.0f);
-	if (players[0].GetRotationY() < -360.0f) players[0].SetRotationY(-360.0f);
+	if (players[MyID].GetRotationX() > 360.0f) players[MyID].SetRotationX(players[MyID].GetRotationX() - 360.0f);
+	if (players[MyID].GetRotationX() < -360.0f) players[MyID].SetRotationX(players[MyID].GetRotationX() + 360.0f);
+	if (players[MyID].GetRotationY() > 360.0f) players[MyID].SetRotationY(360.0f);
+	if (players[MyID].GetRotationY() < -360.0f) players[MyID].SetRotationY(-360.0f);
 
     // 현재 마우스 위치를 저장하여 다음 호출에서 비교
     before_mouse_x = x;
@@ -120,7 +122,8 @@ void Motion(int x, int y)
 
 void Keyboard(unsigned char key, int x, int y)
 {
-    // 키 입력 처리
+    extern UINT MyID;
+
     switch (key) {
     case 'j':
         if (infjump == 1) {
@@ -131,52 +134,54 @@ void Keyboard(unsigned char key, int x, int y)
             infjump = 1;
             std::cout << "inf jump enabled.\n";
         }
-
         break;
     case ' ':
-		players[0].inputs.jump = true;
+		players[MyID].inputs.jump = true;
         break;
     case 'q': // 종료
         exit(0);
         break;
     case 'w': // 앞으로 이동
-        if (players[0].inputs.updown <= 0)
-		players[0].inputs.updown += 1;
+        if (players[MyID].inputs.updown <= 0)
+		players[MyID].inputs.updown += 1;
         break;
     case 's': // 뒤로 이동
-        if (players[0].inputs.updown >= 0)
-        players[0].inputs.updown -= 1;
+        if (players[MyID].inputs.updown >= 0)
+        players[MyID].inputs.updown -= 1;
         break;
     case 'a': // 왼쪽 이동
-        if (players[0].inputs.rightleft >= 0)
-		players[0].inputs.rightleft -= 1;
+        if (players[MyID].inputs.rightleft >= 0)
+		players[MyID].inputs.rightleft -= 1;
         break;
     case 'd': // 오른쪽 이동
-        if (players[0].inputs.rightleft <= 0)
-        players[0].inputs.rightleft += 1;
+        if (players[MyID].inputs.rightleft <= 0)
+        players[MyID].inputs.rightleft += 1;
         break;
     }
 }
-void KeyboardUp(unsigned char key, int x, int y) {
+void KeyboardUp(unsigned char key, int x, int y)
+{
+    extern UINT MyID;
+
     switch (key) {
     case 'w': // 앞으로 이동
-		if (players[0].inputs.updown >= 0)
-        players[0].inputs.updown -= 1;
+		if (players[MyID].inputs.updown >= 0)
+        players[MyID].inputs.updown -= 1;
         break;
     case 's': // 뒤로 이동
-        if (players[0].inputs.updown <= 0)
-        players[0].inputs.updown += 1;
+        if (players[MyID].inputs.updown <= 0)
+        players[MyID].inputs.updown += 1;
         break;
     case 'a': // 왼쪽 이동
-        if (players[0].inputs.rightleft <= 0)
-        players[0].inputs.rightleft += 1;
+        if (players[MyID].inputs.rightleft <= 0)
+        players[MyID].inputs.rightleft += 1;
         break;
     case 'd': // 오른쪽 이동
-        if (players[0].inputs.rightleft >= 0)
-        players[0].inputs.rightleft -= 1;
+        if (players[MyID].inputs.rightleft >= 0)
+        players[MyID].inputs.rightleft -= 1;
         break;
     case ' ':
-		players[0].inputs.jump = false;
+		players[MyID].inputs.jump = false;
 		break;
     }
 }
