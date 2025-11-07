@@ -55,31 +55,33 @@ GLvoid drawScene()
     int lightColorLoc = glGetUniformLocation(shaderProgramID, "lightColor");
     glUniform3f(lightColorLoc, 1.0f, 1.0f, 1.0f);  // 조명의 색상 (흰색)
 
-    // === vaoCube ===
-    glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(char_pos[0], char_pos[1], char_pos[2]));
-    //model = glm::rotate(model, glm::radians(char_angle[0]), glm::vec3(1.0, 0.0, 0.0));
-    model = glm::rotate(model, glm::radians(char_angle[1]), glm::vec3(0.0, -1.0, 0.0));
-    //model = glm::rotate(model, glm::radians(char_angle[2]), glm::vec3(0.0, 0.0, 1.0));
-    unsigned int modelLocation = glGetUniformLocation(shaderProgramID, "modelTransform");
-    glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(model));
-
-    // vaoCube용 normalMatrix
-    glm::mat3 normalMatrix = glm::transpose(glm::inverse(glm::mat3(model)));
-    unsigned int normalMatrixLoc = glGetUniformLocation(shaderProgramID, "normalMatrix");
-    glUniformMatrix3fv(normalMatrixLoc, 1, GL_FALSE, glm::value_ptr(normalMatrix));
-
     // 텍스처 사용 활성화 - 안현우
     unsigned int useTexture = glGetUniformLocation(shaderProgramID, "useTexture");
     glUniform1i(useTexture, 1);
 
-    //육면체 그리기
-    glBindVertexArray(vaoCube);  // 육면체 VAO 바인딩
-    glBindTexture(GL_TEXTURE_2D, textureIDs[1]); // 텍스처 바인딩 - 안현우
+    for (int i = 0; i < MAX_PLAYER; i++) {
+        // === vaoCube ===
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, glm::vec3(char_pos[0], char_pos[1], char_pos[2]));
+        //model = glm::rotate(model, glm::radians(char_angle[0]), glm::vec3(1.0, 0.0, 0.0));
+        model = glm::rotate(model, glm::radians(char_angle[1]), glm::vec3(0.0, -1.0, 0.0));
+        //model = glm::rotate(model, glm::radians(char_angle[2]), glm::vec3(0.0, 0.0, 1.0));
+        unsigned int modelLocation = glGetUniformLocation(shaderProgramID, "modelTransform");
+        glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(model));
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eboCube);
-    glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+        // vaoCube용 normalMatrix
+        glm::mat3 normalMatrix = glm::transpose(glm::inverse(glm::mat3(model)));
+        unsigned int normalMatrixLoc = glGetUniformLocation(shaderProgramID, "normalMatrix");
+        glUniformMatrix3fv(normalMatrixLoc, 1, GL_FALSE, glm::value_ptr(normalMatrix));
 
+
+        //육면체 그리기
+        glBindVertexArray(vaoCube);  // 육면체 VAO 바인딩
+        glBindTexture(GL_TEXTURE_2D, textureIDs[i + 2]); // 텍스처 바인딩 - 안현우
+
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eboCube);
+        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+    }
     //바닥
     glm::mat4 modelFloor = glm::mat4(1.0f);
     unsigned int modelLocation_F = glGetUniformLocation(shaderProgramID, "modelTransform");
@@ -90,7 +92,7 @@ GLvoid drawScene()
     glUniformMatrix3fv(normalMatrixLoc_floor, 1, GL_FALSE, glm::value_ptr(normalMatrix_floor));
 
     glBindVertexArray(vaofloor);
-    glBindTexture(GL_TEXTURE_2D, textureIDs[2]); // 텍스처 바인딩 - 안현우
+    glBindTexture(GL_TEXTURE_2D, textureIDs[0]); // 텍스처 바인딩 - 안현우
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebofloor);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -108,7 +110,7 @@ GLvoid drawScene()
 
         //육면체 그리기
         glBindVertexArray(vaoCube);  // 육면체 VAO 바인딩
-        glBindTexture(GL_TEXTURE_2D, textureIDs[0]); // 텍스처 바인딩 - 안현우
+        glBindTexture(GL_TEXTURE_2D, textureIDs[1]); // 텍스처 바인딩 - 안현우
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eboCube);
         glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);

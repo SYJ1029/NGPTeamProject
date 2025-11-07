@@ -4,7 +4,7 @@
 #include "stdafx.h"
 
 void InitTexture();
-extern GLuint textureIDs[3];
+extern GLuint textureIDs[5];
 extern GLuint vboTexCube, vboTexFloor, vboTexSLB, vboTexELB;
 
 #endif

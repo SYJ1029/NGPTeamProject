@@ -1,18 +1,20 @@
 #include "TextureUtils.h"
 #include "ShaderUtils.h"
 
-GLuint textureIDs[3];
+GLuint textureIDs[5];
 GLuint vboTexCube, vboTexFloor, vboTexSLB, vboTexELB;
 
 void InitTexture()
 {
-    std::string texFileNames[3] = {
+    std::string texFileNames[5] = {
+        "sea.jpg",
         "stone.bmp",
         "diamond.png",
-        "sea.jpg"
+        "gold.png",
+        "redstone.png"
     };
 
-    for (int i = 0; i < 3; ++i) {
+    for (int i = 0; i < 5; ++i) {
         glGenTextures(1, &textureIDs[i]);
         glBindTexture(GL_TEXTURE_2D, textureIDs[i]);
 
