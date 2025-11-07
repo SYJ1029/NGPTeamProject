@@ -62,10 +62,8 @@ GLvoid drawScene()
     for (int i = 0; i < MAX_PLAYER; i++) {
         // === vaoCube ===
         glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(char_pos[0], char_pos[1], char_pos[2]));
-        //model = glm::rotate(model, glm::radians(char_angle[0]), glm::vec3(1.0, 0.0, 0.0));
-        model = glm::rotate(model, glm::radians(char_angle[1]), glm::vec3(0.0, -1.0, 0.0));
-        //model = glm::rotate(model, glm::radians(char_angle[2]), glm::vec3(0.0, 0.0, 1.0));
+        model = glm::translate(model, players[i].GetPosVec3());
+        model = glm::rotate(model, glm::radians(players[i].GetRotationY()), glm::vec3(0.0, -1.0, 0.0));
         unsigned int modelLocation = glGetUniformLocation(shaderProgramID, "modelTransform");
         glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(model));
 

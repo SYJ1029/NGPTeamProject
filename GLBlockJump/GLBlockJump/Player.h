@@ -22,6 +22,9 @@ public:
     void Release();
 
     bool CheckCollision(const Object& other);
+
+	float GetRotationX() const { return rotation[0]; };
+	float GetRotationY() const { return rotation[1]; };
 };
 
 extern std::array<Player, MAX_PLAYER> players;
