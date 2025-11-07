@@ -41,67 +41,57 @@ void TimerFunction(int value)
     cameraTarget.y = rotatedTarget.y;
     cameraTarget.z = rotatedTarget.z;
 
+    for (int P = 0; P < MAX_PLAYER; P++) {
 
-    // char_angle[1] 기준 회전 행렬 계산
-    glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), glm::radians(-players[0].GetRotationY()), glm::vec3(0.0f, 1.0f, 0.0f));
-	players[0].Update();
-	bool isGrounded = false;
+        glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), glm::radians(-players[P].GetRotationY()), glm::vec3(0.0f, 1.0f, 0.0f));
+        players[P].Update();
 
-    for (int i = 0; i < count_block; i++) {
-        if (players[0].CheckCollision(staticObjects[i])) {
-            float blockPos[3]{ staticObjects[i].GetPosVec3().x, staticObjects[i].GetPosVec3().y, staticObjects[i].GetPosVec3().z};
-            if ((players[0].GetPosY() + players[0].GetMoveSpeedY()) < blockPos[1] + 1.0f && players[0].GetPosY() >= blockPos[1]) {
-               players[0].SetPosY(blockPos[1] + 1.0f);
-               players[0].SetMoveSpeedY(0);
-			   isGrounded = true;
+
+        bool isGrounded = false;
+        for (int i = 0; i < count_block; i++) {
+            if (players[P].CheckCollision(staticObjects[i])) {
+                float blockPos[3]{ staticObjects[i].GetPosVec3().x, staticObjects[i].GetPosVec3().y, staticObjects[i].GetPosVec3().z };
+                if ((players[P].GetPosY() + players[P].GetMoveSpeedY()) < blockPos[1] + 1.0f && players[P].GetPosY() >= blockPos[1]) {
+                    players[P].SetPosY(blockPos[1] + 1.0f);
+                    players[P].SetMoveSpeedY(0);
+                    isGrounded = true;
+                }
+                else if ((players[P].GetPosY() + players[P].GetMoveSpeedY()) > blockPos[1] - 1.0f && players[P].GetPosY() <= blockPos[1]) {
+                    players[P].SetPosY(blockPos[1] - 1.0f);
+                    players[P].SetMoveSpeedY(0);
+                }
+
+                if ((!game_end) && ((blockPos[1] >= 50) && (count_block - i <= 25))) {
+                    std::cout << "Congratulations! You Win! \npress \"q\" to quit the game.\n";
+                    game_end = true;
+                }
+
+                break;
             }
-            else if ((players[0].GetPosY() + players[0].GetMoveSpeedY()) > blockPos[1] - 1.0f && players[0].GetPosY() <= blockPos[1]) {
-                players[0].SetPosY(blockPos[1] - 1.0f);
-                players[0].SetMoveSpeedY(0);
+        }
+        for (int i = 0; i < count_moving_block; i++) {
+            if (players[P].CheckCollision(MoveObjects[i])) {
+                if ((players[P].GetPosY() + players[P].GetMoveSpeedY()) < MoveObjects[i].GetPosVec3().y + 1.0f && players[P].GetPosY() >= MoveObjects[i].GetPosVec3().y) {
+                    players[P].SetPosY(MoveObjects[i].GetPosVec3().y + 1.0f);
+                    players[P].SetMoveSpeedY(0);
+                    isGrounded = true;
+                }
+                else if ((char_pos[1] + players[P].GetMoveSpeedY()) > MoveObjects[i].GetPosVec3().y - 1.0f && players[P].GetPosY() <= MoveObjects[i].GetPosVec3().y) {
+                    char_pos[1] = MoveObjects[i].GetPosVec3().y - 1.0f;
+                    players[P].SetMoveSpeedY(0);
+                }
+                players[P].SetPosX(players[P].GetPosX() + MoveObjects[i].GetDirVec3().x * 0.03f);
+                players[P].SetPosY(players[P].GetPosY() + MoveObjects[i].GetDirVec3().y * 0.03f);
+                players[P].SetPosZ(players[P].GetPosZ() + MoveObjects[i].GetDirVec3().z * 0.03f);
+                break;
             }
+        }
+        players[P].isGrounded = isGrounded;
 
-            if ((!game_end) && ((blockPos[1] >= 50) && (count_block - i <= 25))) {
-                std::cout << "Congratulations! You Win! \npress \"q\" to quit the game.\n";
-                game_end = true;
-            }
-
-            break;
+        for (int i = 0; i < count_moving_block; i++) {
+            MoveObjects[i].Update();
         }
     }
-    for (int i = 0; i < count_moving_block; i++) {
-        if (players[0].CheckCollision(MoveObjects[i])) {
-            if ((players[0].GetPosY() + players[0].GetMoveSpeedY()) < MoveObjects[i].GetPosVec3().y + 1.0f && players[0].GetPosY() >= MoveObjects[i].GetPosVec3().y) {
-                players[0].SetPosY(MoveObjects[i].GetPosVec3().y + 1.0f);
-                players[0].SetMoveSpeedY(0);
-				isGrounded = true;
-            }
-            else if ((char_pos[1] + players[0].GetMoveSpeedY()) > MoveObjects[i].GetPosVec3().y - 1.0f && players[0].GetPosY() <= MoveObjects[i].GetPosVec3().y) {
-                char_pos[1] = MoveObjects[i].GetPosVec3().y - 1.0f;
-                players[0].SetMoveSpeedY(0);
-            }
-			players[0].SetPosX(players[0].GetPosX() + MoveObjects[i].GetDirVec3().x * 0.03f);
-			players[0].SetPosY(players[0].GetPosY() + MoveObjects[i].GetDirVec3().y * 0.03f);
-			players[0].SetPosZ(players[0].GetPosZ() + MoveObjects[i].GetDirVec3().z * 0.03f);
-            break;
-        }
-    }
-	players[0].isGrounded = isGrounded;
-
-    for (int i = 0; i < count_moving_block; i++) {
-        MoveObjects[i].Update();
-    }
-
-    char_pos[1] += y_speed;
-
-
-    if (char_pos[1] <= -10.0f) {
-        char_pos[0] = 0.0f;
-        char_pos[1] = 10.0f;
-        char_pos[2] = 0.0f;
-
-        y_speed = 0.0f;
-    }
-
 
     glutPostRedisplay();
     glutTimerFunc(10, TimerFunction, 1);

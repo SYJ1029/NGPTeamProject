@@ -36,7 +36,6 @@ void Player::Update()
         pos[0] -= right.x * moveSpeed[0];
         pos[2] -= right.z * moveSpeed[2];
     }
-    std::cout << pos[0] << ", " << pos[1] << ", " << pos[2] << "\n";
 
     //점프
     if (inputs.jump && isGrounded) {
@@ -47,6 +46,14 @@ void Player::Update()
     //자유낙하
     moveSpeed[1] -= GRAVITY;
     pos[1] += moveSpeed[1];
+
+    if (pos[1] <= -10.0f) {
+        pos[0] = 0.0f;
+        pos[1] = 10.0f;
+        pos[2] = 0.0f;
+
+        moveSpeed[1] = 0.0f;
+    }
 }
 
 void Player::Release()
