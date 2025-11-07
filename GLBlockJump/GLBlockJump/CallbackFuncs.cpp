@@ -45,6 +45,7 @@ void TimerFunction(int value)
     // char_angle[1] 기준 회전 행렬 계산
     glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), glm::radians(-players[0].GetRotationY()), glm::vec3(0.0f, 1.0f, 0.0f));
 	players[0].Update();
+	bool isGrounded = false;
 
     for (int i = 0; i < count_block; i++) {
         if (players[0].CheckCollision(staticObjects[i])) {
@@ -52,7 +53,7 @@ void TimerFunction(int value)
             if ((players[0].GetPosY() + players[0].GetMoveSpeedY()) < blockPos[1] + 1.0f && players[0].GetPosY() >= blockPos[1]) {
                players[0].SetPosY(blockPos[1] + 1.0f);
                players[0].SetMoveSpeedY(0);
-               jumpable = 1;
+			   isGrounded = true;
             }
             else if ((players[0].GetPosY() + players[0].GetMoveSpeedY()) > blockPos[1] - 1.0f && players[0].GetPosY() <= blockPos[1]) {
                 players[0].SetPosY(blockPos[1] - 1.0f);
@@ -72,7 +73,7 @@ void TimerFunction(int value)
             if ((players[0].GetPosY() + players[0].GetMoveSpeedY()) < MoveObjects[i].GetPosVec3().y + 1.0f && players[0].GetPosY() >= MoveObjects[i].GetPosVec3().y) {
                 players[0].SetPosY(MoveObjects[i].GetPosVec3().y + 1.0f);
                 players[0].SetMoveSpeedY(0);
-                jumpable = 1;
+				isGrounded = true;
             }
             else if ((char_pos[1] + players[0].GetMoveSpeedY()) > MoveObjects[i].GetPosVec3().y - 1.0f && players[0].GetPosY() <= MoveObjects[i].GetPosVec3().y) {
                 char_pos[1] = MoveObjects[i].GetPosVec3().y - 1.0f;
@@ -84,6 +85,7 @@ void TimerFunction(int value)
             break;
         }
     }
+	players[0].isGrounded = isGrounded;
 
     for (int i = 0; i < count_moving_block; i++) {
         MoveObjects[i].Update();
@@ -142,49 +144,50 @@ void Keyboard(unsigned char key, int x, int y)
 
         break;
     case ' ':
-        if (jumpable) {
-            y_speed = 0.3f;
-            char_pos[1] += y_speed;
-        }
-        break;
-    case '\n':
-    case '\r':
-        char_angle[0] = 0;
-        char_angle[1] = 0;
-        before_mouse_x = x;
-        before_mouse_y = y;
+		players[0].inputs.jump = true;
         break;
     case 'q': // 종료
         exit(0);
         break;
     case 'w': // 앞으로 이동
-        go_v[0] = 1;
+        if (players[0].inputs.updown <= 0)
+		players[0].inputs.updown += 1;
         break;
     case 's': // 뒤로 이동
-        go_v[1] = 1;
+        if (players[0].inputs.updown >= 0)
+        players[0].inputs.updown -= 1;
         break;
     case 'a': // 왼쪽 이동
-        go_v[2] = 1;
+        if (players[0].inputs.rightleft >= 0)
+		players[0].inputs.rightleft -= 1;
         break;
     case 'd': // 오른쪽 이동
-        go_v[3] = 1;
+        if (players[0].inputs.rightleft <= 0)
+        players[0].inputs.rightleft += 1;
         break;
     }
 }
 void KeyboardUp(unsigned char key, int x, int y) {
     switch (key) {
     case 'w': // 앞으로 이동
-        go_v[0] = 0;
+		if (players[0].inputs.updown >= 0)
+        players[0].inputs.updown -= 1;
         break;
     case 's': // 뒤로 이동
-        go_v[1] = 0;
+        if (players[0].inputs.updown <= 0)
+        players[0].inputs.updown += 1;
         break;
     case 'a': // 왼쪽 이동
-        go_v[2] = 0;
+        if (players[0].inputs.rightleft <= 0)
+        players[0].inputs.rightleft += 1;
         break;
     case 'd': // 오른쪽 이동
-        go_v[3] = 0;
+        if (players[0].inputs.rightleft >= 0)
+        players[0].inputs.rightleft -= 1;
         break;
+    case ' ':
+		players[0].inputs.jump = false;
+		break;
     }
 }
 

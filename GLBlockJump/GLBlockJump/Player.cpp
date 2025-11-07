@@ -4,6 +4,9 @@
 
 void Player::Init(const std::array<float, 3>& newPos, uint8_t id)
 {
+	moveSpeed[0] = 0.1f;
+	moveSpeed[1] = 0.0f; 
+	moveSpeed[2] = 0.1f;
     Object::Init(newPos);
     ID = id;
 }
@@ -17,22 +20,23 @@ void Player::Update()
     forward = glm::normalize(glm::vec3(rotMat * glm::vec4(forward, 0.0f)));
     right = glm::normalize(glm::vec3(rotMat * glm::vec4(right, 0.0f)));
 
-    if (inputs.updown == 1) {
+    if (inputs.updown > 0) {
         pos[0] -= forward.x * moveSpeed[0];
         pos[2] -= forward.z * moveSpeed[2];
     }
-    else if (inputs.updown == -1) {
+    else if (inputs.updown < 0) {
         pos[0] += forward.x * moveSpeed[0];
         pos[2] += forward.z * moveSpeed[2];
     }
-    if (inputs.rightleft == -1) {
+    if (inputs.rightleft < 0) {
         pos[0] += right.x * moveSpeed[0];
         pos[2] += right.z * moveSpeed[2];
     }
-    else if (inputs.rightleft == 1) {
+    else if (inputs.rightleft > 0) {
         pos[0] -= right.x * moveSpeed[0];
         pos[2] -= right.z * moveSpeed[2];
     }
+    std::cout << pos[0] << ", " << pos[1] << ", " << pos[2] << "\n";
 
     //มกวม
     if (inputs.jump && isGrounded) {
