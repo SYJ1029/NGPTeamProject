@@ -142,3 +142,7 @@ Set Player + CallbackFuncs에 Player 설정
 
 4. TimerFunction에서 모든 Player Update, 충돌검사 수행함.
 
+
+<<<2021184008 김준호 2025-11-05>>>
+
+1. GL 초기화를 위한 InitGL 코드 정리 및 리팩토링

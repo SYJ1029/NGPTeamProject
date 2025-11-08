@@ -2,21 +2,13 @@
 #include "SocketError.h"
 
 #include "MeshData.h"
-#include "ShaderUtils.h"
-#include "BufferInit.h"
-#include "TextureUtils.h"
 #include "CameraAndLight.h"
 #include "GameState.h"
-#include "CallbackFuncs.h"
-#include "Render.h"
 
 #include "Object.h"
 #include "Player.h"
 
-
-int window_w = 600;
-int window_h = 600;
-GLint width, height;
+#include "InitGL.h"
 
 
 // 서버 포트 및 버퍼 크기 정의
@@ -68,55 +60,33 @@ int main(int argc, char** argv)
 
     serveraddr.sin_port = htons(SERVERPORT);
 
-    retval = connect(sock, (struct sockaddr*)&serveraddr, sizeof(serveraddr));
-    if (retval == SOCKET_ERROR) {
-        err_display("connect()");
-        closesocket(sock);
-        WSACleanup();
-    }
-    
-    UINT id = -1;
-    WORD len = 0;
-    
-    retval = recv(sock, (char*)&len, sizeof(WORD), MSG_WAITALL);
-    if (retval == SOCKET_ERROR || retval == 0) { err_display("recv()"); return -1; }
+ //   retval = connect(sock, (struct sockaddr*)&serveraddr, sizeof(serveraddr));
+ //   if (retval == SOCKET_ERROR) {
+ //       err_display("connect()");
+ //       closesocket(sock);
+ //       WSACleanup();
+ //   }
+ //   
+ //   UINT id = -1;
+ //   WORD len = 0;
+ //   
+ //   retval = recv(sock, (char*)&len, sizeof(WORD), MSG_WAITALL);
+ //   if (retval == SOCKET_ERROR || retval == 0) { err_display("recv()"); return -1; }
 
-    len = ntohs(len);
+ //   len = ntohs(len);
 
-    retval = recv(sock, (char*)&id, len, MSG_WAITALL);
-    if (retval == SOCKET_ERROR || retval == 0) { err_display("recv()"); return -1; }
-    
-    id = ntohl(id);
-    
-	MyID = id;
-    printf("이 클라이언트의 ID는 %d\n\n", id);
+ //   retval = recv(sock, (char*)&id, len, MSG_WAITALL);
+ //   if (retval == SOCKET_ERROR || retval == 0) { err_display("recv()"); return -1; }
+ //   
+ //   id = ntohl(id);
+ //   
+	//MyID = id;
+ //   printf("이 클라이언트의 ID는 %d\n\n", id);
 
-    projection = glm::perspective(glm::radians(45.0f), (float)window_w / window_h, 0.1f, 1000.0f);
-    srand(time(NULL));
     setting(staticObjects, MoveObjects, players);
-
-    glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
-    glutInitWindowPosition(100, 100);
-    glutInitWindowSize(window_w, window_h);
-    glutCreateWindow("TermProj");
-    glewExperimental = GL_TRUE;
-    glewInit();
-    make_shaderProgram();
-    InitTexture();
-    InitBuffer();
-    init();
-
-    glutMotionFunc(Motion);
-    glutPassiveMotionFunc(Motion); // 클릭 없이 이동
-    glutKeyboardFunc(Keyboard);
-    glutKeyboardUpFunc(KeyboardUp);   // 키 떼짐 처리
-    //glutMouseFunc(Mouse);
-    //glutSpecialFunc(SpecialInput);
-
-    glutTimerFunc(10, TimerFunction, 1);
-    glutReshapeFunc(Reshape);
-    glutDisplayFunc(drawScene);
+ 
+    //srand(time(NULL));
+    InitGL(argc, argv);
 
     glutMainLoop();
     closesocket(sock);
