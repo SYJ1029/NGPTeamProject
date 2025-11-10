@@ -46,6 +46,9 @@
     <ClCompile Include="InitGL.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="ConnectServer.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BufferInit.h">
@@ -99,6 +102,9 @@
     <ClInclude Include="InitGL.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="ConnectServer.h">
+      <Filter>Network</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="sea.jpg">
@@ -146,6 +152,9 @@
     </Filter>
     <Filter Include="State">
       <UniqueIdentifier>{fb466566-1c0d-4a11-bb58-1be06a08a20c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network">
+      <UniqueIdentifier>{af2b2236-6e9b-44a6-b790-9bffca459a75}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
