@@ -146,3 +146,13 @@ Set Player + CallbackFuncs에 Player 설정
 <<<2021184008 김준호 2025-11-05>>>
 
 1. GL 초기화를 위한 InitGL 코드 정리 및 리팩토링
+
+
+<<<2021182031 이현석 2025-11-10>>>
+RecvInit 구현
+
+1. 클라이언트 socket 함수(윈속 초기화 ~ connect) 함수화 해서 뺌.
+
+2. RecvInitPlayers, RecvInitWorldStatic, RecvInitWorldDynamic 각각 구현
+
+3. main에 주석 상태로 Recv 함수 추가
