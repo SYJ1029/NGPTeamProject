@@ -66,7 +66,8 @@ int main(int argc, char** argv)
             break;
     }
     */
-
+	
+    //RecvInitPlayers(sock, MyID);
     setting(staticObjects, MoveObjects, players);
  
     //srand(time(NULL));
