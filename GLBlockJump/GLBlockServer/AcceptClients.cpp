@@ -60,3 +60,113 @@ int ConnectSocket(SOCKET& listen_sock)
 }
 
 
+void SendInitPlayers(SOCKET sock, UINT& MyID)
+{
+    PacketParam header{};
+    int retval;
+
+    header.type = PACK_INIT_PLAYERS;
+    header.size = players.size() * sizeof(Player);
+    for (int i = 0; i < 3; ++i) {
+        retval = send(sock, (char*)&header, sizeof(header), MSG_WAITALL);
+        if (retval <= 0) return;
+    }
+
+
+    PlayerInitInfo info[3];
+    for (int i = 0; i < MAX_CLIENTS; ++i)
+    {
+        info[i].playerId = i;
+        glm::vec3 glmPos = players[i].GetPosVec3();
+        info[i].spawnPos[0] = glmPos.x;
+        info[i].spawnPos[1] = glmPos.y;
+        info[i].spawnPos[2] = glmPos.z;
+    }
+    PktInitPlayers* pkt = {};
+    pkt->myPlayerId = 0;
+
+    for (int i = 0; i < MAX_CLIENTS; ++i)
+    {
+        pkt->myPlayerId = i;
+        pkt->players[i] = info[i];
+
+        retval = send(sock, (char*)pkt->myPlayerId, sizeof(int), MSG_WAITALL);
+        retval = send(sock, (char*)pkt->players->spawnPos, 3 * sizeof(float), MSG_WAITALL);
+
+
+    }
+
+
+    std::vector<char> buffer(header.size);
+
+    
+    retval = send(sock, buffer.data(), header.size, MSG_WAITALL);
+    if (retval <= 0) return;
+
+
+
+  
+}
+
+void SendInitWorldStatic(SOCKET sock)
+{
+    PacketParam header{};
+    int retval = recv(sock, (char*)&header, sizeof(header), MSG_WAITALL);
+    if (retval <= 0) return;
+
+    if (header.type != PACK_INIT_WORLD_STATIC)
+        return;
+
+    int bodySize = header.size - sizeof(PacketParam);
+    if (bodySize <= 0) return;
+
+    std::vector<float> buffer(bodySize / sizeof(float));
+    retval = recv(sock, (char*)buffer.data(), bodySize, MSG_WAITALL);
+    if (retval <= 0) return;
+
+    int objectCount = bodySize / (sizeof(float) * 3);
+    staticObjects.resize(objectCount);
+
+    for (int i = 0; i < objectCount; ++i)
+    {
+        std::array<float, 3> pos = {
+            buffer[i * 3 + 0],
+            buffer[i * 3 + 1],
+            buffer[i * 3 + 2]
+        };
+        staticObjects[i].Init(pos);
+    }
+
+}
+void SendInitWorldDynamic(SOCKET sock)
+{
+    PacketParam header{};
+    int retval = recv(sock, (char*)&header, sizeof(header), MSG_WAITALL);
+    if (retval <= 0) return;
+
+    if (header.type != PACK_INIT_WORLD_DYNAMIC)
+        return;
+
+    int bodySize = header.size - sizeof(PacketParam);
+    if (bodySize <= 0) return;
+
+    std::vector<float> buffer(bodySize / sizeof(float));
+    retval = recv(sock, (char*)buffer.data(), bodySize, MSG_WAITALL);
+    if (retval <= 0) return;
+
+    int objectCount = bodySize / (sizeof(float) * 3);
+    MoveObjects.resize(objectCount);
+
+    for (int i = 0; i < objectCount; ++i)
+    {
+        std::array<float, 3> pos = {
+            buffer[i * 3 + 0],
+            buffer[i * 3 + 1],
+            buffer[i * 3 + 2]
+        };
+        std::array<int, 3> dir = { 0,0,0 }; // 기본 방향값 (클라에서는 사용 X)
+        MoveObjects[i].Init(pos, dir);
+    }
+}
+
+

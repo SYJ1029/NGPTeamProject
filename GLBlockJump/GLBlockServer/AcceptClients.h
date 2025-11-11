@@ -5,6 +5,9 @@
 
 #include "ServerMacro.h"
 
+#include "Object.h"
+#include "player.h"
+
 // 스레드에 소켓 뿐만이 아니라 id를 같이 넘겨준다
 struct ThreadParam
 {
@@ -14,4 +17,9 @@ struct ThreadParam
 
 int ConnectSocket(SOCKET& listen_sock);
 
+void SendInitPlayers(SOCKET sock, UINT& MyID);
+void SendInitWorldStatic(SOCKET sock);
+void SendInitWorldDynamic(SOCKET sock);
+
 DWORD WINAPI ProcessServer(LPVOID arg);
+

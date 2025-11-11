@@ -29,11 +29,11 @@ struct PacketParam {
 
 
 struct PlayerInitInfo {
-    unsigned long long playerId;
+    int playerId;
     float spawnPos[3];
 };
 
 struct PktInitPlayers {
-    unsigned long long myPlayerId;
+    int myPlayerId;
     PlayerInitInfo players[3]; // 모든 플레이어의 초기 위치
 };

@@ -67,7 +67,7 @@ int main(int argc, char** argv)
     }
     */
 	
-    //RecvInitPlayers(sock, MyID);
+    RecvInitPlayers(sock, MyID);
     //RecvInitWorldStatic(sock);
     //RecvInitWorldDynamic(sock);
     setting(staticObjects, MoveObjects, players);
