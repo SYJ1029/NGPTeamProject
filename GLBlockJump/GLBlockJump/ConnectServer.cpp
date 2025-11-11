@@ -1,4 +1,5 @@
 #include "ConnectServer.h"
+#include <iostream>
 
 PacketParam staticObjParam; // 고정 객체를 전송할 패킷들의 총 정보
 float staticObjectPosition[3]; // 고정된 객체들의 각 좌표를 넣어서 그 개수만큼 반복
@@ -56,22 +57,26 @@ void CleanupSocket(SOCKET sock)
 void RecvInitPlayers(SOCKET sock, UINT &MyID)
 {
     PacketParam header{};
-    int retval = recv(sock, (char*)&header.type, sizeof(header.type), MSG_WAITALL);
+    int pkType = 0;
+    int retval = recv(sock, (char*)&pkType, sizeof(int), MSG_WAITALL);
+    std::cout << "연결 종료\n\n";
     if (retval <= 0) return;
+
+    header.type = (PacketType)pkType;
 
     retval = recv(sock, (char*)&header.size, sizeof(header.size), MSG_WAITALL);
     if (retval <= 0) return;
 
     if (header.type != PACK_INIT_PLAYERS) return;
 
-    int bodySize = header.size - sizeof(PacketParam);
+    int bodySize = header.size / sizeof(PacketParam);
     if (bodySize <= 0 || bodySize > 1024) return;
 
 
   
 
-    std::vector<uint8_t> buffer(bodySize);
-    retval = recv(sock, (char*)buffer.data(), bodySize, MSG_WAITALL);
+    std::vector<uint8_t> buffer(100);
+    retval = recv(sock, (char*)buffer.data(), 100 * sizeof(uint8_t), MSG_WAITALL);
     if (retval <= 0) return;
 
     PktInitPlayers pkt;

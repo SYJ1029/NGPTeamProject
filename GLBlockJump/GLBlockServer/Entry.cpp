@@ -57,7 +57,7 @@ int main()
 	SOCKET listen_sock = CreateListenSocket();
 
 	ConnectSocket(listen_sock);
-	SendInitPlayers(listen_sock);
+	//SendInitPlayers(listen_sock);
 
 	// ¼ÒÄÏ ´İ±â
 	closesocket(listen_sock);

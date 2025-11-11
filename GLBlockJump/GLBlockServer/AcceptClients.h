@@ -17,7 +17,7 @@ struct ThreadParam
 
 int ConnectSocket(SOCKET& listen_sock);
 
-void SendInitPlayers(SOCKET sock);
+void SendInitPlayers(PlayerInitInfo info[MAX_CLIENTS], SOCKET* sock);
 void SendInitWorldStatic(SOCKET sock);
 void SendInitWorldDynamic(SOCKET sock);
 
