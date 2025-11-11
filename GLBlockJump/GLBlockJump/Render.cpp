@@ -11,6 +11,7 @@ extern std::vector<MovingObject> MoveObjects;
 
 
 int wireframeMode = 0;
+
 GLvoid drawScene()
 {
     glUseProgram(shaderProgramID);

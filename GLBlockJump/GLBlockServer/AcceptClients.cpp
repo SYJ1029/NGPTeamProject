@@ -9,7 +9,7 @@ DWORD WINAPI ProcessServer(LPVOID arg)
 
 int ConnectSocket(SOCKET& listen_sock)
 {
-	int retval = 0;
+	int retval = -1;
 	// 데이터 통신에 사용할 변수
 	ThreadParam client_param[MAX_CLIENTS];
 	struct sockaddr_in clientaddr;
@@ -60,15 +60,17 @@ int ConnectSocket(SOCKET& listen_sock)
 }
 
 
-void SendInitPlayers(SOCKET sock, UINT& MyID)
+void SendInitPlayers(SOCKET sock)
 {
     PacketParam header{};
     int retval;
 
     header.type = PACK_INIT_PLAYERS;
-    header.size = players.size() * sizeof(Player);
-    for (int i = 0; i < 3; ++i) {
-        retval = send(sock, (char*)&header, sizeof(header), MSG_WAITALL);
+    header.size = players.size() * sizeof(PktInitPlayers);
+    for (int i = 0; i < MAX_CLIENTS; ++i) {
+        retval = send(sock, (char*)&header.type, sizeof(PacketType), MSG_WAITALL);
+        if (retval <= 0) return;
+        retval = send(sock, (char*)&header.size, sizeof(size_t), MSG_WAITALL);
         if (retval <= 0) return;
     }
 
@@ -82,26 +84,28 @@ void SendInitPlayers(SOCKET sock, UINT& MyID)
         info[i].spawnPos[1] = glmPos.y;
         info[i].spawnPos[2] = glmPos.z;
     }
-    PktInitPlayers* pkt = {};
-    pkt->myPlayerId = 0;
+
+    PktInitPlayers pkt;
+    pkt.myPlayerId = 0;
 
     for (int i = 0; i < MAX_CLIENTS; ++i)
     {
-        pkt->myPlayerId = i;
-        pkt->players[i] = info[i];
+        pkt.myPlayerId = i + 1;
+        pkt.players[i] = info[i];
+    }
 
-        retval = send(sock, (char*)pkt->myPlayerId, sizeof(int), MSG_WAITALL);
-        retval = send(sock, (char*)pkt->players->spawnPos, 3 * sizeof(float), MSG_WAITALL);
+    std::vector<uint8_t> buffer;
+    buffer = pkt.Serialize();
 
+    for (int i = 0; i < MAX_CLIENTS; ++i) {
+
+        //ID와 주소를 한꺼번에 전송
+        retval = send(sock, (char*)buffer.data(), buffer.size() * sizeof(uint8_t), MSG_WAITALL);
 
     }
 
 
-    std::vector<char> buffer(header.size);
 
-    
-    retval = send(sock, buffer.data(), header.size, MSG_WAITALL);
-    if (retval <= 0) return;
 
 
 

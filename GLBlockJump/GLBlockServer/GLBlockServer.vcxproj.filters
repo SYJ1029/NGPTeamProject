@@ -60,6 +60,9 @@
     <ClCompile Include="AcceptClients.cpp">
       <Filter>Network</Filter>
     </ClCompile>
+    <ClCompile Include="PacketStruct.cpp">
+      <Filter>Protocols</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Object.h">

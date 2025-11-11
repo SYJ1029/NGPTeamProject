@@ -49,6 +49,9 @@
     <ClCompile Include="ConnectServer.cpp">
       <Filter>Network</Filter>
     </ClCompile>
+    <ClCompile Include="PacketStruct.cpp">
+      <Filter>PacketStructs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BufferInit.h">

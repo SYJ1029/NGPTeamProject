@@ -161,6 +161,7 @@
     <ClCompile Include="MeshData.cpp" />
     <ClCompile Include="MovingObject.cpp" />
     <ClCompile Include="Object.cpp" />
+    <ClCompile Include="PacketStruct.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Render.cpp" />
     <ClCompile Include="ShaderUtils.cpp" />

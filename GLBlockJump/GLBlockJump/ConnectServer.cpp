@@ -56,7 +56,10 @@ void CleanupSocket(SOCKET sock)
 void RecvInitPlayers(SOCKET sock, UINT &MyID)
 {
     PacketParam header{};
-    int retval = recv(sock, (char*)&header, sizeof(header), MSG_WAITALL);
+    int retval = recv(sock, (char*)&header.type, sizeof(header.type), MSG_WAITALL);
+    if (retval <= 0) return;
+
+    retval = recv(sock, (char*)&header.size, sizeof(header.size), MSG_WAITALL);
     if (retval <= 0) return;
 
     if (header.type != PACK_INIT_PLAYERS) return;
@@ -64,20 +67,24 @@ void RecvInitPlayers(SOCKET sock, UINT &MyID)
     int bodySize = header.size - sizeof(PacketParam);
     if (bodySize <= 0 || bodySize > 1024) return;
 
-    std::vector<char> buffer(bodySize);
-    retval = recv(sock, buffer.data(), bodySize, MSG_WAITALL);
+
+  
+
+    std::vector<uint8_t> buffer(bodySize);
+    retval = recv(sock, (char*)buffer.data(), bodySize, MSG_WAITALL);
     if (retval <= 0) return;
 
-    PktInitPlayers* pkt = reinterpret_cast<PktInitPlayers*>(buffer.data());
-    MyID = pkt->myPlayerId;
+    PktInitPlayers pkt;
+    pkt.Deserialize(buffer.data(), buffer.size());
+    MyID = pkt.myPlayerId;
 
     for (int i = 0; i < 3; ++i) {
         const std::array<float, 3> pos = {
-            pkt->players[i].spawnPos[0],
-            pkt->players[i].spawnPos[1],
-            pkt->players[i].spawnPos[2]
+            pkt.players[i].spawnPos[0],
+            pkt.players[i].spawnPos[1],
+            pkt.players[i].spawnPos[2]
         };
-        players[i].Init(pos, pkt->players[i].playerId);
+        players[i].Init(pos, pkt.players[i].playerId);
     }
 }
 

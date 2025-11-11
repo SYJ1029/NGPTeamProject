@@ -146,6 +146,7 @@
     <ClCompile Include="InitWorld.cpp" />
     <ClCompile Include="MovingObject.cpp" />
     <ClCompile Include="Object.cpp" />
+    <ClCompile Include="PacketStruct.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SockeError.cpp" />
     <ClCompile Include="stdafx.cpp" />
