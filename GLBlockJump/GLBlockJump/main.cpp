@@ -11,7 +11,7 @@
 
 #include "InitGL.h"
 
-#define BUFSIZE    512
+#define BUFSIZE    4096
 
 //const int MAX_PLAYER{ 3 };
 
@@ -71,7 +71,9 @@ int main(int argc, char** argv)
     RecvInitPlayers(sock, MyID);
     RecvInitWorldStatic(sock);
     RecvInitWorldDynamic(sock);
+
     //setting(staticObjects, MoveObjects, players);
+
  
     //srand(time(NULL));
     InitGL(argc, argv);

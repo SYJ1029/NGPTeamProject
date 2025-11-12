@@ -1,5 +1,9 @@
 #include "ConnectServer.h"
 #include <iostream>
+#include "ParticleSendRecv.h"
+
+#include "GameState.h"
+
 
 PacketParam staticObjParam; // 고정 객체를 전송할 패킷들의 총 정보
 float staticObjectPosition[3]; // 고정된 객체들의 각 좌표를 넣어서 그 개수만큼 반복
@@ -117,7 +121,7 @@ void RecvInitWorldStatic(SOCKET sock)
     if (bodySize <= 0) return;
 
     std::vector<float> buffer(header.size * 3);
-    retval = recv(sock, (char*)buffer.data(), buffer.size(), MSG_WAITALL);
+    retval = recv_all(sock, (char*)buffer.data(), buffer.size() * 4);
     if (retval == SOCKET_ERROR) 
         err_quit("recv()");
 
@@ -135,6 +139,7 @@ void RecvInitWorldStatic(SOCKET sock)
         staticObjects[i].Init(pos);
     }
 
+    count_block = staticObjects.size();
 }
 void RecvInitWorldDynamic(SOCKET sock)
 {
@@ -160,7 +165,7 @@ void RecvInitWorldDynamic(SOCKET sock)
     if (bodySize <= 0) return;
 
     std::vector<float> buffer(header.size * 3);
-    retval = recv(sock, (char*)buffer.data(), buffer.size(), MSG_WAITALL);
+    retval = recv(sock, (char*)buffer.data(), buffer.size() * 4, MSG_WAITALL);
     if (retval == SOCKET_ERROR)
         err_quit("recv()");
 
@@ -177,4 +182,6 @@ void RecvInitWorldDynamic(SOCKET sock)
         };
         MoveObjects[i].Init(pos, {0, 0, 0});
     }
+
+    count_moving_block = MoveObjects.size();
 }

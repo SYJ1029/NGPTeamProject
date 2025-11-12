@@ -98,5 +98,8 @@
     <ClInclude Include="AcceptClients.h">
       <Filter>Network</Filter>
     </ClInclude>
+    <ClInclude Include="ParticleSendRecv.h">
+      <Filter>Network</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

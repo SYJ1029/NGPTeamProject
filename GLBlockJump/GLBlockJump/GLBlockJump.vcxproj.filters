@@ -108,6 +108,9 @@
     <ClInclude Include="ConnectServer.h">
       <Filter>Network</Filter>
     </ClInclude>
+    <ClInclude Include="ParticleSendRecv.h">
+      <Filter>Network</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="sea.jpg">

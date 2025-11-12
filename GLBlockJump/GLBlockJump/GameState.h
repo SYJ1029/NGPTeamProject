@@ -21,7 +21,5 @@ extern bool infjump;
 extern bool game_end;
 
 bool checkCollision(float ax, float ay, float az, float bx, float by, float bz);
-void setting(std::vector<Object>&, std::vector<MovingObject>& j, std::array<Player, MAX_PLAYER>&);
-void place_platform(std::vector<Object>&, int& curr, const glm::vec3& v, int dx, int dy, int dz);
 
 #endif

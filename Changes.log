@@ -156,3 +156,21 @@ RecvInit 구현
 2. RecvInitPlayers, RecvInitWorldStatic, RecvInitWorldDynamic 각각 구현
 
 3. main에 주석 상태로 Recv 함수 추가
+
+
+
+
+<<<2021184018 송영준 2025-11-10 ~ 2025-11-12>>>
+
+1. SendInitOnePlayer 추가 구현
+2. PacketStruct의 PkInitPlayer 구조체에 Serialize, Deserialize 멤버 함수 추가함
+- id, 좌표들을 묶어서 하나의 vector에 담아서 전송하는 함수, 반대로 vector를 다시 id와 좌표로 분할하는 함수
+- 같은 방식은 추후 Player 좌표의 소수 부분을 잘라낼 가능성이 있으니 다시 사용할 때는 조금 다른 방식을 적용할 필요가 있다
+3. SendInitPlayers, SendInitWorldStatic, SendInitWorldDynamic 모두 구현
+4. RecvInitPlayers, RecvInitWorldStatic, RecvInitWorldDynamic를 Send의 방식에 맞게 수정하였음
+5. send_all, recv_all 추가
+- 한번에 모두 보내지 않고 부분을 나누어서 전송하는 구조
+- 일단은 그냥 send, recv 쓸 것이지만 추후에 recv나 send가 한번에 읽지 못하는 경우가 발생할 수 있으므로
+- 이 경우를 확인했다면 이 함수를 쓸 것
+
+6. 이제 Client에서 setting과 그 관련된 함수는 이제 있을 필요가 없으므로 지웠음

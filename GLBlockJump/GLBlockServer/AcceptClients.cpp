@@ -1,4 +1,5 @@
 #include "AcceptClients.h"
+#include "ParticleSendRecv.h"
 
 PlayerInitInfo SendInitOnePlayer(SOCKET& sock, int Id);
 
@@ -69,7 +70,7 @@ PlayerInitInfo SendInitOnePlayer(SOCKET& sock, int Id)
     info.playerId = Id;
     for (int i = 0; i < MAX_CLIENTS; ++i)
     {
-        glm::vec3 glmPos = players[i].GetPosVec3();
+        glm::vec3 glmPos = players[Id].GetPosVec3();
         info.spawnPos[0] = glmPos.x;
         info.spawnPos[1] = glmPos.y;
         info.spawnPos[2] = glmPos.z;
@@ -125,16 +126,16 @@ void SendInitWorldStatic(SOCKET* sock)
 
 
         std::vector<float> buffer(header.size * 3);
-        for (int j = 0; j < buffer.size(); j += 3)
+        for (int j = 0; j < header.size; j++)
         {
-            buffer[j] = staticObjects[j/3].GetPosVec3().x;
-            buffer[j + 1] = staticObjects[j/3].GetPosVec3().y;
-            buffer[j + 2] = staticObjects[j/3].GetPosVec3().z;
+            buffer[j * 3] = staticObjects[j].GetPosVec3().x;
+            buffer[j * 3 + 1] = staticObjects[j].GetPosVec3().y;
+            buffer[j * 3 + 2] = staticObjects[j].GetPosVec3().z;
         }
 
 
         
-        retval = send(sock[i], (char*)buffer.data(), buffer.size(), 0);
+        retval = send_all(sock[i], (char*)buffer.data(), buffer.size() * 4);
         if (retval == SOCKET_ERROR) err_quit("send()");
 
     
@@ -170,7 +171,7 @@ void SendInitWorldDynamic(SOCKET* sock)
 
 
 
-        retval = send(sock[i], (char*)buffer.data(), buffer.size(), 0);
+        retval = send(sock[i], (char*)buffer.data(), buffer.size() * 4, 0);
         if (retval == SOCKET_ERROR) err_quit("send()");
     }
 }
