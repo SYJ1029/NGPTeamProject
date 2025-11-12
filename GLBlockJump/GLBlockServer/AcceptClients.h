@@ -19,7 +19,7 @@ int ConnectSocket(SOCKET& listen_sock);
 
 void SendInitPlayers(PlayerInitInfo info[MAX_CLIENTS], SOCKET* sock);
 void SendInitWorldStatic(SOCKET* sock);
-void SendInitWorldDynamic(SOCKET sock);
+void SendInitWorldDynamic(SOCKET* sock);
 
 DWORD WINAPI ProcessServer(LPVOID arg);
 

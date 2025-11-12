@@ -45,6 +45,7 @@ int ConnectSocket(SOCKET& listen_sock)
 
         SendInitPlayers(info, client_param);
         SendInitWorldStatic(client_param);
+        SendInitWorldDynamic(client_param);
         //return 0;
 	
 	}
@@ -114,59 +115,63 @@ void SendInitWorldStatic(SOCKET* sock)
     
 
     for (int i = 0; i < MAX_CLIENTS; ++i) {
-        int retval = send(sock[i], (char*)&header.type, sizeof(header), 0);
+        int pktype = header.type;
+        int retval = send(sock[i], (char*)&pktype, sizeof(int), 0);
         if (retval == SOCKET_ERROR) err_quit("send()");
 
-        uint32_t hsize = htonl(header.size);
-        retval = send(sock[i], (char*)&hsize, sizeof(unsigned int), 0);
+        size_t hsize = htonl(header.size);
+        retval = send(sock[i], (char*)&hsize, sizeof(header.size), 0);
         if (retval == SOCKET_ERROR) err_quit("send()");
 
 
         std::vector<float> buffer(header.size * 3);
-        for (int j = 0; j < staticObjects.size(); j += 3)
+        for (int j = 0; j < buffer.size(); j += 3)
         {
             buffer[j] = staticObjects[j/3].GetPosVec3().x;
             buffer[j + 1] = staticObjects[j/3].GetPosVec3().y;
             buffer[j + 2] = staticObjects[j/3].GetPosVec3().z;
         }
 
-        int bodySize = header.size * 3;
 
         
-        retval = send(sock[i], (char*)buffer.data(), bodySize, 0);
+        retval = send(sock[i], (char*)buffer.data(), buffer.size(), 0);
         if (retval == SOCKET_ERROR) err_quit("send()");
 
     
     }
 }
-void SendInitWorldDynamic(SOCKET sock)
+
+
+void SendInitWorldDynamic(SOCKET* sock)
 {
     PacketParam header{};
-    int retval = recv(sock, (char*)&header, sizeof(header), MSG_WAITALL);
-    if (retval <= 0) return;
+    header.type = PACK_INIT_WORLD_DYNAMIC;
+    header.size = MoveObjects.size();
 
-    if (header.type != PACK_INIT_WORLD_DYNAMIC)
-        return;
 
-    int bodySize = header.size - sizeof(PacketParam);
-    if (bodySize <= 0) return;
 
-    std::vector<float> buffer(bodySize / sizeof(float));
-    retval = recv(sock, (char*)buffer.data(), bodySize, MSG_WAITALL);
-    if (retval <= 0) return;
+    for (int i = 0; i < MAX_CLIENTS; ++i) {
+        int pktype = header.type;
+        int retval = send(sock[i], (char*)&pktype, sizeof(int), 0);
+        if (retval == SOCKET_ERROR) err_quit("send()");
 
-    int objectCount = bodySize / (sizeof(float) * 3);
-    MoveObjects.resize(objectCount);
+        size_t hsize = htonl(header.size);
+        retval = send(sock[i], (char*)&hsize, sizeof(header.size), 0);
+        if (retval == SOCKET_ERROR) err_quit("send()");
 
-    for (int i = 0; i < objectCount; ++i)
-    {
-        std::array<float, 3> pos = {
-            buffer[i * 3 + 0],
-            buffer[i * 3 + 1],
-            buffer[i * 3 + 2]
-        };
-        std::array<int, 3> dir = { 0,0,0 }; // 기본 방향값 (클라에서는 사용 X)
-        MoveObjects[i].Init(pos, dir);
+
+        std::vector<float> buffer(header.size * 3);
+        for (int j = 0; j < buffer.size(); j += 3)
+        {
+            buffer[j] = MoveObjects[j / 3].GetPosVec3().x;
+            buffer[j + 1] = MoveObjects[j / 3].GetPosVec3().y;
+            buffer[j + 2] = MoveObjects[j / 3].GetPosVec3().z;
+        }
+
+
+
+        retval = send(sock[i], (char*)buffer.data(), buffer.size(), 0);
+        if (retval == SOCKET_ERROR) err_quit("send()");
     }
 }
 

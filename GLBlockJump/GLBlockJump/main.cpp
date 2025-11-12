@@ -70,8 +70,8 @@ int main(int argc, char** argv)
 	
     RecvInitPlayers(sock, MyID);
     RecvInitWorldStatic(sock);
-    //RecvInitWorldDynamic(sock);
-    setting(staticObjects, MoveObjects, players);
+    RecvInitWorldDynamic(sock);
+    //setting(staticObjects, MoveObjects, players);
  
     //srand(time(NULL));
     InitGL(argc, argv);
