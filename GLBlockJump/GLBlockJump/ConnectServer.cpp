@@ -96,20 +96,31 @@ void RecvInitPlayers(SOCKET sock, UINT &MyID)
 void RecvInitWorldStatic(SOCKET sock)
 {
     PacketParam header{};
-    int retval = recv(sock, (char*)&header, sizeof(header), MSG_WAITALL);
+    int pkType = 0;
+    int retval = recv(sock, (char*)&pkType, sizeof(header), MSG_WAITALL);
     if (retval <= 0) return;
+
+    header.type = (PacketType)pkType;
+
+    int hsize = 0;
+    retval = recv(sock, (char*)&hsize, sizeof(int), MSG_WAITALL);
+    if (retval <= 0) return;
+
+    header.size = ntohl(hsize);
 
     if (header.type != PACK_INIT_WORLD_STATIC)
         return;
 
-    int bodySize = header.size - sizeof(PacketParam);
+    int bodySize = header.size * 3;
     if (bodySize <= 0) return;
 
-    std::vector<float> buffer(bodySize / sizeof(float));
-    retval = recv(sock, (char*)buffer.data(), bodySize, MSG_WAITALL);
-    if (retval <= 0) return;
+    std::vector<float> buffer(10000);
+    retval = recv(sock, (char*)buffer.data(), bodySize * sizeof(float), MSG_WAITALL);
+    if (retval == SOCKET_ERROR) 
+        err_quit("recv()");
 
-    int objectCount = bodySize / (sizeof(float) * 3);
+
+    int objectCount = bodySize;
     staticObjects.resize(objectCount);
 
     for (int i = 0; i < objectCount; ++i)
