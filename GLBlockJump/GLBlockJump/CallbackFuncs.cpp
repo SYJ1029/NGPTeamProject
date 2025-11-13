@@ -93,6 +93,20 @@ void TimerFunction(int value)
             MoveObjects[i].Update();
         }
     }
+    struct PlayerInputs {
+        int playerid;
+        int updown, rightleft; // 위치 이동 계산이 없으므로 int
+        bool jump;
+        float deltax, deltay;
+    };
+	using namespace std;
+    cout << "-----------------------------------------------------------\n";
+    cout << "Player " << MyID << " Inputs - UpDown: " << players[MyID].inputs.updown
+        << "\n RightLeft: " << players[MyID].inputs.rightleft
+        << "\n Jump: " << (players[MyID].inputs.jump ? "True" : "False")
+        << "\n deltax: " << players[MyID].inputs.deltax
+        << "\n deltay: " << players[MyID].inputs.deltay;
+	players[MyID].inputs.jump = false;
 
     glutPostRedisplay();
     glutTimerFunc(10, TimerFunction, 1);
