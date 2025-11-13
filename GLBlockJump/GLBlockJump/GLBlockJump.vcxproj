@@ -154,6 +154,7 @@
     <ClCompile Include="BufferInit.cpp" />
     <ClCompile Include="CallbackFuncs.cpp" />
     <ClCompile Include="CameraAndLight.cpp" />
+    <ClCompile Include="ClientProcess.cpp" />
     <ClCompile Include="ConnectServer.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="InitGL.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="BufferInit.h" />
     <ClInclude Include="CallbackFuncs.h" />
     <ClInclude Include="CameraAndLight.h" />
+    <ClInclude Include="ClientProcess.h" />
     <ClInclude Include="ConnectServer.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="InitGL.h" />

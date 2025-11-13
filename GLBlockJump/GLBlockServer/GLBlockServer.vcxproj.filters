@@ -63,6 +63,9 @@
     <ClCompile Include="PacketStruct.cpp">
       <Filter>Protocols</Filter>
     </ClCompile>
+    <ClCompile Include="ServerProcess.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Object.h">
@@ -99,6 +102,9 @@
       <Filter>Network</Filter>
     </ClInclude>
     <ClInclude Include="ParticleSendRecv.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerProcess.h">
       <Filter>Network</Filter>
     </ClInclude>
   </ItemGroup>
