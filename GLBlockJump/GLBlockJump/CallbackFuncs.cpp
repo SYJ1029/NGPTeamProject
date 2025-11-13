@@ -99,14 +99,15 @@ void TimerFunction(int value)
         bool jump;
         float deltax, deltay;
     };
+    /*
 	using namespace std;
     cout << "-----------------------------------------------------------\n";
     cout << "Player " << MyID << " Inputs - UpDown: " << players[MyID].inputs.updown
         << "\n RightLeft: " << players[MyID].inputs.rightleft
         << "\n Jump: " << (players[MyID].inputs.jump ? "True" : "False")
         << "\n deltax: " << players[MyID].inputs.deltax
-        << "\n deltay: " << players[MyID].inputs.deltay;
-	players[MyID].inputs.jump = false;
+        << "\n deltay: " << players[MyID].inputs.deltay << '\n';
+    */
 
     glutPostRedisplay();
     glutTimerFunc(10, TimerFunction, 1);
@@ -117,6 +118,9 @@ void Motion(int x, int y)
     // x와 y의 변화량 계산
     float deltaX = static_cast<float>(x - before_mouse_x);
     float deltaY = static_cast<float>(y - before_mouse_y);
+
+	players[MyID].inputs.deltax = deltaX;
+	players[MyID].inputs.deltay = deltaY;
 
     // 변화량을 char_angle에 반영
 	players[MyID].SetRotationY(players[MyID].GetRotationY() + deltaX * 0.8f);
