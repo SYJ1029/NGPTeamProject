@@ -154,6 +154,7 @@
     <ClCompile Include="BufferInit.cpp" />
     <ClCompile Include="CallbackFuncs.cpp" />
     <ClCompile Include="CameraAndLight.cpp" />
+    <ClCompile Include="ClientProcess.cpp" />
     <ClCompile Include="ConnectServer.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="InitGL.cpp" />
@@ -161,6 +162,7 @@
     <ClCompile Include="MeshData.cpp" />
     <ClCompile Include="MovingObject.cpp" />
     <ClCompile Include="Object.cpp" />
+    <ClCompile Include="PacketStruct.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Render.cpp" />
     <ClCompile Include="ShaderUtils.cpp" />
@@ -176,12 +178,14 @@
     <ClInclude Include="BufferInit.h" />
     <ClInclude Include="CallbackFuncs.h" />
     <ClInclude Include="CameraAndLight.h" />
+    <ClInclude Include="ClientProcess.h" />
     <ClInclude Include="ConnectServer.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="InitGL.h" />
     <ClInclude Include="MeshData.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="PacketStruct.h" />
+    <ClInclude Include="ParticleSendRecv.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Render.h" />
     <ClInclude Include="ShaderUtils.h" />

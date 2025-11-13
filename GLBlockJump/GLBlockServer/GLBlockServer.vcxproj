@@ -146,7 +146,9 @@
     <ClCompile Include="InitWorld.cpp" />
     <ClCompile Include="MovingObject.cpp" />
     <ClCompile Include="Object.cpp" />
+    <ClCompile Include="PacketStruct.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="ServerProcess.cpp" />
     <ClCompile Include="SockeError.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
@@ -156,8 +158,10 @@
     <ClInclude Include="InitWorld.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="PacketStruct.h" />
+    <ClInclude Include="ParticleSendRecv.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="ServerMacro.h" />
+    <ClInclude Include="ServerProcess.h" />
     <ClInclude Include="SocketError.h" />
     <ClInclude Include="StateEnums.h" />
     <ClInclude Include="StateMacro.h" />

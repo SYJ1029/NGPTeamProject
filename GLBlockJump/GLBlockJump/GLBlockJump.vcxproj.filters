@@ -49,6 +49,12 @@
     <ClCompile Include="ConnectServer.cpp">
       <Filter>Network</Filter>
     </ClCompile>
+    <ClCompile Include="PacketStruct.cpp">
+      <Filter>PacketStructs</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientProcess.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BufferInit.h">
@@ -103,6 +109,12 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="ConnectServer.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSendRecv.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientProcess.h">
       <Filter>Network</Filter>
     </ClInclude>
   </ItemGroup>

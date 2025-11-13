@@ -11,7 +11,7 @@
 
 #include "InitGL.h"
 
-#define BUFSIZE    512
+#define BUFSIZE    4096
 
 //const int MAX_PLAYER{ 3 };
 
@@ -46,10 +46,11 @@ int main(int argc, char** argv)
     if (retval == SOCKET_ERROR || retval == 0) { err_display("recv()"); return -1; }
     
     id = ntohl(id);
-    */
+    
 
 	MyID = id;
     printf("이 클라이언트의 ID는 %d\n\n", MyID);
+    */
 
     /*
     int len;
@@ -67,10 +68,12 @@ int main(int argc, char** argv)
     }
     */
 	
-    //RecvInitPlayers(sock, MyID);
-    //RecvInitWorldStatic(sock);
-    //RecvInitWorldDynamic(sock);
-    setting(staticObjects, MoveObjects, players);
+    RecvInitPlayers(sock, MyID);
+    RecvInitWorldStatic(sock);
+    RecvInitWorldDynamic(sock);
+
+    //setting(staticObjects, MoveObjects, players);
+
  
     //srand(time(NULL));
     InitGL(argc, argv);

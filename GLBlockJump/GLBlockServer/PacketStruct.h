@@ -1,4 +1,8 @@
 #pragma once
+#include <iostream>
+#include <vector>
+#include <WinSock2.h>
+#include <WS2tcpip.h>
 
 /* -----------------------------------------
 플레이어 입출력 관리 구조체
@@ -29,11 +33,17 @@ struct PacketParam {
 
 
 struct PlayerInitInfo {
-    unsigned long long playerId;
+    int playerId;
     float spawnPos[3];
 };
 
 struct PktInitPlayers {
-    unsigned long long myPlayerId;
+    int myPlayerId;
     PlayerInitInfo players[3]; // 모든 플레이어의 초기 위치
+
+    PktInitPlayers() {}
+    ~PktInitPlayers() {}
+
+    std::vector<uint8_t> Serialize();
+    void Deserialize(const uint8_t* data, int size);
 };

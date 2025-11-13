@@ -1,4 +1,9 @@
 #include "ConnectServer.h"
+#include <iostream>
+#include "ParticleSendRecv.h"
+
+#include "GameState.h"
+
 
 PacketParam staticObjParam; // 고정 객체를 전송할 패킷들의 총 정보
 float staticObjectPosition[3]; // 고정된 객체들의 각 좌표를 넣어서 그 개수만큼 반복
@@ -56,48 +61,72 @@ void CleanupSocket(SOCKET sock)
 void RecvInitPlayers(SOCKET sock, UINT &MyID)
 {
     PacketParam header{};
-    int retval = recv(sock, (char*)&header, sizeof(header), MSG_WAITALL);
+    int pkType = 0;
+    int retval = recv(sock, (char*)&pkType, sizeof(int), MSG_WAITALL);
+    std::cout << "연결 종료\n\n";
+    if (retval <= 0) return;
+
+    header.type = (PacketType)pkType;
+
+    retval = recv(sock, (char*)&header.size, sizeof(header.size), MSG_WAITALL);
     if (retval <= 0) return;
 
     if (header.type != PACK_INIT_PLAYERS) return;
 
-    int bodySize = header.size - sizeof(PacketParam);
+    int bodySize = header.size / sizeof(PacketParam);
     if (bodySize <= 0 || bodySize > 1024) return;
 
-    std::vector<char> buffer(bodySize);
-    retval = recv(sock, buffer.data(), bodySize, MSG_WAITALL);
+
+  
+
+    std::vector<uint8_t> buffer(sizeof(PktInitPlayers));
+    retval = recv(sock, (char*)buffer.data(), buffer.size() * sizeof(uint8_t), MSG_WAITALL);
     if (retval <= 0) return;
 
-    PktInitPlayers* pkt = reinterpret_cast<PktInitPlayers*>(buffer.data());
-    MyID = pkt->myPlayerId;
+    PktInitPlayers pkt;
+    pkt.Deserialize(buffer.data(), buffer.size());
+    MyID = pkt.myPlayerId;
 
     for (int i = 0; i < 3; ++i) {
         const std::array<float, 3> pos = {
-            pkt->players[i].spawnPos[0],
-            pkt->players[i].spawnPos[1],
-            pkt->players[i].spawnPos[2]
+            pkt.players[i].spawnPos[0],
+            pkt.players[i].spawnPos[1],
+            pkt.players[i].spawnPos[2]
         };
-        players[i].Init(pos, pkt->players[i].playerId);
+        players[i].Init(pos, pkt.players[i].playerId);
     }
 }
 
 void RecvInitWorldStatic(SOCKET sock)
 {
     PacketParam header{};
-    int retval = recv(sock, (char*)&header, sizeof(header), MSG_WAITALL);
+    int pkType = 0;
+    int retval = recv(sock, (char*)&pkType, sizeof(int), MSG_WAITALL);
     if (retval <= 0) return;
+
+    header.type = (PacketType)pkType;
 
     if (header.type != PACK_INIT_WORLD_STATIC)
         return;
 
-    int bodySize = header.size - sizeof(PacketParam);
-    if (bodySize <= 0) return;
-
-    std::vector<float> buffer(bodySize / sizeof(float));
-    retval = recv(sock, (char*)buffer.data(), bodySize, MSG_WAITALL);
+    size_t hsize = 0;
+    retval = recv(sock, (char*)&hsize, sizeof(size_t), MSG_WAITALL);
     if (retval <= 0) return;
 
-    int objectCount = bodySize / (sizeof(float) * 3);
+    header.size = ntohl(hsize);
+
+
+
+    int bodySize = header.size * 3;
+    if (bodySize <= 0) return;
+
+    std::vector<float> buffer(header.size * 3);
+    retval = recv_all(sock, (char*)buffer.data(), buffer.size() * 4);
+    if (retval == SOCKET_ERROR) 
+        err_quit("recv()");
+
+
+    int objectCount = bodySize / 3;
     staticObjects.resize(objectCount);
 
     for (int i = 0; i < objectCount; ++i)
@@ -110,24 +139,38 @@ void RecvInitWorldStatic(SOCKET sock)
         staticObjects[i].Init(pos);
     }
 
+    count_block = staticObjects.size();
 }
 void RecvInitWorldDynamic(SOCKET sock)
 {
     PacketParam header{};
-    int retval = recv(sock, (char*)&header, sizeof(header), MSG_WAITALL);
+    int pkType = 0;
+    int retval = recv(sock, (char*)&pkType, sizeof(int), MSG_WAITALL);
     if (retval <= 0) return;
+
+    header.type = (PacketType)pkType;
 
     if (header.type != PACK_INIT_WORLD_DYNAMIC)
         return;
 
-    int bodySize = header.size - sizeof(PacketParam);
-    if (bodySize <= 0) return;
-
-    std::vector<float> buffer(bodySize / sizeof(float));
-    retval = recv(sock, (char*)buffer.data(), bodySize, MSG_WAITALL);
+    size_t hsize = 0;
+    retval = recv(sock, (char*)&hsize, sizeof(size_t), MSG_WAITALL);
     if (retval <= 0) return;
 
-    int objectCount = bodySize / (sizeof(float) * 3);
+    header.size = ntohl(hsize);
+
+
+
+    int bodySize = header.size * 3;
+    if (bodySize <= 0) return;
+
+    std::vector<float> buffer(header.size * 3);
+    retval = recv(sock, (char*)buffer.data(), buffer.size() * 4, MSG_WAITALL);
+    if (retval == SOCKET_ERROR)
+        err_quit("recv()");
+
+
+    int objectCount = bodySize / 3;
     MoveObjects.resize(objectCount);
 
     for (int i = 0; i < objectCount; ++i)
@@ -137,7 +180,8 @@ void RecvInitWorldDynamic(SOCKET sock)
             buffer[i * 3 + 1],
             buffer[i * 3 + 2]
         };
-        std::array<int, 3> dir = { 0,0,0 }; // 기본 방향값 (클라에서는 사용 X)
-        MoveObjects[i].Init(pos, dir);
+        MoveObjects[i].Init(pos, {0, 0, 0});
     }
+
+    count_moving_block = MoveObjects.size();
 }

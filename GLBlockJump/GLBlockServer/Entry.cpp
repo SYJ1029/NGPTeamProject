@@ -58,6 +58,8 @@ int main()
 
 	ConnectSocket(listen_sock);
 
+
+
 	// 소켓 닫기
 	closesocket(listen_sock);
 	// 윈속 종료
