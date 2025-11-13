@@ -93,12 +93,7 @@ void TimerFunction(int value)
             MoveObjects[i].Update();
         }
     }
-    struct PlayerInputs {
-        int playerid;
-        int updown, rightleft; // 위치 이동 계산이 없으므로 int
-        bool jump;
-        float deltax, deltay;
-    };
+
     /*
 	using namespace std;
     cout << "-----------------------------------------------------------\n";
