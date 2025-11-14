@@ -120,6 +120,10 @@ void RecvInitWorldStatic(SOCKET sock)
     int bodySize = header.size * 3;
     if (bodySize <= 0) return;
 
+    // 버퍼 안에는 초기 정점들을 넣음
+    // 정점은 3개의 float로 구성이 되어 있고
+    // 우리가 서버로부터 받은 size는 "정점"의 개수
+    // 버퍼는 모든 "float"를 저장해야 하니까 정점을 풀어서 저장해야 해
     std::vector<float> buffer(header.size * 3);
     retval = recv_all(sock, (char*)buffer.data(), buffer.size() * 4);
     if (retval == SOCKET_ERROR) 
