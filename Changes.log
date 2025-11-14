@@ -156,8 +156,3 @@ RecvInit 구현
 2. RecvInitPlayers, RecvInitWorldStatic, RecvInitWorldDynamic 각각 구현
 
 3. main에 주석 상태로 Recv 함수 추가
-
-<<<2021182031 이현석 2025-11-14>>>
-
-1. 마우스 이동 시 PlayerInputs delta X, Y 변경되도록 수정
-//키 입력은 (2025-11-07)에 완료해놨음
