@@ -41,7 +41,7 @@ int ConnectSocket(SOCKET& listen_sock)
 				addr, ntohs(clientaddr.sin_port));
 
 
-            info[i] = SendInitOnePlayer(client_param[i], i);
+            //info[i] = SendInitOnePlayer(client_param[i], i);
 		}
 
         SendInitPlayers(info, client_param);
@@ -91,14 +91,16 @@ void SendInitPlayers(PlayerInitInfo info[MAX_CLIENTS], SOCKET* sock)
 
     for (int i = 0; i < MAX_CLIENTS; ++i)
     {
-        pkt.myPlayerId = i;
-        pkt.players[i] = info[i];
+        pkt.players[i] = SendInitOnePlayer(sock[i], i);
     }
 
     std::vector<uint8_t> buffer;
-    buffer = pkt.Serialize();
 
     for (int i = 0; i < MAX_CLIENTS; ++i) {
+
+        // 클라이언트가 컨트롤하게 될 플레이어 ID를 전송 직전에 지정
+        pkt.myPlayerId = i;
+        buffer = pkt.Serialize();
 
         //ID와 주소를 한꺼번에 전송
         retval = send(sock[i], (char*)buffer.data(), buffer.size() * sizeof(uint8_t), 0);
