@@ -181,3 +181,10 @@ RecvInit 구현
 
 1. 마우스 이동 시 PlayerInputs delta X, Y 변경되도록 수정
 //키 입력은 (2025-11-07)에 완료해놨음
+
+<<<2021182031 이현석 2025-11-16>>>
+SendInputChange() 구현
+
+1.PacketParam 헤더를 구성해 패킷 타입(PACK_INPUT_COMMAND)과 전체 전송 크기를 계산
+
+2.PlayerInputs 구조체를 그대로 바이트 단위로 send() 하여 입력값을 서버로 전달
