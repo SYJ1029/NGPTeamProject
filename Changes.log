@@ -175,6 +175,20 @@ RecvInit 구현
 
 6. 이제 Client에서 setting과 그 관련된 함수는 이제 있을 필요가 없으므로 지웠음
 
+
+
+
+<<<2021184018 송영준 2025-11-14 ~ 2025-11-16>>>
+
+1. ServerProcess, ClientProcess 생성
+- 송수신 쓰레드
+
+2. Pkt_Frame_State 추가, State는 여러 자료형을 가지고 있으므로 하나의 자료구조로 묶는 함수도 작성함
+3.  Pkt_Frame_State 보호용 임계영역 생성, 이 구조체에 쓰기, 읽기 작업을 임계영역을 통하여 보호함
+3. ServerMainLoop 추가
+- 서버에서의 메인 로직을 처리하는 함수
+4. SendWorld 구현
+-> 월드 정보를  Pkt_Frame_State에 담아서 전송
 3. main에 주석 상태로 Recv 함수 추가
 
 <<<2021182031 이현석 2025-11-14>>>
