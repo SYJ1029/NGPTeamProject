@@ -28,6 +28,9 @@
     <Filter Include="Network">
       <UniqueIdentifier>{e5eb5e25-40c4-4fea-8f80-666097284a9d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainLoop">
+      <UniqueIdentifier>{071f20bd-4b45-45f8-b501-4fce70fb6e2a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entry.cpp">
@@ -65,6 +68,9 @@
     </ClCompile>
     <ClCompile Include="ServerProcess.cpp">
       <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerMainLoop.cpp">
+      <Filter>MainLoop</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -106,6 +112,9 @@
     </ClInclude>
     <ClInclude Include="ServerProcess.h">
       <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerMainLoop.h">
+      <Filter>MainLoop</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

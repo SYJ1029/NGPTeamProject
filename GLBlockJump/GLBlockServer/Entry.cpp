@@ -1,8 +1,9 @@
+#include "stdafx.h"
+#include "InitWorld.h"
+
 #include "Object.h"
 #include "Player.h"
 
-#include "stdafx.h"
-#include "InitWorld.h"
 
 
 // 家南 傈价 坷幅 包府
@@ -12,7 +13,14 @@
 
 // 楷搬 包府
 #include "AcceptClients.h"
+#include "ServerProcess.h"
 
+
+#include "CollisionManager.h"
+
+bool game_end = true;
+
+void ServerMainLoop();
 
 extern std::vector<Object> staticObjects;
 extern std::vector<MovingObject> MoveObjects;
@@ -55,9 +63,23 @@ int main()
 		return 1;
 
 	SOCKET listen_sock = CreateListenSocket();
+	SOCKET client_sock[MAX_CLIENTS];
 
-	ConnectSocket(listen_sock);
+	ConnectSocket(listen_sock, client_sock);
+	
+	Fs.DynObjPos = new float[count_moving_block][3];
 
+
+	ThreadParam client_param[MAX_CLIENTS];
+
+	for (int i = 0; i < MAX_CLIENTS; ++i)
+	{
+		client_param[i].id = i;
+		client_param[i].sock = client_sock[i];
+		CreateThread(NULL, 0, ServerProcess, (LPVOID)&client_param[i], 0, NULL);
+	}
+
+	ServerMainLoop();
 
 
 	// 家南 摧扁
@@ -65,3 +87,59 @@ int main()
 	// 扩加 辆丰
 	WSACleanup();
 }
+
+
+bool WriteFrameState(Game_State& state)
+{
+	EnterCriticalSection(&FrameCS);
+
+	//Fs.gameState = state;
+	for (int i = 0; i < MAX_CLIENTS; ++i)
+	{
+		Fs.players[i].playerId = i;
+		Fs.players[i].position[0] = players[i].GetPosX();
+		Fs.players[i].position[1] = players[i].GetPosY();
+		Fs.players[i].position[2] = players[i].GetPosZ();
+
+		Fs.players[i].rotation[0] = players[i].GetRotationX();
+		Fs.players[i].rotation[1] = players[i].GetRotationY();
+		Fs.players[i].rotation[2] = players[i].GetRotationX();
+	}
+
+	Fs.move_block_size = count_moving_block;
+	
+	for (int i = 0; i < Fs.move_block_size; ++i)
+	{
+		Fs.DynObjPos[i][0] = MoveObjects[i].GetPosVec3().x;
+		Fs.DynObjPos[i][1] = MoveObjects[i].GetPosVec3().y; 
+		Fs.DynObjPos[i][2] = MoveObjects[i].GetPosVec3().z;
+	}
+	
+
+	LeaveCriticalSection(&FrameCS);
+	return true;
+}
+
+void ServerMainLoop()
+{
+	Game_State state = GAME_STATE_RUNNING;
+
+	while (1)
+	{
+
+		for (int i = 0; i < MAX_CLIENTS; ++i)
+		{
+			players[i].Update();
+			ChecKCollisionLoop(players[i]);
+		}
+
+		for (int i = 0; i < count_moving_block; ++i)
+		{
+			MoveObjects[i].Update();
+		}
+
+		WriteFrameState(state);
+		
+	}
+}
+

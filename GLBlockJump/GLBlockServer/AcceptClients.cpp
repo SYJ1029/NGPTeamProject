@@ -9,11 +9,11 @@ DWORD WINAPI ProcessServer(LPVOID arg)
 }
 
 
-int ConnectSocket(SOCKET& listen_sock)
+int ConnectSocket(SOCKET& listen_sock, SOCKET* client_sock)
 {
 	int retval = -1;
 	// 데이터 통신에 사용할 변수
-	SOCKET client_param[MAX_CLIENTS];
+	//SOCKET client_param[MAX_CLIENTS];
 	struct sockaddr_in clientaddr;
 	int addrlen;
 	HANDLE hThread[MAX_CLIENTS];
@@ -29,8 +29,8 @@ int ConnectSocket(SOCKET& listen_sock)
 
 		for (int i = 0; i < MAX_CLIENTS; i++)
 		{
-			client_param[i] = accept(listen_sock, (struct sockaddr*)&clientaddr, &addrlen);
-			if (client_param[i] == INVALID_SOCKET) {
+			client_sock[i] = accept(listen_sock, (struct sockaddr*)&clientaddr, &addrlen);
+			if (client_sock[i] == INVALID_SOCKET) {
 				err_quit("accept()"); // err_display()에서 err_quit()로 변경, 오류 시 종료
                 
 			}
@@ -44,9 +44,9 @@ int ConnectSocket(SOCKET& listen_sock)
             //info[i] = SendInitOnePlayer(client_param[i], i);
 		}
 
-        SendInitPlayers(info, client_param);
-        SendInitWorldStatic(client_param);
-        SendInitWorldDynamic(client_param);
+        SendInitPlayers(client_sock);
+        SendInitWorldStatic(client_sock);
+        SendInitWorldDynamic(client_sock);
         //return 0;
 	
 	}
@@ -80,7 +80,7 @@ PlayerInitInfo SendInitOnePlayer(SOCKET& sock, int Id)
 }
 
 
-void SendInitPlayers(PlayerInitInfo info[MAX_CLIENTS], SOCKET* sock)
+void SendInitPlayers(SOCKET* sock)
 {
    
    

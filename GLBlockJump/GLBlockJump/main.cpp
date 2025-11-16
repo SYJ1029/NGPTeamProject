@@ -9,6 +9,7 @@
 #include "Object.h"
 #include "Player.h"
 
+#include "ClientProcess.h"
 #include "InitGL.h"
 
 #define BUFSIZE    4096
@@ -31,6 +32,8 @@ int main(int argc, char** argv)
     RecvInitPlayers(sock, MyID);
     RecvInitWorldStatic(sock);
     RecvInitWorldDynamic(sock);
+
+    CreateThread(NULL, 0, ClientProcess, (LPVOID)&sock, 0, NULL);
  
     InitGL(argc, argv);
 
