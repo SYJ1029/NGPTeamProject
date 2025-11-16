@@ -1,5 +1,53 @@
 #include "CollisionManager.h"
+#include "InitWorld.h"
 
+
+float char_pos[3] = { 0.0f, 10.0f, 0.0f };
+
+bool ChecKCollisionLoop(Player& player)
+{
+    bool isGrounded = false;
+    for (int i = 0; i < count_block; i++) {
+        if (player.CheckCollision(staticObjects[i])) {
+            float blockPos[3]{ staticObjects[i].GetPosVec3().x, staticObjects[i].GetPosVec3().y, staticObjects[i].GetPosVec3().z };
+            if ((player.GetPosY() + player.GetMoveSpeedY()) < blockPos[1] + 1.0f && player.GetPosY() >= blockPos[1]) {
+                player.SetPosY(blockPos[1] + 1.0f);
+                player.SetMoveSpeedY(0);
+                isGrounded = true;
+            }
+            else if ((player.GetPosY() + player.GetMoveSpeedY()) > blockPos[1] - 1.0f && player.GetPosY() <= blockPos[1]) {
+                player.SetPosY(blockPos[1] - 1.0f);
+                player.SetMoveSpeedY(0);
+            }
+
+            if ((!game_end) && ((blockPos[1] >= 50) && (count_block - i <= 25))) {
+                std::cout << "Congratulations! You Win! \npress \"q\" to quit the game.\n";
+                game_end = true;
+            }
+
+            break;
+        }
+    }
+    for (int i = 0; i < count_moving_block; i++) {
+        if (player.CheckCollision(MoveObjects[i])) {
+            if ((player.GetPosY() + player.GetMoveSpeedY()) < MoveObjects[i].GetPosVec3().y + 1.0f && player.GetPosY() >= MoveObjects[i].GetPosVec3().y) {
+                player.SetPosY(MoveObjects[i].GetPosVec3().y + 1.0f);
+                player.SetMoveSpeedY(0);
+                isGrounded = true;
+            }
+            else if ((char_pos[1] + player.GetMoveSpeedY()) > MoveObjects[i].GetPosVec3().y - 1.0f && player.GetPosY() <= MoveObjects[i].GetPosVec3().y) {
+                char_pos[1] = MoveObjects[i].GetPosVec3().y - 1.0f;
+                player.SetMoveSpeedY(0);
+            }
+            player.SetPosX(player.GetPosX() + MoveObjects[i].GetDirVec3().x * 0.03f);
+            player.SetPosY(player.GetPosY() + MoveObjects[i].GetDirVec3().y * 0.03f);
+            player.SetPosZ(player.GetPosZ() + MoveObjects[i].GetDirVec3().z * 0.03f);
+            break;
+        }
+    }
+    player.isGrounded = isGrounded;
+    return false;
+}
 
 bool CheckOBBCollision(const OBB& A, const OBB& B)
 {
@@ -52,3 +100,5 @@ bool CheckOBBCollision(const OBB& A, const OBB& B)
 
     return true; // 분리축이 없으면 충돌
 }
+
+

@@ -3,6 +3,7 @@
 #include <vector>
 #include <WinSock2.h>
 #include <WS2tcpip.h>
+#include "StateEnums.h"
 
 /* -----------------------------------------
 플레이어 입출력 관리 구조체
@@ -47,3 +48,28 @@ struct PktInitPlayers {
     std::vector<uint8_t> Serialize();
     void Deserialize(const uint8_t* data, int size);
 };
+
+
+
+
+/*-----------------------
+  매 프레임마다 보내게될 정보
+-------------------------*/
+
+struct PlayerSyncData {
+    int playerId; // 플레이어의 id  
+    float position[3]; // 서버 기준 월드 좌표  
+    float rotation[3]; // 객체의 회전 각도      
+};
+struct PktFrameState {
+    Game_State gameState; // 지금 게임이 RUNNING인지 FINISHED인지도 함께 보냄  
+    PlayerSyncData players[3];
+
+    int move_block_size;
+    float (*DynObjPos)[3];
+
+    std::vector<uint8_t> Serialize(); // 구조체 정보들을 하나의 배열로 만들기
+    void Deserialize(const uint8_t* data, int size); // 배열에서 다시 구조체 정보로 바꾸기
+};
+
+extern CRITICAL_SECTION FrameCS;

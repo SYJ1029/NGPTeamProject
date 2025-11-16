@@ -1,6 +1,8 @@
+
+#include "Object.h"
 #include "Player.h"
+
 #include "CollisionManager.h"
-#include "StateMacro.h"
 
 void Player::Init(const std::array<float, 3>& newPos, uint8_t id)
 {
@@ -49,7 +51,7 @@ void Player::Release()
 {
 }
 
-bool Player::CheckCollision(const Object& other)
+bool Player::CheckCollision(Object& other)
 {
     OBB PlayerOBB;
     PlayerOBB.center = glm::vec3(pos[0], pos[1], pos[2]);

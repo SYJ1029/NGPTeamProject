@@ -61,3 +61,102 @@ void PktInitPlayers::Deserialize(const uint8_t* data, int size)
         }
     }
 }
+
+
+CRITICAL_SECTION FrameCS;
+
+std::vector<uint8_t> PktFrameState::Serialize()
+{
+    EnterCriticalSection(&FrameCS);
+    std::vector<uint8_t> buffer;
+
+    auto writeInt = [&](int v) {
+        uint32_t net = htonl(v);
+        uint8_t* p = reinterpret_cast<uint8_t*>(&net);
+        buffer.insert(buffer.end(), p, p + 4);
+        };
+
+    auto writeFloat = [&](float f) {
+        uint32_t temp;
+        memcpy(&temp, &f, 4);
+        uint32_t net = htonl(temp);
+        uint8_t* p = reinterpret_cast<uint8_t*>(&net);
+        buffer.insert(buffer.end(), p, p + 4);
+        };
+
+
+    for (int i = 0; i < 3; ++i) {
+        // myPlayerId
+        writeInt(players[i].playerId);
+
+        // players
+        for (int i = 0; i < 3; i++) {
+            writeInt(players[i].playerId);
+            for (int j = 0; j < 3; j++) {
+                writeFloat(players[i].position[j]);
+            }
+            for (int j = 0; j < 3; j++) {
+                writeFloat(players[i].rotation[j]);
+            }
+
+        }
+    }
+
+    writeInt(move_block_size);
+    for (int i = 0; i < move_block_size; i++) {
+        for (int j = 0; j < 3; j++) {
+            writeFloat(DynObjPos[i][j]);
+        }
+
+    }
+
+    LeaveCriticalSection(&FrameCS);
+    return buffer;
+}
+
+void PktFrameState::Deserialize(const uint8_t* data, int size)
+{
+    size_t offset = 0;
+
+    auto readInt = [&](int& out) {
+        uint32_t net;
+        memcpy(&net, data + offset, 4);
+        offset += 4;
+        out = ntohl(net);
+        };
+
+    auto readFloat = [&](float& out) {
+        uint32_t net;
+        memcpy(&net, data + offset, 4);
+        offset += 4;
+        uint32_t host = ntohl(net);
+        memcpy(&out, &host, 4);
+        };
+
+    for (int i = 0; i < 3; ++i) {
+        // myPlayerId
+        readInt(players[i].playerId);
+
+        // players
+        for (int i = 0; i < 3; i++) {
+            readInt(players[i].playerId);
+            for (int j = 0; j < 3; j++) {
+                readFloat(players[i].position[j]);
+            }
+            for (int j = 0; j < 3; j++) {
+                readFloat(players[i].rotation[j]);
+            }
+
+        }
+    }
+
+    readInt(move_block_size);
+    for (int i = 0; i < move_block_size; i++) {
+        for (int j = 0; j < 3; j++) {
+            readFloat(DynObjPos[i][j]);
+        }
+
+    }
+
+}
+

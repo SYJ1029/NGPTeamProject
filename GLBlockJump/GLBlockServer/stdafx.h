@@ -39,7 +39,7 @@
 #include "StateMacro.h"
 
 //서버용 충돌 관리
-#include "CollisionManager.h"
+//#include "CollisionManager.h"
 
 
 
