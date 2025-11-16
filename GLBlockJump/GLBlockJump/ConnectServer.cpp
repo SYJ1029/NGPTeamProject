@@ -189,3 +189,20 @@ void RecvInitWorldDynamic(SOCKET sock)
 
     count_moving_block = MoveObjects.size();
 }
+
+void SendInputChange(SOCKET sock, const PlayerInputs& input)
+{
+    PacketParam header{};
+    header.type = PACK_INPUT_COMMAND;
+    header.size = sizeof(PacketParam) + sizeof(PlayerInputs);
+
+    int retval = send(sock, reinterpret_cast<const char*>(&header), sizeof(header), 0);
+    if (retval == SOCKET_ERROR) return;
+
+    retval = send(sock, reinterpret_cast<const char*>(&input), sizeof(input), 0);
+    if (retval == SOCKET_ERROR) return;
+
+    // 디버그용
+    printf("[SendInputChange] playerid=%d jump=%d updown=%d rightleft=%d dx=%.2f dy=%.2f\n",
+        input.playerid, input.jump, input.updown, input.rightleft, input.deltax, input.deltay);
+}
