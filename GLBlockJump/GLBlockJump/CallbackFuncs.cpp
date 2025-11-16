@@ -152,6 +152,7 @@ void Keyboard(unsigned char key, int x, int y)
 		players[MyID].inputs.jump = true;
         break;
     case 'q': // 종료
+        players[MyID].inputs.quit = true;
         exit(0);
         break;
     case 'w': // 앞으로 이동

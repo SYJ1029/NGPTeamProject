@@ -202,3 +202,8 @@ SendInputChange() 구현
 1.PacketParam 헤더를 구성해 패킷 타입(PACK_INPUT_COMMAND)과 전체 전송 크기를 계산
 
 2.PlayerInputs 구조체를 그대로 바이트 단위로 send() 하여 입력값을 서버로 전달
+
+
+<<<2021184008 김준호 2025-11-16>>>
+
+1. player input 구조체에 boolean타입인 quit 변수 생성, 클라가 종료 키를 누를 시에 서버도 알도록 하기 위함
