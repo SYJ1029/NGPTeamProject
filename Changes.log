@@ -208,7 +208,7 @@ SendInputChange() 구현
 
 1. player input 구조체에 boolean타입인 quit 변수 생성, 클라가 종료 키를 누를 시에 서버도 알도록 하기 위함
 
-<<<2021182031 이현석 2025-11-07>>>
+<<<2021182031 이현석 2025-11-17>>>
 RecvWorld() 구현
 
 1. ClientProcess에서 RecvWorld, SendInputChange 하도록 추가
