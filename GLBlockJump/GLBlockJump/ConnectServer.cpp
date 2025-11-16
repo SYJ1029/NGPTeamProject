@@ -164,15 +164,12 @@ void RecvInitWorldDynamic(SOCKET sock)
     header.size = ntohl(hsize);
 
 
-
     int bodySize = header.size * 3;
     if (bodySize <= 0) return;
 
     std::vector<float> buffer(header.size * 3);
     retval = recv(sock, (char*)buffer.data(), buffer.size() * 4, MSG_WAITALL);
-    if (retval == SOCKET_ERROR)
-        err_quit("recv()");
-
+    if (retval == SOCKET_ERROR) err_display("recv()");
 
     int objectCount = bodySize / 3;
     MoveObjects.resize(objectCount);
@@ -205,4 +202,57 @@ void SendInputChange(SOCKET sock, const PlayerInputs& input)
     // 디버그용
     printf("[SendInputChange] playerid=%d jump=%d updown=%d rightleft=%d dx=%.2f dy=%.2f\n",
         input.playerid, input.jump, input.updown, input.rightleft, input.deltax, input.deltay);
+}
+
+void RecvWorld(SOCKET sock)
+{
+    PacketParam header{};
+    int pkType = 0;
+
+    int retval = recv(sock, (char*)&pkType, sizeof(int), MSG_WAITALL);
+    if (retval <= 0) return;
+
+    header.type = (PacketType)pkType;
+    if (header.type != PACK_FRAME_STATE) return;
+
+    retval = recv(sock, (char*)&header.size, sizeof(header.size), MSG_WAITALL);
+    if (retval <= 0) return;
+
+    std::vector<uint8_t> buffer(header.size);
+    retval = recv(sock, (char*)buffer.data(), (int)buffer.size(), MSG_WAITALL);
+    if (retval <= 0) return;
+
+    PktFrameState pkt;
+    pkt.Deserialize(buffer.data(), (int)buffer.size());
+
+    EnterCriticalSection(&FrameCS);
+
+    for (int i = 0; i < 3; ++i)
+    {
+        players[i].SetPosX(pkt.players[i].position[0]);
+        players[i].SetPosY(pkt.players[i].position[1]);
+        players[i].SetPosZ(pkt.players[i].position[2]);
+
+        players[i].SetRotationX(pkt.players[i].rotation[0]);
+        players[i].SetRotationY(pkt.players[i].rotation[1]);
+        // rotation[2]는 setter가 없으니 일단 무시
+    }
+
+    if (pkt.move_block_size > 0 &&
+        pkt.move_block_size <= (int)MoveObjects.size())
+    {
+        for (int i = 0; i < pkt.move_block_size; ++i)
+        {
+            std::array<float, 3> pos = {
+                pkt.DynObjPos[0][i],
+                pkt.DynObjPos[1][i],
+                pkt.DynObjPos[2][i]
+            };
+
+            //클라에서 방향은 의미 없음. 000으로 대체
+            std::array<int, 3> dirArr = { 0,0,0 };
+            MoveObjects[i].Init(pos, dirArr);
+        }
+    }
+    LeaveCriticalSection(&FrameCS);
 }

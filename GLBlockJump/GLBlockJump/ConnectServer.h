@@ -16,4 +16,6 @@ void CleanupSocket(SOCKET sock);
 void RecvInitPlayers(SOCKET sock, UINT &MyID);
 void RecvInitWorldStatic(SOCKET sock);
 void RecvInitWorldDynamic(SOCKET sock);
+
+void RecvWorld(SOCKET sock);
 void SendInputChange(SOCKET sock, const PlayerInputs& input);
