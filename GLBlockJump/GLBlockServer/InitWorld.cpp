@@ -15,7 +15,7 @@ void place_platform(std::vector<Object>& staticObj, int& curr, const glm::vec3& 
     }
 }
 
-void setting(std::vector<Object>& staticObj, std::vector<MovingObject>& dynamicObj, std::array<Player, MAX_PLAYER>& players)
+void InitWorld(std::vector<Object>& staticObj, std::vector<MovingObject>& dynamicObj, std::array<Player, MAX_PLAYER>& players)
 {
     int player_count{};
     int curr_block_count{};

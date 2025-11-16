@@ -55,7 +55,7 @@ SOCKET CreateListenSocket()
 int main()
 {
 	// 월드 기본 정보 생성
-	setting(staticObjects, MoveObjects, players);
+	InitWorld(staticObjects, MoveObjects, players);
 
 	// 윈속 초기화
 	WSADATA wsa;
