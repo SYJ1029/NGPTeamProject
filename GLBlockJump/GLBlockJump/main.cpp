@@ -33,6 +33,8 @@ int main(int argc, char** argv)
     RecvInitWorldStatic(sock);
     RecvInitWorldDynamic(sock);
 
+
+    InitializeCriticalSection(&FrameCS);
     InitializeCriticalSection(&InputCS);
     CreateThread(NULL, 0, ClientProcess, (LPVOID)&sock, 0, NULL);
 
@@ -40,6 +42,7 @@ int main(int argc, char** argv)
 
     glutMainLoop();
 
+	DeleteCriticalSection(&FrameCS);
     DeleteCriticalSection(&InputCS);
     CleanupSocket(sock);
 }
