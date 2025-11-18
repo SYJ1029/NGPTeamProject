@@ -214,3 +214,15 @@ RecvWorld() 구현
 1. ClientProcess에서 RecvWorld, SendInputChange 하도록 추가
 
 2. RecvWorld 구현. player와 MovingObject 업데이트 하게 됨.
+
+
+<<<2021182031 이현석 2025-11-18>>>
+RecvInputChange() 구현
+
+1. ServerProcess에 RecvInputChange 추가함.
+
+2. 플레이어가 quit 했을 경우 스레드 종료
+
+3. 클라이언트 input 임계영역 설정
+
+4. 서버, 클라 양쪽에 cs 호출하도록 추가

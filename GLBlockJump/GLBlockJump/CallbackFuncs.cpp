@@ -114,6 +114,7 @@ void Motion(int x, int y)
     float deltaX = static_cast<float>(x - before_mouse_x);
     float deltaY = static_cast<float>(y - before_mouse_y);
 
+    EnterCriticalSection(&InputCS);
 	players[MyID].inputs.deltax = deltaX;
 	players[MyID].inputs.deltay = deltaY;
 
@@ -127,6 +128,7 @@ void Motion(int x, int y)
 	if (players[MyID].GetRotationY() > 360.0f) players[MyID].SetRotationY(360.0f);
 	if (players[MyID].GetRotationY() < -360.0f) players[MyID].SetRotationY(-360.0f);
 
+    LeaveCriticalSection(&InputCS);
     // 현재 마우스 위치를 저장하여 다음 호출에서 비교
     before_mouse_x = x;
     before_mouse_y = y;
@@ -136,6 +138,7 @@ void Motion(int x, int y)
 void Keyboard(unsigned char key, int x, int y)
 {
     extern UINT MyID;
+    EnterCriticalSection(&InputCS);
 
     switch (key) {
     case 'j':
@@ -172,10 +175,13 @@ void Keyboard(unsigned char key, int x, int y)
         players[MyID].inputs.rightleft += 1;
         break;
     }
+
+    LeaveCriticalSection(&InputCS);
 }
 void KeyboardUp(unsigned char key, int x, int y)
 {
     extern UINT MyID;
+    EnterCriticalSection(&InputCS);
 
     switch (key) {
     case 'w': // 앞으로 이동
@@ -198,6 +204,7 @@ void KeyboardUp(unsigned char key, int x, int y)
 		players[MyID].inputs.jump = false;
 		break;
     }
+    LeaveCriticalSection(&InputCS);
 }
 
 /*

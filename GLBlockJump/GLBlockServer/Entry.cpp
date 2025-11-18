@@ -76,6 +76,9 @@ int main()
 
 	ThreadParam client_param[MAX_CLIENTS];
 
+	InitializeCriticalSection(&FrameCS);
+	InitializeCriticalSection(&InputCS);
+
 	for (int i = 0; i < MAX_CLIENTS; ++i)
 	{
 		client_param[i].id = i;
@@ -88,6 +91,9 @@ int main()
 
 	// 소켓 닫기
 	closesocket(listen_sock);
+
+	DeleteCriticalSection(&FrameCS);
+	DeleteCriticalSection(&InputCS);
 	// 윈속 종료
 	WSACleanup();
 }
