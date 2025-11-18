@@ -3,12 +3,6 @@
 
 PlayerInitInfo SendInitOnePlayer(SOCKET& sock, int Id);
 
-DWORD WINAPI ProcessServer(LPVOID arg)
-{
-	return 0;
-}
-
-
 int ConnectSocket(SOCKET& listen_sock, SOCKET* client_sock)
 {
 	int retval = -1;
@@ -82,8 +76,6 @@ PlayerInitInfo SendInitOnePlayer(SOCKET& sock, int Id)
 
 void SendInitPlayers(SOCKET* sock)
 {
-   
-   
     int retval;
 
     PktInitPlayers pkt;
