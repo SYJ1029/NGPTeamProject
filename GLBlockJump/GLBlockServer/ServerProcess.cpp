@@ -35,17 +35,17 @@ bool RecvInputChange(SOCKET sock, uint32_t clientId)
 {
     PacketType pktType;
     int retval = recv(sock, (char*)&pktType, sizeof(pktType), MSG_WAITALL);
-    if (retval <= 0) return;
-    if (pktType != PACK_INPUT_COMMAND) return; 
+    if (retval <= 0) return false;
+    if (pktType != PACK_INPUT_COMMAND) return false;
 
     size_t bodySize = 0;
     retval = recv(sock, (char*)&bodySize, sizeof(bodySize), MSG_WAITALL);
-    if (retval <= 0) return;
-    if (bodySize != sizeof(PlayerInputs)) return;
+    if (retval <= 0) return false;
+    if (bodySize != sizeof(PlayerInputs)) return false;
     
     PlayerInputs input{};
     retval = recv(sock, (char*)&input, sizeof(PlayerInputs), MSG_WAITALL);
-    if (retval <= 0) return;
+    if (retval <= 0) return false;
     
 	bool quit = input.quit;
 
