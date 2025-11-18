@@ -63,6 +63,7 @@ void PktInitPlayers::Deserialize(const uint8_t* data, int size)
 
 
 CRITICAL_SECTION FrameCS;
+CRITICAL_SECTION InputCS;
 
 std::vector<uint8_t> PktFrameState::Serialize()
 {

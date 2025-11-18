@@ -76,3 +76,4 @@ struct PktFrameState {
 };
 
 extern CRITICAL_SECTION FrameCS;
+extern CRITICAL_SECTION InputCS;
