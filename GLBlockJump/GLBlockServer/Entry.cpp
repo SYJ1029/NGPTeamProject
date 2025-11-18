@@ -20,7 +20,9 @@
 
 bool game_end = true;
 
+// 함수 전방 선언
 void ServerMainLoop();
+bool WriteFrameState(Game_State& state);
 
 extern std::vector<Object> staticObjects;
 extern std::vector<MovingObject> MoveObjects;
@@ -65,10 +67,12 @@ int main()
 	SOCKET listen_sock = CreateListenSocket();
 	SOCKET client_sock[MAX_CLIENTS];
 
+
 	ConnectSocket(listen_sock, client_sock);
 	
 	Fs.DynObjPos = new float[count_moving_block][3];
-
+	Game_State semistate = GAME_STATE_RUNNING;
+	WriteFrameState(semistate);
 
 	ThreadParam client_param[MAX_CLIENTS];
 
@@ -99,7 +103,7 @@ bool WriteFrameState(Game_State& state)
 {
 	EnterCriticalSection(&FrameCS);
 
-	//Fs.gameState = state;
+	Fs.gameState = state;
 	for (int i = 0; i < MAX_CLIENTS; ++i)
 	{
 		Fs.players[i].playerId = i;
