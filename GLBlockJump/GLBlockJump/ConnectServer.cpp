@@ -227,28 +227,30 @@ void RecvWorld(SOCKET sock)
     PktFrameState pkt;
     pkt.Deserialize(buffer.data(), (int)buffer.size());
 
-    EnterCriticalSection(&FrameCS);
+	PktFrameState tempPkt = pkt;
+
+
 
     for (int i = 0; i < 3; ++i)
     {
-        players[i].SetPosX(pkt.players[i].position[0]);
-        players[i].SetPosY(pkt.players[i].position[1]);
-        players[i].SetPosZ(pkt.players[i].position[2]);
+        players[i].SetPosX(tempPkt.players[i].position[0]);
+        players[i].SetPosY(tempPkt.players[i].position[1]);
+        players[i].SetPosZ(tempPkt.players[i].position[2]);
 
-        players[i].SetRotationX(pkt.players[i].rotation[0]);
-        players[i].SetRotationY(pkt.players[i].rotation[1]);
+        players[i].SetRotationX(tempPkt.players[i].rotation[0]);
+        players[i].SetRotationY(tempPkt.players[i].rotation[1]);
         // rotation[2]는 setter가 없으니 일단 무시
     }
 
-    if (pkt.move_block_size > 0 &&
-        pkt.move_block_size <= (int)MoveObjects.size())
+    if (tempPkt.move_block_size > 0 &&
+        tempPkt.move_block_size <= (int)MoveObjects.size())
     {
         for (int i = 0; i < pkt.move_block_size; ++i)
         {
             std::array<float, 3> pos = {
-                pkt.DynObjPos[0][i],
-                pkt.DynObjPos[1][i],
-                pkt.DynObjPos[2][i]
+                tempPkt.DynObjPos[0][i],
+                tempPkt.DynObjPos[1][i],
+                tempPkt.DynObjPos[2][i]
             };
 
             //클라에서 방향은 의미 없음. 000으로 대체
@@ -256,5 +258,4 @@ void RecvWorld(SOCKET sock)
             MoveObjects[i].Init(pos, dirArr);
         }
     }
-    LeaveCriticalSection(&FrameCS);
 }
