@@ -11,7 +11,7 @@ void SendWorld(ThreadParam* param)
     
 }
 
-
+void RecvInputChange(SOCKET sock, uint32_t clientId);
 DWORD WINAPI ServerProcess(LPVOID arg)
 {
     // ThreadParam으로 변환
