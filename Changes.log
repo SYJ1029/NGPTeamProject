@@ -219,6 +219,8 @@ RecvWorld() 구현
 <<<2021182031 이현석 2025-11-18>>>
 RecvInputChange() 구현
 
-1.ServerProcess에 RecvInputChange 추가함.
+1. ServerProcess에 RecvInputChange 추가함.
 
 2. 플레이어가 quit 했을 경우 스레드 종료
+
+3. 클라이언트 input 임계영역 설정
