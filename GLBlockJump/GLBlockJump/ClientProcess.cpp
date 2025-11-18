@@ -16,6 +16,5 @@ DWORD WINAPI ClientProcess(LPVOID arg)
         SendInputChange(param, players[MyID].inputs);
     }
 
-    return 0;
 	return 0;
 }
