@@ -11,7 +11,7 @@ void SendWorld(ThreadParam* param)
     
 }
 
-
+bool RecvInputChange(SOCKET sock, uint32_t clientId);
 DWORD WINAPI ServerProcess(LPVOID arg)
 {
     // ThreadParam으로 변환
@@ -24,7 +24,41 @@ DWORD WINAPI ServerProcess(LPVOID arg)
     while (1)
     {
         SendWorld(param);
+        bool br = RecvInputChange(clientSock, clientId);
+		if (br) break;
     }
 
     return 0;
+}
+
+bool RecvInputChange(SOCKET sock, uint32_t clientId)
+{
+    PacketType pktType;
+    int retval = recv(sock, (char*)&pktType, sizeof(pktType), MSG_WAITALL);
+    if (retval <= 0) return;
+    if (pktType != PACK_INPUT_COMMAND) return; 
+
+    size_t bodySize = 0;
+    retval = recv(sock, (char*)&bodySize, sizeof(bodySize), MSG_WAITALL);
+    if (retval <= 0) return;
+    if (bodySize != sizeof(PlayerInputs)) return;
+    
+    PlayerInputs input{};
+    retval = recv(sock, (char*)&input, sizeof(PlayerInputs), MSG_WAITALL);
+    if (retval <= 0) return;
+    
+	bool quit = input.quit;
+
+    EnterCriticalSection(&InputCS);
+
+    players[clientId].inputs = input;
+
+    LeaveCriticalSection(&InputCS);
+
+    // 디버그용
+    printf("[RecvInputChange] 클라이언트 %d 입력 수신: up=%d, rl=%d, jump=%d, dx=%.2f, dy=%.2f, quit=%d\n",
+        input.playerid, input.updown, input.rightleft, input.jump,
+        input.deltax, input.deltay, input.quit);
+
+    return quit;
 }
