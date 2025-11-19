@@ -13,35 +13,6 @@ extern std::array<Player, MAX_PLAYER> players;
 
 void TimerFunction(int value)
 {
-    extern UINT MyID;
-    // AÀÇ ÀÌµ¿ ¹× È¸Àü º¯È¯ °è»ê
-    glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, players[MyID].GetPosVec3());
-    model = glm::rotate(model, glm::radians(players[MyID].GetRotationY()), glm::vec3(0.0, -1.0, 0.0));
-    model = glm::rotate(model, glm::radians(players[MyID].GetRotationX()), glm::vec3(1.0, 0.0, 0.0));
-
-    // ÃÊ±â Á¡ (A¿¡¼­ z+1 À§Ä¡)
-    glm::vec4 initialPoint = glm::vec4(0.0f, 3.0f, -5.0f, 1.0f);
-
-    // º¯È¯µÈ ÁÂÇ¥ °è»ê
-    glm::vec4 transformedPoint = model * initialPoint;
-
-    // cameraPos ¾÷µ¥ÀÌÆ®
-    cameraPos.x = transformedPoint.x;
-    cameraPos.y = transformedPoint.y;
-    cameraPos.z = transformedPoint.z;
-
-    // A ±âÁØ ¹Ý´ëÆí Á¡ °è»ê (±âÁØÁ¡¿¡¼­ ¹Ý´ë ¹æÇâÀ¸·Î ÀÌµ¿)
-    glm::vec4 targetPoint = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
-
-    // º¯È¯µÈ ÁÂÇ¥ °è»ê
-    glm::vec4 rotatedTarget = model * targetPoint;
-
-    // cameraTarget ¾÷µ¥ÀÌÆ®
-    cameraTarget.x = rotatedTarget.x;
-    cameraTarget.y = rotatedTarget.y;
-    cameraTarget.z = rotatedTarget.z;
-
     for (int P = 0; P < MAX_PLAYER; P++) {
 
         glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), glm::radians(-players[P].GetRotationY()), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -110,7 +81,7 @@ void TimerFunction(int value)
 void Motion(int x, int y)
 {
     extern UINT MyID;
-    // x¿Í yÀÇ º¯È­·® °è»ê
+    // xï¿½ï¿½ yï¿½ï¿½ ï¿½ï¿½È­ï¿½ï¿½ ï¿½ï¿½ï¿½
     float deltaX = static_cast<float>(x - before_mouse_x);
     float deltaY = static_cast<float>(y - before_mouse_y);
 
@@ -118,7 +89,7 @@ void Motion(int x, int y)
 	players[MyID].inputs.deltax = deltaX;
 	players[MyID].inputs.deltay = deltaY;
     LeaveCriticalSection(&InputCS);
-    // ÇöÀç ¸¶¿ì½º À§Ä¡¸¦ ÀúÀåÇÏ¿© ´ÙÀ½ È£Ãâ¿¡¼­ ºñ±³
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ì½º ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ È£ï¿½â¿¡ï¿½ï¿½ ï¿½ï¿½
     before_mouse_x = x;
     before_mouse_y = y;
 }
@@ -143,23 +114,23 @@ void Keyboard(unsigned char key, int x, int y)
     case ' ':
 		players[MyID].inputs.jump = true;
         break;
-    case 'q': // Á¾·á
+    case 'q': // ï¿½ï¿½ï¿½ï¿½
         players[MyID].inputs.quit = true;
         exit(0);
         break;
-    case 'w': // ¾ÕÀ¸·Î ÀÌµ¿
+    case 'w': // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
         if (players[MyID].inputs.updown <= 0)
 		players[MyID].inputs.updown += 1;
         break;
-    case 's': // µÚ·Î ÀÌµ¿
+    case 's': // ï¿½Ú·ï¿½ ï¿½Ìµï¿½
         if (players[MyID].inputs.updown >= 0)
         players[MyID].inputs.updown -= 1;
         break;
-    case 'a': // ¿ÞÂÊ ÀÌµ¿
+    case 'a': // ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
         if (players[MyID].inputs.rightleft >= 0)
 		players[MyID].inputs.rightleft -= 1;
         break;
-    case 'd': // ¿À¸¥ÂÊ ÀÌµ¿
+    case 'd': // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
         if (players[MyID].inputs.rightleft <= 0)
         players[MyID].inputs.rightleft += 1;
         break;
@@ -173,19 +144,19 @@ void KeyboardUp(unsigned char key, int x, int y)
     EnterCriticalSection(&InputCS);
 
     switch (key) {
-    case 'w': // ¾ÕÀ¸·Î ÀÌµ¿
+    case 'w': // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
 		if (players[MyID].inputs.updown >= 0)
         players[MyID].inputs.updown -= 1;
         break;
-    case 's': // µÚ·Î ÀÌµ¿
+    case 's': // ï¿½Ú·ï¿½ ï¿½Ìµï¿½
         if (players[MyID].inputs.updown <= 0)
         players[MyID].inputs.updown += 1;
         break;
-    case 'a': // ¿ÞÂÊ ÀÌµ¿
+    case 'a': // ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
         if (players[MyID].inputs.rightleft <= 0)
         players[MyID].inputs.rightleft += 1;
         break;
-    case 'd': // ¿À¸¥ÂÊ ÀÌµ¿
+    case 'd': // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
         if (players[MyID].inputs.rightleft >= 0)
         players[MyID].inputs.rightleft -= 1;
         break;
@@ -199,20 +170,20 @@ void KeyboardUp(unsigned char key, int x, int y)
 /*
 void SpecialInput(int key, int x, int y) {
     switch (key) {
-    case GLUT_KEY_LEFT:  // ¡ç Å°
+    case GLUT_KEY_LEFT:  // ï¿½ï¿½ Å°
 
         break;
-    case GLUT_KEY_RIGHT: // ¡æ Å°
+    case GLUT_KEY_RIGHT: // ï¿½ï¿½ Å°
 
         break;
-    case GLUT_KEY_UP:    // ¡è Å°
+    case GLUT_KEY_UP:    // ï¿½ï¿½ Å°
 
         break;
-    case GLUT_KEY_DOWN:  // ¡é Å°
+    case GLUT_KEY_DOWN:  // ï¿½ï¿½ Å°
 
         break;
     }
-    glutPostRedisplay();  // ÀÔ·Â ÈÄ ´Ù½Ã ±×¸®±â
+    glutPostRedisplay();  // ï¿½Ô·ï¿½ ï¿½ï¿½ ï¿½Ù½ï¿½ ï¿½×¸ï¿½ï¿½ï¿½
 }
 
 void Mouse(int button, int state, int x, int y)

@@ -9,4 +9,6 @@ extern glm::vec3 up;
 extern glm::mat4 projection;
 extern glm::vec3 lightPos;
 
+void UpdateCamera();
+
 #endif
