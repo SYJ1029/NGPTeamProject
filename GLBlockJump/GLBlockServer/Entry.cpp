@@ -140,7 +140,7 @@ void ServerMainLoop()
 
 	while (1)
 	{
-		Sleep(5);
+		Sleep(1);
 		
 		for (int i = 0; i < MAX_CLIENTS; ++i)
 		{

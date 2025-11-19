@@ -15,6 +15,18 @@ void Player::Init(const std::array<float, 3>& newPos, uint8_t id)
 
 void Player::Update()
 {
+   //마우스 회전
+       // 변화량을 char_angle에 반영
+   SetRotationY(GetRotationY() + inputs.deltax * 0.8f);
+   SetRotationX(GetRotationX() + inputs.deltay * 0.1f);
+
+   // 각도 범위 제한 (360도 이상, -360도 이하로 가지 않도록 처리)
+   if (GetRotationX() > 360.0f) SetRotationX(GetRotationX() - 360.0f);
+   if (GetRotationX() < -360.0f) SetRotationX(GetRotationX() + 360.0f);
+   if (GetRotationY() > 360.0f) SetRotationY(360.0f);
+   if (GetRotationY() < -360.0f) SetRotationY(-360.0f);
+
+
     //전후좌우 이동
     glm::mat4 rotMat = glm::rotate(glm::mat4(1.0f), glm::radians(-rotation[1]), glm::vec3(0.0f, 1.0f, 0.0f));
     glm::vec3 forward = glm::vec3(0.0f, 0.0f, -1.0f);

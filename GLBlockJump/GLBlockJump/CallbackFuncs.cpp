@@ -117,17 +117,6 @@ void Motion(int x, int y)
     EnterCriticalSection(&InputCS);
 	players[MyID].inputs.deltax = deltaX;
 	players[MyID].inputs.deltay = deltaY;
-
-    // 변화량을 char_angle에 반영
-	players[MyID].SetRotationY(players[MyID].GetRotationY() + deltaX * 0.8f);
-	players[MyID].SetRotationX(players[MyID].GetRotationX() + deltaY * 0.1f);
-
-    // 각도 범위 제한 (360도 이상, -360도 이하로 가지 않도록 처리)
-	if (players[MyID].GetRotationX() > 360.0f) players[MyID].SetRotationX(players[MyID].GetRotationX() - 360.0f);
-	if (players[MyID].GetRotationX() < -360.0f) players[MyID].SetRotationX(players[MyID].GetRotationX() + 360.0f);
-	if (players[MyID].GetRotationY() > 360.0f) players[MyID].SetRotationY(360.0f);
-	if (players[MyID].GetRotationY() < -360.0f) players[MyID].SetRotationY(-360.0f);
-
     LeaveCriticalSection(&InputCS);
     // 현재 마우스 위치를 저장하여 다음 호출에서 비교
     before_mouse_x = x;

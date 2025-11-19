@@ -226,3 +226,12 @@ RecvInputChange() 구현
 3. 클라이언트 input 임계영역 설정
 
 4. 서버, 클라 양쪽에 cs 호출하도록 추가
+
+
+
+<<<2021184018 송영준 2025 11-18 ~ 11-20>>>
+
+1. 테스트에서 여러 에러가 발생했던 Send World 수정
+2. RecvInputChange 구현 완료
+3. 임계영역 사용 범위 수정
+-> playerInput에 대한 Data Race 발생 여부는 추후 확인이 필요함
