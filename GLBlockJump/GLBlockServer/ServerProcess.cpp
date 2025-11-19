@@ -15,7 +15,7 @@ void SendWorld(ThreadParam* param)
 	// 전송할 패킷의 크기를 계산한다
     
     std::vector<uint8_t> tempData = Fs.Serialize();
-	pkHeader.size = sizeof(PacketParam) + tempData.size();
+	pkHeader.size = tempData.size();
 
 	// 패킷 헤더 전송
     send(param->sock, (char*)&pkHeader, sizeof(PacketParam), 0);
@@ -25,6 +25,8 @@ void SendWorld(ThreadParam* param)
 }
 
 bool RecvInputChange(SOCKET sock, uint32_t clientId);
+
+
 DWORD WINAPI ServerProcess(LPVOID arg)
 {
     // ThreadParam으로 변환

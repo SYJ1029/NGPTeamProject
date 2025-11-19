@@ -72,12 +72,14 @@ int main()
 	
 	Fs.DynObjPos = new float[count_moving_block][3];
 	Game_State semistate = GAME_STATE_RUNNING;
+
+	InitializeCriticalSection(&FrameCS);
+	InitializeCriticalSection(&InputCS);
 	WriteFrameState(semistate);
 
 	ThreadParam client_param[MAX_CLIENTS];
 
-	InitializeCriticalSection(&FrameCS);
-	InitializeCriticalSection(&InputCS);
+
 
 	for (int i = 0; i < MAX_CLIENTS; ++i)
 	{
@@ -117,7 +119,7 @@ bool WriteFrameState(Game_State& state)
 	}
 
 	Fs.move_block_size = count_moving_block;
-	
+
 	for (int i = 0; i < Fs.move_block_size; ++i)
 	{
 		Fs.DynObjPos[i][0] = MoveObjects[i].GetPosVec3().x;
