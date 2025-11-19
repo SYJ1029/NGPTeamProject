@@ -24,14 +24,18 @@ void SendInputChange(SOCKET sock, const PlayerInputs& input)
 {
     PacketParam header{};
     header.type = PACK_INPUT_COMMAND;
-    header.size = sizeof(PacketParam) + sizeof(PlayerInputs);
+    header.size = sizeof(PlayerInputs);
 
     int retval = send(sock, reinterpret_cast<const char*>(&header), sizeof(header), 0);
     if (retval == SOCKET_ERROR) return;
 
     EnterCriticalSection(&InputCS);
     retval = send(sock, reinterpret_cast<const char*>(&input), sizeof(input), 0);
-    if (retval == SOCKET_ERROR) return;
+    if (retval == SOCKET_ERROR) {
+		// 실패에 대한 모든 강제 종료는 임계영역 해제가 동반되어야만 함
+		LeaveCriticalSection(&InputCS);
+        return;
+    }
     LeaveCriticalSection(&InputCS);
 
     // 디버그용
