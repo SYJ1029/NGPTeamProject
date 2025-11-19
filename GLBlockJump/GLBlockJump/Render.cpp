@@ -26,6 +26,7 @@ GLvoid drawScene()
     }
 
     // === ºäÀ× º¯È¯ ===
+    UpdateCamera();
     glm::mat4 view = glm::lookAt(cameraPos, cameraTarget, up);
     int viewLoc = glGetUniformLocation(shaderProgramID, "viewTransform");
     glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
