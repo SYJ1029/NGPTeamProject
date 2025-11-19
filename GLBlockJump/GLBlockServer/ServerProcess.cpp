@@ -1,5 +1,5 @@
 #include "ServerProcess.h"
-
+#include "SocketError.h"
 
 PktFrameState Fs;
 PlayerInputs pi[MAX_CLIENTS];
@@ -51,29 +51,44 @@ DWORD WINAPI ServerProcess(LPVOID arg)
 
 bool RecvInputChange(SOCKET sock, uint32_t clientId)
 {
-    PacketType pktType;
-    int retval = recv(sock, (char*)&pktType, sizeof(pktType), MSG_WAITALL);
-    if (retval <= 0) return false;
-    if (pktType != PACK_INPUT_COMMAND) return false;
+    // PacketParam 헤더 수신
+    PacketParam header{};
+    int retval = recv(sock, reinterpret_cast<char*>(&header), sizeof(header), MSG_WAITALL);
+    if (retval <= 0) {
+        err_display("recv() - Header");
+        return false;
+    }
 
-    size_t bodySize = 0;
-    retval = recv(sock, (char*)&bodySize, sizeof(bodySize), MSG_WAITALL);
-    if (retval <= 0) return false;
-    if (bodySize != sizeof(PlayerInputs)) return false;
-    
+    // 헤더 타입 확인
+    if (header.type != PACK_INPUT_COMMAND) {
+        printf("[RecvInputChange] Unexpected packet type: %d\n", header.type);
+        return false;
+    }
+
+    // 헤더에 명시된 크기 확인
+    if (header.size != sizeof(PlayerInputs)) {
+        printf("[RecvInputChange] Unexpected packet size: %d\n", header.size);
+        return false;
+    }
+
+    // 입력 데이터 수신
     PlayerInputs input{};
-    retval = recv(sock, (char*)&input, sizeof(PlayerInputs), MSG_WAITALL);
-    if (retval <= 0) return false;
-    
-	bool quit = input.quit;
+    retval = recv(sock, reinterpret_cast<char*>(&input), sizeof(input), MSG_WAITALL);
+    if (retval <= 0) {
+        err_display("recv() - Body");
+        return false;
+    }
+
+    // 입력 데이터 처리
+    bool quit = input.quit;
 
     EnterCriticalSection(&InputCS);
-
     players[clientId].inputs = input;
-
+    if (input.jump)
+        std::cout << "얘 점프해요" << std::endl;
     LeaveCriticalSection(&InputCS);
 
-    // 디버그용
+    // 디버그용 출력
     printf("[RecvInputChange] 클라이언트 %d 입력 수신: up=%d, rl=%d, jump=%d, dx=%.2f, dy=%.2f, quit=%d\n",
         input.playerid, input.updown, input.rightleft, input.jump,
         input.deltax, input.deltay, input.quit);

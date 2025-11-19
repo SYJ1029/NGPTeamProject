@@ -6,6 +6,9 @@
 
 void Player::Init(const std::array<float, 3>& newPos, uint8_t id)
 {
+    moveSpeed[0] = 0.1f;
+    moveSpeed[1] = 0.0f;
+    moveSpeed[2] = 0.1f;
 	Object::Init(newPos);
 	ID = id;
 }
@@ -18,6 +21,7 @@ void Player::Update()
     glm::vec3 right = glm::vec3(1.0f, 0.0f, 0.0f);
     forward = glm::normalize(glm::vec3(rotMat * glm::vec4(forward, 0.0f)));
     right = glm::normalize(glm::vec3(rotMat * glm::vec4(right, 0.0f)));
+
 
     if (inputs.updown == 1) {
         pos[0] -= forward.x * moveSpeed[0];
