@@ -63,6 +63,7 @@ void PktInitPlayers::Deserialize(const uint8_t* data, int size)
 
 
 CRITICAL_SECTION FrameCS;
+CRITICAL_SECTION InputCS;
 
 std::vector<uint8_t> PktFrameState::Serialize()
 {
@@ -132,6 +133,7 @@ void PktFrameState::Deserialize(const uint8_t* data, int size)
         memcpy(&out, &host, 4);
         };
 
+    EnterCriticalSection(&FrameCS);
     for (int i = 0; i < 3; ++i) {
         // myPlayerId
         readInt(players[i].playerId);
@@ -156,5 +158,6 @@ void PktFrameState::Deserialize(const uint8_t* data, int size)
         }
 
     }
+    LeaveCriticalSection(&FrameCS);
 
 }
