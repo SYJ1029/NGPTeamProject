@@ -22,14 +22,14 @@
     <Filter Include="Collision">
       <UniqueIdentifier>{6ef4ce42-debc-4cdc-bce8-daaaa3e0b602}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Init">
-      <UniqueIdentifier>{61be0bfc-83bb-4c60-ae0d-785a9d27d23e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Network">
       <UniqueIdentifier>{e5eb5e25-40c4-4fea-8f80-666097284a9d}</UniqueIdentifier>
     </Filter>
     <Filter Include="MainLoop">
       <UniqueIdentifier>{071f20bd-4b45-45f8-b501-4fce70fb6e2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entry\Init">
+      <UniqueIdentifier>{61be0bfc-83bb-4c60-ae0d-785a9d27d23e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -55,10 +55,10 @@
       <Filter>Collision</Filter>
     </ClCompile>
     <ClCompile Include="InitWorld.cpp">
-      <Filter>Init</Filter>
+      <Filter>Entry\Init</Filter>
     </ClCompile>
     <ClCompile Include="InitPlayer.cpp">
-      <Filter>Init</Filter>
+      <Filter>Entry\Init</Filter>
     </ClCompile>
     <ClCompile Include="AcceptClients.cpp">
       <Filter>Network</Filter>
@@ -102,7 +102,7 @@
       <Filter>Collision</Filter>
     </ClInclude>
     <ClInclude Include="InitWorld.h">
-      <Filter>Init</Filter>
+      <Filter>Entry\Init</Filter>
     </ClInclude>
     <ClInclude Include="AcceptClients.h">
       <Filter>Network</Filter>

@@ -41,7 +41,7 @@ int ConnectSocket(SOCKET& listen_sock, SOCKET* client_sock)
         SendInitPlayers(client_sock);
         SendInitWorldStatic(client_sock);
         SendInitWorldDynamic(client_sock);
-        //return 0;
+        return 0;
 	
 	}
 }

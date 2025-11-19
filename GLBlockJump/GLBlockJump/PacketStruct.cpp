@@ -152,6 +152,8 @@ void PktFrameState::Deserialize(const uint8_t* data, int size)
     }
 
     readInt(move_block_size);
+
+
     for (int i = 0; i < move_block_size; i++) {
         for (int j = 0; j < 3; j++) {
             readFloat(DynObjPos[i][j]);
