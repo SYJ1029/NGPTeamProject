@@ -20,7 +20,7 @@ DWORD WINAPI ClientProcess(LPVOID arg)
 	return 0;
 }
 
-void SendInputChange(SOCKET sock, const PlayerInputs& input)
+void SendInputChange(SOCKET sock, PlayerInputs& input)
 {
     PacketParam header{};
     header.type = PACK_INPUT_COMMAND;
@@ -36,6 +36,8 @@ void SendInputChange(SOCKET sock, const PlayerInputs& input)
 		LeaveCriticalSection(&InputCS);
         return;
     }
+
+    input.clear();
     LeaveCriticalSection(&InputCS);
 
     // 디버그용

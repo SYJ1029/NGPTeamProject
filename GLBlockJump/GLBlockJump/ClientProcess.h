@@ -7,4 +7,4 @@
 DWORD WINAPI ClientProcess(LPVOID arg);
 
 void RecvWorld(SOCKET sock);
-void SendInputChange(SOCKET sock, const PlayerInputs& input);
+void SendInputChange(SOCKET sock, PlayerInputs& input);
