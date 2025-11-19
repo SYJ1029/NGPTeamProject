@@ -13,40 +13,10 @@ extern std::array<Player, MAX_PLAYER> players;
 
 void TimerFunction(int value)
 {
-    extern UINT MyID;
-    // A의 이동 및 회전 변환 계산
-    glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, players[MyID].GetPosVec3());
-    model = glm::rotate(model, glm::radians(players[MyID].GetRotationY()), glm::vec3(0.0, -1.0, 0.0));
-    model = glm::rotate(model, glm::radians(players[MyID].GetRotationX()), glm::vec3(1.0, 0.0, 0.0));
-
-    // 초기 점 (A에서 z+1 위치)
-    glm::vec4 initialPoint = glm::vec4(0.0f, 3.0f, -5.0f, 1.0f);
-
-    // 변환된 좌표 계산
-    glm::vec4 transformedPoint = model * initialPoint;
-
-    // cameraPos 업데이트
-    cameraPos.x = transformedPoint.x;
-    cameraPos.y = transformedPoint.y;
-    cameraPos.z = transformedPoint.z;
-
-    // A 기준 반대편 점 계산 (기준점에서 반대 방향으로 이동)
-    glm::vec4 targetPoint = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
-
-    // 변환된 좌표 계산
-    glm::vec4 rotatedTarget = model * targetPoint;
-
-    // cameraTarget 업데이트
-    cameraTarget.x = rotatedTarget.x;
-    cameraTarget.y = rotatedTarget.y;
-    cameraTarget.z = rotatedTarget.z;
-
     for (int P = 0; P < MAX_PLAYER; P++) {
 
         glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), glm::radians(-players[P].GetRotationY()), glm::vec3(0.0f, 1.0f, 0.0f));
         players[P].Update();
-
 
         bool isGrounded = false;
         for (int i = 0; i < count_block; i++) {
