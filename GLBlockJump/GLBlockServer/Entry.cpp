@@ -136,9 +136,12 @@ void ServerMainLoop()
 {
 	Game_State state = GAME_STATE_RUNNING;
 
+
+
 	while (1)
 	{
-
+		Sleep(5);
+		
 		for (int i = 0; i < MAX_CLIENTS; ++i)
 		{
 			players[i].Update();
@@ -151,7 +154,8 @@ void ServerMainLoop()
 		}
 
 		WriteFrameState(state);
-		
+
+
 	}
 }
 

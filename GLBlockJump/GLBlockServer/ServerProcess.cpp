@@ -84,8 +84,8 @@ bool RecvInputChange(SOCKET sock, uint32_t clientId)
 
     EnterCriticalSection(&InputCS);
     players[clientId].inputs = input;
-    if (input.jump)
-        std::cout << "얘 점프해요" << std::endl;
+    if(input.updown != 0)
+		std::cout << "updown: " << input.updown << std::endl;
     LeaveCriticalSection(&InputCS);
 
     // 디버그용 출력

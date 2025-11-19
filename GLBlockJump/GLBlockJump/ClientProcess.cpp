@@ -37,7 +37,7 @@ void SendInputChange(SOCKET sock, PlayerInputs& input)
         return;
     }
 
-    input.clear();
+    //input.clear();
     LeaveCriticalSection(&InputCS);
 
     // 디버그용
