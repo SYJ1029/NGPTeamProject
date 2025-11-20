@@ -61,6 +61,14 @@ void Player::Update()
     //ÀÚÀ¯³«ÇÏ
     moveSpeed[1] -= GRAVITY;
 	pos[1] += moveSpeed[1];
+
+    if (pos[1] <= -10.0f) {
+        pos[0] = 0.0f;
+        pos[1] = 10.0f;
+        pos[2] = 0.0f;
+
+        moveSpeed[1] = 0.0f;
+    }
 }
 
 void Player::Release()

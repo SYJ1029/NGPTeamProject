@@ -50,7 +50,7 @@ void RecvWorld(SOCKET sock)
     PacketParam header{};
     int retval = recv(sock, reinterpret_cast<char*>(&header), sizeof(header), MSG_WAITALL);
     if (retval <= 0) {
-        err_display("recv() - Header");
+        //err_display("recv() - Header");
         return;
     }
     // 헤더 타입 확인
