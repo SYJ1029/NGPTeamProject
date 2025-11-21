@@ -35,6 +35,10 @@ DWORD WINAPI ServerProcess(LPVOID arg)
     uint32_t clientId = param->id;
     SOCKET clientSock = param->sock;
 
+    DWORD optval = 1;
+    setsockopt(clientSock, IPPROTO_TCP, TCP_NODELAY, (const char*)&optval, sizeof(optval));
+
+
   //  if (param->id != 0)
   //  {
 		//SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_TIME_CRITICAL);
@@ -86,11 +90,10 @@ bool RecvInputChange(SOCKET sock, uint32_t clientId)
     // 입력 데이터 처리
     bool quit = input.quit;
 
-    EnterCriticalSection(&InputCS);
+    EnterCriticalSection(&players[clientId].pInputCS);
     players[clientId].inputs = input;
-    if(input.updown != 0)
-		std::cout << "updown: " << input.updown << std::endl;
-    LeaveCriticalSection(&InputCS);
+    LeaveCriticalSection(&players[clientId].pInputCS);
+
 
     // 디버그용 출력
     if (input.playerid != 0) {

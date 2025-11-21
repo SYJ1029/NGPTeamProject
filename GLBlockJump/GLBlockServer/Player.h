@@ -14,6 +14,9 @@ private:
 public:
 	bool isGrounded{ true };
 	PlayerInputs inputs{};
+	CRITICAL_SECTION pInputCS;
+
+	~Player();
 
 	virtual void Init(const std::array<float, 3>& newPos, uint8_t id);
 
