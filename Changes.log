@@ -228,6 +228,27 @@ RecvInputChange() 구현
 4. 서버, 클라 양쪽에 cs 호출하도록 추가
 
 
+
+
+<<<2021184018 송영준 2025 11-18 ~ 11-20>>>
+
+1. 테스트에서 여러 에러가 발생했던 Send World 수정
+2. RecvInputChange 구현 완료
+3. 임계영역 사용 범위 수정
+-> playerInput에 대한 Data Race 발생 여부는 추후 확인이 필요함
+
 <<<2021184008 김준호 2025-11-19>>>
 
 1. UpdateCamera()에서 플레이어의 좌표와 방향으로 카메라 업데이트를 함. 이를 서버가 아닌 클라이언트의 Rendering 과정에서 수행함.
+
+
+<<<2021182031 이현석 2025-11-21>>>
+클라이언트에서 마우스 이동이 없으면 잔여 input.deltaX/Y 값이 남아있던 버그 해결 
+알고리즘:
+1. 클라이언트에 exturn bool isMotion 추가
+2. Motion() 함수 실행 시 isMotion= true로 변경
+3. TimerFunction()에서 isMotion==true면 input.deltaX/Y 0으로 초기화하고 isMotion = false;
+-> GL 내부는 단일쓰레드니까TimerFunction()가 실행된다면 그 시점에서 isMotion == false가 맞음. 논리적 문제 없음.
+
+※ 잔여 input.deltaX/Y 없어짐에 따라 마우스 회전 최대치가 제한됨, 마우스 감도 조정 필요
+※ 이 문제 해결하면서 클라이언트 송수신 쓰레드의 입출력 데이터 초기화 필요가 없어짐, 추진서 플로우차트 수정 필요

@@ -16,6 +16,15 @@ struct PlayerInputs {
     bool jump;
     float deltax, deltay;
     bool quit;
+
+    void clear() {
+        updown = 0;
+        rightleft = 0;
+        jump = false;
+        deltax = 0.0f;
+        deltay = 0.0f;
+        quit = false;
+	}
 };
 
 

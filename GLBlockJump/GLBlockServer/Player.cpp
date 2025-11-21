@@ -6,18 +6,34 @@
 
 void Player::Init(const std::array<float, 3>& newPos, uint8_t id)
 {
+    moveSpeed[0] = 0.1f;
+    moveSpeed[1] = 0.0f;
+    moveSpeed[2] = 0.1f;
 	Object::Init(newPos);
 	ID = id;
 }
 
 void Player::Update()
 {
+   //마우스 회전
+       // 변화량을 char_angle에 반영
+   SetRotationY(GetRotationY() + inputs.deltax * 0.8f);
+   SetRotationX(GetRotationX() + inputs.deltay * 0.1f);
+
+   // 각도 범위 제한 (360도 이상, -360도 이하로 가지 않도록 처리)
+   if (GetRotationX() > 360.0f) SetRotationX(GetRotationX() - 360.0f);
+   if (GetRotationX() < -360.0f) SetRotationX(GetRotationX() + 360.0f);
+   if (GetRotationY() > 360.0f) SetRotationY(360.0f);
+   if (GetRotationY() < -360.0f) SetRotationY(-360.0f);
+
+
     //전후좌우 이동
     glm::mat4 rotMat = glm::rotate(glm::mat4(1.0f), glm::radians(-rotation[1]), glm::vec3(0.0f, 1.0f, 0.0f));
     glm::vec3 forward = glm::vec3(0.0f, 0.0f, -1.0f);
     glm::vec3 right = glm::vec3(1.0f, 0.0f, 0.0f);
     forward = glm::normalize(glm::vec3(rotMat * glm::vec4(forward, 0.0f)));
     right = glm::normalize(glm::vec3(rotMat * glm::vec4(right, 0.0f)));
+
 
     if (inputs.updown == 1) {
         pos[0] -= forward.x * moveSpeed[0];
@@ -45,6 +61,14 @@ void Player::Update()
     //자유낙하
     moveSpeed[1] -= GRAVITY;
 	pos[1] += moveSpeed[1];
+
+    if (pos[1] <= -10.0f) {
+        pos[0] = 0.0f;
+        pos[1] = 10.0f;
+        pos[2] = 0.0f;
+
+        moveSpeed[1] = 0.0f;
+    }
 }
 
 void Player::Release()

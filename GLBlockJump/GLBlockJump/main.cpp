@@ -36,9 +36,11 @@ int main(int argc, char** argv)
 
     InitializeCriticalSection(&FrameCS);
     InitializeCriticalSection(&InputCS);
+
     CreateThread(NULL, 0, ClientProcess, (LPVOID)&sock, 0, NULL);
 
     InitGL(argc, argv);
+
 
     glutMainLoop();
 

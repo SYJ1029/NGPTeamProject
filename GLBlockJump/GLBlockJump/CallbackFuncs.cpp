@@ -13,66 +13,12 @@ extern std::array<Player, MAX_PLAYER> players;
 
 void TimerFunction(int value)
 {
-    for (int P = 0; P < MAX_PLAYER; P++) {
-
-        glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), glm::radians(-players[P].GetRotationY()), glm::vec3(0.0f, 1.0f, 0.0f));
-        players[P].Update();
-
-        bool isGrounded = false;
-        for (int i = 0; i < count_block; i++) {
-            if (players[P].CheckCollision(staticObjects[i])) {
-                float blockPos[3]{ staticObjects[i].GetPosVec3().x, staticObjects[i].GetPosVec3().y, staticObjects[i].GetPosVec3().z };
-                if ((players[P].GetPosY() + players[P].GetMoveSpeedY()) < blockPos[1] + 1.0f && players[P].GetPosY() >= blockPos[1]) {
-                    players[P].SetPosY(blockPos[1] + 1.0f);
-                    players[P].SetMoveSpeedY(0);
-                    isGrounded = true;
-                }
-                else if ((players[P].GetPosY() + players[P].GetMoveSpeedY()) > blockPos[1] - 1.0f && players[P].GetPosY() <= blockPos[1]) {
-                    players[P].SetPosY(blockPos[1] - 1.0f);
-                    players[P].SetMoveSpeedY(0);
-                }
-
-                if ((!game_end) && ((blockPos[1] >= 50) && (count_block - i <= 25))) {
-                    std::cout << "Congratulations! You Win! \npress \"q\" to quit the game.\n";
-                    game_end = true;
-                }
-
-                break;
-            }
-        }
-        for (int i = 0; i < count_moving_block; i++) {
-            if (players[P].CheckCollision(MoveObjects[i])) {
-                if ((players[P].GetPosY() + players[P].GetMoveSpeedY()) < MoveObjects[i].GetPosVec3().y + 1.0f && players[P].GetPosY() >= MoveObjects[i].GetPosVec3().y) {
-                    players[P].SetPosY(MoveObjects[i].GetPosVec3().y + 1.0f);
-                    players[P].SetMoveSpeedY(0);
-                    isGrounded = true;
-                }
-                else if ((char_pos[1] + players[P].GetMoveSpeedY()) > MoveObjects[i].GetPosVec3().y - 1.0f && players[P].GetPosY() <= MoveObjects[i].GetPosVec3().y) {
-                    char_pos[1] = MoveObjects[i].GetPosVec3().y - 1.0f;
-                    players[P].SetMoveSpeedY(0);
-                }
-                players[P].SetPosX(players[P].GetPosX() + MoveObjects[i].GetDirVec3().x * 0.03f);
-                players[P].SetPosY(players[P].GetPosY() + MoveObjects[i].GetDirVec3().y * 0.03f);
-                players[P].SetPosZ(players[P].GetPosZ() + MoveObjects[i].GetDirVec3().z * 0.03f);
-                break;
-            }
-        }
-        players[P].isGrounded = isGrounded;
-
-        for (int i = 0; i < count_moving_block; i++) {
-            MoveObjects[i].Update();
-        }
+    extern UINT MyID;
+    if (isMotion) {
+        players[MyID].inputs.deltax = 0.0f;
+        players[MyID].inputs.deltay = 0.0f;
+        isMotion = false;
     }
-
-    /*
-	using namespace std;
-    cout << "-----------------------------------------------------------\n";
-    cout << "Player " << MyID << " Inputs - UpDown: " << players[MyID].inputs.updown
-        << "\n RightLeft: " << players[MyID].inputs.rightleft
-        << "\n Jump: " << (players[MyID].inputs.jump ? "True" : "False")
-        << "\n deltax: " << players[MyID].inputs.deltax
-        << "\n deltay: " << players[MyID].inputs.deltay << '\n';
-    */
 
     glutPostRedisplay();
     glutTimerFunc(10, TimerFunction, 1);
@@ -80,28 +26,21 @@ void TimerFunction(int value)
 void Motion(int x, int y)
 {
     extern UINT MyID;
-    // x¿Í yÀÇ º¯È­·® °è»ê
+    // xï¿½ï¿½ yï¿½ï¿½ ï¿½ï¿½È­ï¿½ï¿½ ï¿½ï¿½ï¿½
     float deltaX = static_cast<float>(x - before_mouse_x);
     float deltaY = static_cast<float>(y - before_mouse_y);
 
     EnterCriticalSection(&InputCS);
 	players[MyID].inputs.deltax = deltaX;
 	players[MyID].inputs.deltay = deltaY;
-
-    // º¯È­·®À» char_angle¿¡ ¹Ý¿µ
-	players[MyID].SetRotationY(players[MyID].GetRotationY() + deltaX * 0.8f);
-	players[MyID].SetRotationX(players[MyID].GetRotationX() + deltaY * 0.1f);
-
-    // °¢µµ ¹üÀ§ Á¦ÇÑ (360µµ ÀÌ»ó, -360µµ ÀÌÇÏ·Î °¡Áö ¾Êµµ·Ï Ã³¸®)
-	if (players[MyID].GetRotationX() > 360.0f) players[MyID].SetRotationX(players[MyID].GetRotationX() - 360.0f);
-	if (players[MyID].GetRotationX() < -360.0f) players[MyID].SetRotationX(players[MyID].GetRotationX() + 360.0f);
-	if (players[MyID].GetRotationY() > 360.0f) players[MyID].SetRotationY(360.0f);
-	if (players[MyID].GetRotationY() < -360.0f) players[MyID].SetRotationY(-360.0f);
-
     LeaveCriticalSection(&InputCS);
-    // ÇöÀç ¸¶¿ì½º À§Ä¡¸¦ ÀúÀåÇÏ¿© ´ÙÀ½ È£Ãâ¿¡¼­ ºñ±³
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ì½º ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ È£ï¿½â¿¡ï¿½ï¿½ ï¿½ï¿½
     before_mouse_x = x;
     before_mouse_y = y;
+
+	if (!isMotion) {
+		isMotion = true;
+	}
 }
 
 
@@ -124,23 +63,23 @@ void Keyboard(unsigned char key, int x, int y)
     case ' ':
 		players[MyID].inputs.jump = true;
         break;
-    case 'q': // Á¾·á
+    case 'q': // ï¿½ï¿½ï¿½ï¿½
         players[MyID].inputs.quit = true;
         exit(0);
         break;
-    case 'w': // ¾ÕÀ¸·Î ÀÌµ¿
+    case 'w': // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
         if (players[MyID].inputs.updown <= 0)
 		players[MyID].inputs.updown += 1;
         break;
-    case 's': // µÚ·Î ÀÌµ¿
+    case 's': // ï¿½Ú·ï¿½ ï¿½Ìµï¿½
         if (players[MyID].inputs.updown >= 0)
         players[MyID].inputs.updown -= 1;
         break;
-    case 'a': // ¿ÞÂÊ ÀÌµ¿
+    case 'a': // ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
         if (players[MyID].inputs.rightleft >= 0)
 		players[MyID].inputs.rightleft -= 1;
         break;
-    case 'd': // ¿À¸¥ÂÊ ÀÌµ¿
+    case 'd': // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
         if (players[MyID].inputs.rightleft <= 0)
         players[MyID].inputs.rightleft += 1;
         break;
@@ -154,19 +93,19 @@ void KeyboardUp(unsigned char key, int x, int y)
     EnterCriticalSection(&InputCS);
 
     switch (key) {
-    case 'w': // ¾ÕÀ¸·Î ÀÌµ¿
+    case 'w': // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
 		if (players[MyID].inputs.updown >= 0)
         players[MyID].inputs.updown -= 1;
         break;
-    case 's': // µÚ·Î ÀÌµ¿
+    case 's': // ï¿½Ú·ï¿½ ï¿½Ìµï¿½
         if (players[MyID].inputs.updown <= 0)
         players[MyID].inputs.updown += 1;
         break;
-    case 'a': // ¿ÞÂÊ ÀÌµ¿
+    case 'a': // ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
         if (players[MyID].inputs.rightleft <= 0)
         players[MyID].inputs.rightleft += 1;
         break;
-    case 'd': // ¿À¸¥ÂÊ ÀÌµ¿
+    case 'd': // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
         if (players[MyID].inputs.rightleft >= 0)
         players[MyID].inputs.rightleft -= 1;
         break;
@@ -180,20 +119,20 @@ void KeyboardUp(unsigned char key, int x, int y)
 /*
 void SpecialInput(int key, int x, int y) {
     switch (key) {
-    case GLUT_KEY_LEFT:  // ¡ç Å°
+    case GLUT_KEY_LEFT:  // ï¿½ï¿½ Å°
 
         break;
-    case GLUT_KEY_RIGHT: // ¡æ Å°
+    case GLUT_KEY_RIGHT: // ï¿½ï¿½ Å°
 
         break;
-    case GLUT_KEY_UP:    // ¡è Å°
+    case GLUT_KEY_UP:    // ï¿½ï¿½ Å°
 
         break;
-    case GLUT_KEY_DOWN:  // ¡é Å°
+    case GLUT_KEY_DOWN:  // ï¿½ï¿½ Å°
 
         break;
     }
-    glutPostRedisplay();  // ÀÔ·Â ÈÄ ´Ù½Ã ±×¸®±â
+    glutPostRedisplay();  // ï¿½Ô·ï¿½ ï¿½ï¿½ ï¿½Ù½ï¿½ ï¿½×¸ï¿½ï¿½ï¿½
 }
 
 void Mouse(int button, int state, int x, int y)

@@ -18,6 +18,8 @@
 
 #include "CollisionManager.h"
 
+#include <chrono>
+
 bool game_end = true;
 
 // 함수 전방 선언
@@ -72,12 +74,14 @@ int main()
 	
 	Fs.DynObjPos = new float[count_moving_block][3];
 	Game_State semistate = GAME_STATE_RUNNING;
+
+	InitializeCriticalSection(&FrameCS);
+	InitializeCriticalSection(&InputCS);
 	WriteFrameState(semistate);
 
 	ThreadParam client_param[MAX_CLIENTS];
 
-	InitializeCriticalSection(&FrameCS);
-	InitializeCriticalSection(&InputCS);
+
 
 	for (int i = 0; i < MAX_CLIENTS; ++i)
 	{
@@ -117,7 +121,7 @@ bool WriteFrameState(Game_State& state)
 	}
 
 	Fs.move_block_size = count_moving_block;
-	
+
 	for (int i = 0; i < Fs.move_block_size; ++i)
 	{
 		Fs.DynObjPos[i][0] = MoveObjects[i].GetPosVec3().x;
@@ -134,22 +138,36 @@ void ServerMainLoop()
 {
 	Game_State state = GAME_STATE_RUNNING;
 
+	float frameTime = 0;
+	float deltaTime = 4.8f;
 	while (1)
 	{
+		//Sleep(1);
 
-		for (int i = 0; i < MAX_CLIENTS; ++i)
+
+		auto timerStart = std::chrono::high_resolution_clock::now();
+		if (deltaTime > frameTime);
+		else 
 		{
-			players[i].Update();
-			ChecKCollisionLoop(players[i]);
+			for (int i = 0; i < MAX_CLIENTS; ++i)
+			{
+				players[i].Update();
+				ChecKCollisionLoop(players[i]);
+			}
+
+			for (int i = 0; i < count_moving_block; ++i)
+			{
+				MoveObjects[i].Update();
+			}
+
+			frameTime = 0;
+
+			WriteFrameState(state);
 		}
 
-		for (int i = 0; i < count_moving_block; ++i)
-		{
-			MoveObjects[i].Update();
-		}
 
-		WriteFrameState(state);
-		
+		auto timerEnd = std::chrono::high_resolution_clock::now();
+		frameTime += std::chrono::duration<float, std::milli>(timerEnd - timerStart).count();
 	}
 }
 
