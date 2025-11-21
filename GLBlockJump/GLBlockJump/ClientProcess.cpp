@@ -13,6 +13,9 @@ DWORD WINAPI ClientProcess(LPVOID arg)
     // LPVOID는 void*임 값이 아니라 포인터를 가지고 있음
     SOCKET* sock = (SOCKET*)arg;
 
+    DWORD optval = 1;
+    setsockopt(*sock, IPPROTO_TCP, TCP_NODELAY, (const char*)&optval, sizeof(optval));
+
     while (1)
     {
         RecvWorld(*sock);

@@ -4,6 +4,12 @@
 
 #include "CollisionManager.h"
 
+Player::~Player()
+{
+    Object::~Object();
+    DeleteCriticalSection(&pInputCS);
+}
+
 void Player::Init(const std::array<float, 3>& newPos, uint8_t id)
 {
     moveSpeed[0] = 0.1f;
@@ -11,14 +17,20 @@ void Player::Init(const std::array<float, 3>& newPos, uint8_t id)
     moveSpeed[2] = 0.1f;
 	Object::Init(newPos);
 	ID = id;
+
+    InitializeCriticalSection(&pInputCS);
 }
 
 void Player::Update()
 {
    //마우스 회전
        // 변화량을 char_angle에 반영
-   SetRotationY(GetRotationY() + inputs.deltax * 0.8f);
-   SetRotationX(GetRotationX() + inputs.deltay * 0.1f);
+	EnterCriticalSection(&pInputCS);
+    PlayerInputs local_input = inputs;
+	LeaveCriticalSection(&pInputCS);
+
+   SetRotationY(GetRotationY() + local_input.deltax * 0.8f);
+   SetRotationX(GetRotationX() + local_input.deltay * 0.1f);
 
    // 각도 범위 제한 (360도 이상, -360도 이하로 가지 않도록 처리)
    if (GetRotationX() > 360.0f) SetRotationX(GetRotationX() - 360.0f);
@@ -35,25 +47,25 @@ void Player::Update()
     right = glm::normalize(glm::vec3(rotMat * glm::vec4(right, 0.0f)));
 
 
-    if (inputs.updown == 1) {
+    if (local_input.updown == 1) {
         pos[0] -= forward.x * moveSpeed[0];
         pos[2] -= forward.z * moveSpeed[2];
     }
-    else if (inputs.updown == -1) {
+    else if (local_input.updown == -1) {
         pos[0] += forward.x * moveSpeed[0];
         pos[2] += forward.z * moveSpeed[2];
     }
-    if (inputs.rightleft == -1) {
+    if (local_input.rightleft == -1) {
         pos[0] += right.x * moveSpeed[0];
         pos[2] += right.z * moveSpeed[2];
     }
-    else if (inputs.rightleft == 1) {
+    else if (local_input.rightleft == 1) {
         pos[0] -= right.x * moveSpeed[0];
         pos[2] -= right.z * moveSpeed[2];
     }
 
     //점프
-    if (inputs.jump && isGrounded) {
+    if (local_input.jump && isGrounded) {
         isGrounded = false;
         moveSpeed[1] = jumpSpeed;
 	}

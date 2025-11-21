@@ -70,6 +70,7 @@ int main()
 	SOCKET client_sock[MAX_CLIENTS];
 
 
+
 	ConnectSocket(listen_sock, client_sock);
 	
 	Fs.DynObjPos = new float[count_moving_block][3];
@@ -161,13 +162,14 @@ void ServerMainLoop()
 			}
 
 			frameTime = 0;
-
 			WriteFrameState(state);
 		}
 
 
 		auto timerEnd = std::chrono::high_resolution_clock::now();
 		frameTime += std::chrono::duration<float, std::milli>(timerEnd - timerStart).count();
+
+		WriteFrameState(state);
 	}
 }
 
