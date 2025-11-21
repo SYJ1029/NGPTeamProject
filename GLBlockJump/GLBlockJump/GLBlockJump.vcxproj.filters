@@ -117,6 +117,9 @@
     <ClInclude Include="ClientProcess.h">
       <Filter>Network</Filter>
     </ClInclude>
+    <ClInclude Include="ClientMacro.h">
+      <Filter>PacketStructs</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="sea.jpg">

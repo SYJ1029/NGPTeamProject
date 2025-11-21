@@ -35,6 +35,10 @@ DWORD WINAPI ServerProcess(LPVOID arg)
     uint32_t clientId = param->id;
     SOCKET clientSock = param->sock;
 
+  //  if (param->id != 0)
+  //  {
+		//SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_TIME_CRITICAL);
+  //  }
 
     while (1)
     {
@@ -89,9 +93,11 @@ bool RecvInputChange(SOCKET sock, uint32_t clientId)
     LeaveCriticalSection(&InputCS);
 
     // 디버그용 출력
-    printf("[RecvInputChange] 클라이언트 %d 입력 수신: up=%d, rl=%d, jump=%d, dx=%.2f, dy=%.2f, quit=%d\n",
-        input.playerid, input.updown, input.rightleft, input.jump,
-        input.deltax, input.deltay, input.quit);
+    if (input.playerid != 0) {
+        printf("[RecvInputChange] CLient %d Input Accepted: up=%d, rl=%d, jump=%d, dx=%.2f, dy=%.2f, quit=%d\n",
+            input.playerid, input.updown, input.rightleft, input.jump,
+            input.deltax, input.deltay, input.quit);
+    }
 
     return quit;
 }

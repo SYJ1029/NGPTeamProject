@@ -2,19 +2,21 @@
 #include "Object.h"
 #include "Player.h"
 
+#include "ClientMacro.h"
 
 DWORD WINAPI ClientProcess(LPVOID arg)
 {
     extern UINT MyID;
 	//월드 정보를 수신, 입력 정보를 송신
 
+	players[MyID].inputs.playerid = MyID;
     // LPVOID는 void*임 값이 아니라 포인터를 가지고 있음
-    SOCKET param = *((SOCKET*)arg);
+    SOCKET* sock = (SOCKET*)arg;
 
     while (1)
     {
-        RecvWorld(param);
-        SendInputChange(param, players[MyID].inputs);
+        RecvWorld(*sock);
+        SendInputChange(*sock, players[MyID].inputs);
     }
 
 	return 0;
@@ -22,6 +24,7 @@ DWORD WINAPI ClientProcess(LPVOID arg)
 
 void SendInputChange(SOCKET sock, PlayerInputs& input)
 {
+
     PacketParam header{};
     header.type = PACK_INPUT_COMMAND;
     header.size = sizeof(PlayerInputs);

@@ -15,6 +15,8 @@
 #define BUFSIZE    4096
 
 
+
+
 UINT MyID;
 
 int main(int argc, char** argv)
@@ -36,6 +38,8 @@ int main(int argc, char** argv)
 
     InitializeCriticalSection(&FrameCS);
     InitializeCriticalSection(&InputCS);
+
+
 
     CreateThread(NULL, 0, ClientProcess, (LPVOID)&sock, 0, NULL);
 
