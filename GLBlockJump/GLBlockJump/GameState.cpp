@@ -21,6 +21,8 @@ bool game_end = false ;
 int before_mouse_x = 300;
 int before_mouse_y = 300;
 
+bool isMotion = false;
+
 bool checkCollision(float ax, float ay, float az, float bx, float by, float bz) {
     // 정육면체의 상대적 경계값
     float min_x = -0.5f, max_x = 0.5f;

@@ -13,67 +13,12 @@ extern std::array<Player, MAX_PLAYER> players;
 
 void TimerFunction(int value)
 {
-    for (int P = 0; P < MAX_PLAYER; P++) {
-
-        glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), glm::radians(-players[P].GetRotationY()), glm::vec3(0.0f, 1.0f, 0.0f));
-        //players[P].Update();
-
-
-        //bool isGrounded = false;
-        //for (int i = 0; i < count_block; i++) {
-        //    if (players[P].CheckCollision(staticObjects[i])) {
-        //        float blockPos[3]{ staticObjects[i].GetPosVec3().x, staticObjects[i].GetPosVec3().y, staticObjects[i].GetPosVec3().z };
-        //        if ((players[P].GetPosY() + players[P].GetMoveSpeedY()) < blockPos[1] + 1.0f && players[P].GetPosY() >= blockPos[1]) {
-        //            players[P].SetPosY(blockPos[1] + 1.0f);
-        //            players[P].SetMoveSpeedY(0);
-        //            isGrounded = true;
-        //        }
-        //        else if ((players[P].GetPosY() + players[P].GetMoveSpeedY()) > blockPos[1] - 1.0f && players[P].GetPosY() <= blockPos[1]) {
-        //            players[P].SetPosY(blockPos[1] - 1.0f);
-        //            players[P].SetMoveSpeedY(0);
-        //        }
-
-        //        if ((!game_end) && ((blockPos[1] >= 50) && (count_block - i <= 25))) {
-        //            std::cout << "Congratulations! You Win! \npress \"q\" to quit the game.\n";
-        //            game_end = true;
-        //        }
-
-        //        break;
-        //    }
-        //}
-        //for (int i = 0; i < count_moving_block; i++) {
-        //    if (players[P].CheckCollision(MoveObjects[i])) {
-        //        if ((players[P].GetPosY() + players[P].GetMoveSpeedY()) < MoveObjects[i].GetPosVec3().y + 1.0f && players[P].GetPosY() >= MoveObjects[i].GetPosVec3().y) {
-        //            players[P].SetPosY(MoveObjects[i].GetPosVec3().y + 1.0f);
-        //            players[P].SetMoveSpeedY(0);
-        //            isGrounded = true;
-        //        }
-        //        else if ((char_pos[1] + players[P].GetMoveSpeedY()) > MoveObjects[i].GetPosVec3().y - 1.0f && players[P].GetPosY() <= MoveObjects[i].GetPosVec3().y) {
-        //            char_pos[1] = MoveObjects[i].GetPosVec3().y - 1.0f;
-        //            players[P].SetMoveSpeedY(0);
-        //        }
-        //        players[P].SetPosX(players[P].GetPosX() + MoveObjects[i].GetDirVec3().x * 0.03f);
-        //        players[P].SetPosY(players[P].GetPosY() + MoveObjects[i].GetDirVec3().y * 0.03f);
-        //        players[P].SetPosZ(players[P].GetPosZ() + MoveObjects[i].GetDirVec3().z * 0.03f);
-        //        break;
-        //    }
-        //}
-        //players[P].isGrounded = isGrounded;
-
-        //for (int i = 0; i < count_moving_block; i++) {
-        //    MoveObjects[i].Update();
-        //}
+    extern UINT MyID;
+    if (isMotion) {
+        players[MyID].inputs.deltax = 0.0f;
+        players[MyID].inputs.deltay = 0.0f;
+        isMotion = false;
     }
-
-    /*
-	using namespace std;
-    cout << "-----------------------------------------------------------\n";
-    cout << "Player " << MyID << " Inputs - UpDown: " << players[MyID].inputs.updown
-        << "\n RightLeft: " << players[MyID].inputs.rightleft
-        << "\n Jump: " << (players[MyID].inputs.jump ? "True" : "False")
-        << "\n deltax: " << players[MyID].inputs.deltax
-        << "\n deltay: " << players[MyID].inputs.deltay << '\n';
-    */
 
     glutPostRedisplay();
     glutTimerFunc(10, TimerFunction, 1);
@@ -92,6 +37,10 @@ void Motion(int x, int y)
     // ���� ���콺 ��ġ�� �����Ͽ� ���� ȣ�⿡�� ��
     before_mouse_x = x;
     before_mouse_y = y;
+
+	if (!isMotion) {
+		isMotion = true;
+	}
 }
 
 
