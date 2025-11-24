@@ -143,18 +143,7 @@ void ServerMainLoop()
 	float deltaTime = 2.4f;
 	while (1)
 	{
-#ifdef _DEBUG
-		for (int i = 0; i < MAX_CLIENTS; ++i)
-		{
-			players[i].Update();
-			ChecKCollisionLoop(players[i]);
-		}
 
-		for (int i = 0; i < count_moving_block; ++i)
-		{
-			MoveObjects[i].Update();
-		}
-#else 
 		auto timerStart = std::chrono::high_resolution_clock::now();
 		if (deltaTime > frameTime);
 		else
@@ -178,7 +167,6 @@ void ServerMainLoop()
 		auto timerEnd = std::chrono::high_resolution_clock::now();
 		frameTime += std::chrono::duration<float, std::milli>(timerEnd - timerStart).count();
 
-#endif // _DEBUG
 
 
 
