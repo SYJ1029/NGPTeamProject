@@ -35,6 +35,7 @@ void MovingObject::Update()
 			}
 		}
 	}
+
 }
 
 glm::ivec3 MovingObject::GetDirVec3()

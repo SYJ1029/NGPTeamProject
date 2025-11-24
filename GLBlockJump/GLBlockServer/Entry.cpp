@@ -140,10 +140,9 @@ void ServerMainLoop()
 	Game_State state = GAME_STATE_RUNNING;
 
 	float frameTime = 0;
-	float deltaTime = 4.8f;
+	float deltaTime = 2.4f;
 	while (1)
 	{
-		//Sleep(1);
 #ifdef _DEBUG
 		for (int i = 0; i < MAX_CLIENTS; ++i)
 		{

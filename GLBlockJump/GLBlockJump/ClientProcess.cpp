@@ -93,10 +93,13 @@ void RecvWorld(SOCKET sock)
     if (pkt.move_block_size > 0 && pkt.move_block_size <= static_cast<int>(MoveObjects.size())) {
         for (int i = 0; i < pkt.move_block_size; ++i) {
             std::array<float, 3> pos = {
-                pkt.DynObjPos[0][i],
-                pkt.DynObjPos[1][i],
-                pkt.DynObjPos[2][i]
+                pkt.DynObjPos[i][0],
+                pkt.DynObjPos[i][1],
+                pkt.DynObjPos[i][2]
             };
+
+    //        if(pkt.DynObjPos[2][i] < 0.0f)
+				//std::cout << "Received negative Z position for moving object " << i << ": " << pkt.DynObjPos[2][i] << std::endl;
 
             // 클라이언트에서는 방향 정보가 필요 없으므로 {0, 0, 0}으로 대체
             std::array<int, 3> dirArr = { 0, 0, 0 };
