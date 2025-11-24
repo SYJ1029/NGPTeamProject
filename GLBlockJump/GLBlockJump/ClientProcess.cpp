@@ -98,8 +98,6 @@ void RecvWorld(SOCKET sock)
                 pkt.DynObjPos[i][2]
             };
 
-    //        if(pkt.DynObjPos[2][i] < 0.0f)
-				//std::cout << "Received negative Z position for moving object " << i << ": " << pkt.DynObjPos[2][i] << std::endl;
 
             // 클라이언트에서는 방향 정보가 필요 없으므로 {0, 0, 0}으로 대체
             std::array<int, 3> dirArr = { 0, 0, 0 };
