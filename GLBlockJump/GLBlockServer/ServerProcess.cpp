@@ -54,6 +54,8 @@ DWORD WINAPI ServerProcess(LPVOID arg)
 
     }
 
+    closesocket(clientSock);
+
     return 0;
 }
 

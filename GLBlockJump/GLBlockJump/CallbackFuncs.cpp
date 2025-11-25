@@ -67,7 +67,6 @@ void Keyboard(unsigned char key, int x, int y)
         break;
     case 'q': // ����
         players[MyID].inputs.quit = true;
-        exit(0);
         break;
     case 'w': // ������ �̵�
         if (players[MyID].inputs.updown <= 0)

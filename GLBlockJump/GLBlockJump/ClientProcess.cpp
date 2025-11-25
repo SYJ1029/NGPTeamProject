@@ -42,7 +42,7 @@ void SendInputChange(SOCKET sock, PlayerInputs& input)
 		LeaveCriticalSection(&InputCS);
         return;
     }
-
+    if (input.quit) exit(0);
     //input.clear();
     LeaveCriticalSection(&InputCS);
 
