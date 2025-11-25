@@ -28,7 +28,9 @@ void Motion(int x, int y)
     extern UINT MyID;
     // x�� y�� ��ȭ�� ���
     float deltaX = static_cast<float>(x - before_mouse_x);
+    deltaX *= MouseSensitivity;
     float deltaY = static_cast<float>(y - before_mouse_y);
+    deltaX *= MouseSensitivity;
 
     EnterCriticalSection(&InputCS);
 	players[MyID].inputs.deltax = deltaX;
@@ -116,6 +118,18 @@ void KeyboardUp(unsigned char key, int x, int y)
     LeaveCriticalSection(&InputCS);
 }
 
+void Mouse(int button, int state, int x, int y)
+{
+    // 마우스 휠 위로
+    if (button == 3 && state == GLUT_DOWN) {
+        MouseSensitivity += 0.1f;
+    }
+    // 마우스 휠 아래로
+    if (button == 4 && state == GLUT_DOWN) {
+        if (MouseSensitivity - 0.1f > 0.0f)
+            MouseSensitivity -= 0.1f;
+    }
+}
 /*
 void SpecialInput(int key, int x, int y) {
     switch (key) {
@@ -134,14 +148,5 @@ void SpecialInput(int key, int x, int y) {
     }
     glutPostRedisplay();  // �Է� �� �ٽ� �׸���
 }
-
-void Mouse(int button, int state, int x, int y)
-{
-    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-    }
-    if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
-    }
-    if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN) {
-    }
-}
 */
+

@@ -22,6 +22,7 @@ void InitGL(int argc, char** argv)
     glutPassiveMotionFunc(Motion); // 클릭 없이 이동
     glutKeyboardFunc(Keyboard);
     glutKeyboardUpFunc(KeyboardUp);   // 키 떼짐 처리
+    glutMouseFunc(Mouse);
 
     glutTimerFunc(10, TimerFunction, 1);
     glutReshapeFunc(Reshape);

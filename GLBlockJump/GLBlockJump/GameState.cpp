@@ -22,6 +22,7 @@ int before_mouse_x = 300;
 int before_mouse_y = 300;
 
 bool isMotion = false;
+float MouseSensitivity = 1.0f;
 
 bool checkCollision(float ax, float ay, float az, float bx, float by, float bz) {
     // 정육면체의 상대적 경계값
