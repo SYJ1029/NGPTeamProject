@@ -1,12 +1,5 @@
-#include "ServerProcess.h"
-
-#include <chrono>
-#include "Object.h"
-#include "Player.h"
-#include "InitWorld.h"
 #include "ServerMainLoop.h"
 
-#include "CollisionManager.h"
 
 
 bool WriteFrameState(Game_State& state)
@@ -37,10 +30,10 @@ bool WriteFrameState(Game_State& state)
 
 
 	LeaveCriticalSection(&FrameCS);
-	return true;
+	return Fs.gameState == GAME_STATE_RUNNING;
 }
 
-bool CheckGameEnd()
+int CheckGameEnd()
 {
 	static bool game_end = false;
 	if (game_end) return true;
@@ -50,10 +43,10 @@ bool CheckGameEnd()
 		{
 			std::cout << "Player " << i << " wins! \nPress \"q\" to quit the game.\n";
 			game_end = true;
-			return true;
+			return i;
 		}
 	}
-	return false;
+	return -1;
 }
 
 void ServerMainLoop()
@@ -80,10 +73,15 @@ void ServerMainLoop()
 				MoveObjects[i].Update();
 			}
 
-			CheckGameEnd();
+
+			winnerId = CheckGameEnd();
+			if (-1 != winnerId) {
+				state = GAME_STATE_FINISHED;
+			}
 
 			frameTime = 0;
-			WriteFrameState(state);
+			if (false == WriteFrameState(state))
+				break;
 		}
 
 
@@ -95,5 +93,23 @@ void ServerMainLoop()
 
 
 		WriteFrameState(state);
+	}
+
+	// 게임 종료 처리
+	while (1)
+	{
+		if (clientQuitFlags[0] & clientQuitFlags[1] & clientQuitFlags[2])
+		{
+			std::cout << "All clients have quit. Server is shutting down.\n";
+
+			break;
+		}
+		else
+		{
+			std::cout << "Server is shutting down. Notifying clients...\n";
+			state = GAME_STATE_FINISHED;
+			WriteFrameState(state);
+			Sleep(2000); // Give clients time to process the final state
+		}
 	}
 }

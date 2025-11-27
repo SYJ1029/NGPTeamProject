@@ -2,11 +2,14 @@
 #include "SocketError.h"
 
 PktFrameState Fs;
+int winnerId = -1;
 PlayerInputs pi[MAX_CLIENTS];
+
+bool clientQuitFlags[MAX_CLIENTS] = { false };
+bool clientRestartFlags[MAX_CLIENTS] = { false };
 
 void SendWorld(ThreadParam* param)
 {
-
     // 월드의 정보를 패킷에 담아 전송한다.
 
     PacketParam pkHeader;
@@ -46,21 +49,30 @@ DWORD WINAPI ServerProcess(LPVOID arg)
 
     while (1)
     {
-		// 매 틱마다 월드 정보를 전송
+        // 매 틱마다 월드 정보를 전송
         SendWorld(param);
-		// 클라이언트로부터 입력 정보 수신
-        bool br = RecvInputChange(clientSock, clientId);
-		if (br) break;
+
+        bool br = false;
+
+        // 클라이언트로부터 입력 정보 수신
+        clientQuitFlags[clientId] = RecvInputChange(clientSock, clientId);
+
+
+        if (clientQuitFlags[clientId]) {
+            // 종료 메시지를 출력함
+            printf("[ServerProcess] Client %d quit.\n", clientId);
+            break;
+        }
 
     }
 
     closesocket(clientSock);
-
     return 0;
 }
 
 bool RecvInputChange(SOCKET sock, uint32_t clientId)
 {
+
     // PacketParam 헤더 수신
     PacketParam header{};
     int retval = recv(sock, reinterpret_cast<char*>(&header), sizeof(header), MSG_WAITALL);
@@ -81,6 +93,9 @@ bool RecvInputChange(SOCKET sock, uint32_t clientId)
         return false;
     }
 
+
+
+
     // 입력 데이터 수신
     PlayerInputs input{};
     retval = recv(sock, reinterpret_cast<char*>(&input), sizeof(input), MSG_WAITALL);
@@ -89,17 +104,26 @@ bool RecvInputChange(SOCKET sock, uint32_t clientId)
         return false;
     }
 
-    // 입력 데이터 처리
-    EnterCriticalSection(&players[clientId].pInputCS);
-    players[clientId].inputs = input;
-    LeaveCriticalSection(&players[clientId].pInputCS);
-
-    // 치트 쓴다면 알려야 한다
-    if(input.jumpCheat)
+	// 승자가 정해졌다면 다른 클라이언트의 입력은 quit만을 받는다    
+	// 승자가 정해지지 않았거나, 혹은 승자라면  모든 입력을 읽어들인다.
+    if (winnerId != -1 && winnerId != clientId)
     {
-		std::cout << "Player " << clientId << "using cheat!!!.\n";
-	}
+        EnterCriticalSection(&players[clientId].pInputCS);
+        players[clientId].inputs.quit = input.quit;
+        LeaveCriticalSection(&players[clientId].pInputCS);
+    }
+    else {
+        // 입력 데이터 처리
+        EnterCriticalSection(&players[clientId].pInputCS);
+        players[clientId].inputs = input;
+        LeaveCriticalSection(&players[clientId].pInputCS);
 
+        // 치트 쓴다면 알려야 한다
+        if (input.jumpCheat)
+        {
+            std::cout << "Player " << clientId << "using cheat!!!.\n";
+        }
+    }
     // 디버그용 출력
     //if (input.playerid != 0) {
     //    printf("[RecvInputChange] Client %d Input Accepted: up=%d, rl=%d, jump=%d, dx=%.2f, dy=%.2f, quit=%d\n",

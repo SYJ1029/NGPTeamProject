@@ -24,9 +24,7 @@
 
 bool game_end = true;
 
-// 함수 전방 선언
-void ServerMainLoop();
-bool WriteFrameState(Game_State& state);
+
 
 extern std::vector<Object> staticObjects;
 extern std::vector<MovingObject> MoveObjects;
