@@ -90,19 +90,22 @@ bool RecvInputChange(SOCKET sock, uint32_t clientId)
     }
 
     // 입력 데이터 처리
-    bool quit = input.quit;
-
     EnterCriticalSection(&players[clientId].pInputCS);
     players[clientId].inputs = input;
     LeaveCriticalSection(&players[clientId].pInputCS);
 
+    // 치트 쓴다면 알려야 한다
+    if(input.jumpCheat)
+    {
+		std::cout << "Player " << clientId << "using cheat!!!.\n";
+	}
 
     // 디버그용 출력
-    if (input.playerid != 0) {
-        printf("[RecvInputChange] CLient %d Input Accepted: up=%d, rl=%d, jump=%d, dx=%.2f, dy=%.2f, quit=%d\n",
-            input.playerid, input.updown, input.rightleft, input.jump,
-            input.deltax, input.deltay, input.quit);
-    }
+    //if (input.playerid != 0) {
+    //    printf("[RecvInputChange] Client %d Input Accepted: up=%d, rl=%d, jump=%d, dx=%.2f, dy=%.2f, quit=%d\n",
+    //        input.playerid, input.updown, input.rightleft, input.jump,
+    //        input.deltax, input.deltay, input.quit);
+    //}
 
-    return quit;
+    return input.quit;
 }
