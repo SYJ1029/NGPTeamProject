@@ -78,6 +78,8 @@ void RecvWorld(SOCKET sock)
     pkt.DynObjPos = new float[MoveObjects.size()][3];
     pkt.Deserialize(buffer.data(), buffer.size());
 
+    std::cout << pkt.winnerId << std::endl;
+
     // 플레이어 데이터 업데이트
     for (int i = 0; i < 3; ++i) {
         players[i].SetPosX(pkt.players[i].position[0]);

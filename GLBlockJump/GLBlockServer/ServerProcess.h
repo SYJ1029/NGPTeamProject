@@ -6,7 +6,7 @@
 
 
 extern PktFrameState Fs;
-extern int winnerId;
+extern volatile int winnerId;
 extern PlayerInputs pi[MAX_CLIENTS];
 
 extern bool clientQuitFlags[MAX_CLIENTS];

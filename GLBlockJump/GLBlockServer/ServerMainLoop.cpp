@@ -1,5 +1,10 @@
 #include "ServerMainLoop.h"
 
+#ifdef _DEBUG
+float DEBUG_SPEED_MULTIPLIER = 0.1f;
+#else
+float DEBUG_SPEED_MULTIPLIER = 1.0f;
+#endif
 
 
 bool WriteFrameState(Game_State& state)
@@ -7,6 +12,15 @@ bool WriteFrameState(Game_State& state)
 	EnterCriticalSection(&FrameCS);
 
 	Fs.gameState = state;
+	if(state == GAME_STATE_FINISHED)
+	{
+		Fs.winnerId = winnerId;
+	}
+	else
+	{
+		Fs.winnerId = -1;
+	}
+
 	for (int i = 0; i < MAX_CLIENTS; ++i)
 	{
 		Fs.players[i].playerId = i;
@@ -53,7 +67,7 @@ void ServerMainLoop()
 	Game_State state = GAME_STATE_RUNNING;
 
 	float frameTime = 0;
-	float deltaTime = 2.4f;
+	float deltaTime = 2.4f * DEBUG_SPEED_MULTIPLIER;
 	while (1)
 	{
 		auto timerStart = std::chrono::high_resolution_clock::now();

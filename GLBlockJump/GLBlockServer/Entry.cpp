@@ -22,7 +22,7 @@
 
 #include "ServerMainLoop.h"
 
-bool game_end = true;
+bool game_end = false;
 
 
 

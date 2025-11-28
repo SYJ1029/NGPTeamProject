@@ -2,7 +2,7 @@
 #include "SocketError.h"
 
 PktFrameState Fs;
-int winnerId = -1;
+volatile int winnerId = -1;
 PlayerInputs pi[MAX_CLIENTS];
 
 bool clientQuitFlags[MAX_CLIENTS] = { false };

@@ -78,6 +78,7 @@ struct PlayerSyncData {
 struct PktFrameState {
     Game_State gameState; // 지금 게임이 RUNNING인지 FINISHED인지도 함께 보냄  
     PlayerSyncData players[3];
+    int winnerId = -1;
 
     int move_block_size;
     float (*DynObjPos)[3];
