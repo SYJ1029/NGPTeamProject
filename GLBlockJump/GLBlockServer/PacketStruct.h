@@ -15,6 +15,7 @@ struct PlayerInputs {
     bool jump;
     float deltax, deltay;
     bool quit;
+    bool jumpCheat;
 
     void clear() {
         updown = 0;
@@ -23,6 +24,7 @@ struct PlayerInputs {
         deltax = 0.0f;
         deltay = 0.0f;
         quit = false;
+        jumpCheat = false;
     }
 };
 
@@ -74,6 +76,7 @@ struct PlayerSyncData {
 struct PktFrameState {
     Game_State gameState; // 지금 게임이 RUNNING인지 FINISHED인지도 함께 보냄  
     PlayerSyncData players[3];
+    int winnerId = -1;
 
     int move_block_size;
     float (*DynObjPos)[3];

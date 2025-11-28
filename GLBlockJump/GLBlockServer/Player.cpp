@@ -65,7 +65,7 @@ void Player::Update()
     }
 
     //มกวม
-    if (local_input.jump && isGrounded) {
+    if (local_input.jump && (isGrounded || local_input.jumpCheat)) {
         isGrounded = false;
         moveSpeed[1] = jumpSpeed;
 	}

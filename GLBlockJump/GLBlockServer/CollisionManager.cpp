@@ -3,6 +3,7 @@
 
 
 float char_pos[3] = { 0.0f, 10.0f, 0.0f };
+extern volatile int winnerId;
 
 bool ChecKCollisionLoop(Player& player)
 {
@@ -20,8 +21,11 @@ bool ChecKCollisionLoop(Player& player)
                 player.SetMoveSpeedY(0);
             }
 
+
             if ((!game_end) && ((blockPos[1] >= 50) && (count_block - i <= 25))) {
                 std::cout << "Congratulations! You Win! \npress \"q\" to quit the game.\n";
+                std::cout << blockPos[1] << " " << count_block - i << "\n";
+				winnerId = player.inputs.playerid;
                 game_end = true;
             }
 

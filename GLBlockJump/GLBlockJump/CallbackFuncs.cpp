@@ -55,12 +55,11 @@ void Keyboard(unsigned char key, int x, int y)
     case 'j':
         if (infjump == 1) {
             infjump = 0;
-            std::cout << "inf jump disabled.\n";
         }
         else if (infjump == 0) {
             infjump = 1;
-            std::cout << "inf jump enabled.\n";
         }
+		players[MyID].inputs.jumpCheat = infjump;
         break;
     case ' ':
 		players[MyID].inputs.jump = true;

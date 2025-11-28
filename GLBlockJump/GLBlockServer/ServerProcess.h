@@ -6,5 +6,9 @@
 
 
 extern PktFrameState Fs;
+extern volatile int winnerId;
 extern PlayerInputs pi[MAX_CLIENTS];
+
+extern bool clientQuitFlags[MAX_CLIENTS];
+extern bool clientRestartFlags[MAX_CLIENTS];
 DWORD WINAPI ServerProcess(LPVOID arg);

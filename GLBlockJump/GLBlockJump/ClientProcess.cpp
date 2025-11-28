@@ -47,8 +47,8 @@ void SendInputChange(SOCKET sock, PlayerInputs& input)
     LeaveCriticalSection(&InputCS);
 
     // 디버그용
-    printf("[SendInputChange] playerid=%d jump=%d updown=%d rightleft=%d dx=%.2f dy=%.2f\n",
-        input.playerid, input.jump, input.updown, input.rightleft, input.deltax, input.deltay);
+    //printf("[SendInputChange] playerid=%d jump=%d updown=%d rightleft=%d dx=%.2f dy=%.2f\n",
+    //    input.playerid, input.jump, input.updown, input.rightleft, input.deltax, input.deltay);
 }
 
 void RecvWorld(SOCKET sock)
@@ -77,6 +77,8 @@ void RecvWorld(SOCKET sock)
     PktFrameState pkt;
     pkt.DynObjPos = new float[MoveObjects.size()][3];
     pkt.Deserialize(buffer.data(), buffer.size());
+
+    std::cout << pkt.winnerId << std::endl;
 
     // 플레이어 데이터 업데이트
     for (int i = 0; i < 3; ++i) {
