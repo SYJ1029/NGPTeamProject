@@ -3,6 +3,8 @@
 #include "Object.h"
 #include "MeshData.h" 
 
+extern int winnerID;
+
 class Player :
     public Object
 {

@@ -2,6 +2,8 @@
 //#include "CollisionManager.h"
 #include "StateMacro.h"
 
+int winnerID = -1;
+
 void Player::Init(const std::array<float, 3>& newPos, uint8_t id)
 {
 	moveSpeed[0] = 0.1f;

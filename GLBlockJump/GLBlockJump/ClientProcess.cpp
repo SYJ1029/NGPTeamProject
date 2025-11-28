@@ -77,7 +77,7 @@ void RecvWorld(SOCKET sock)
     PktFrameState pkt;
     pkt.DynObjPos = new float[MoveObjects.size()][3];
     pkt.Deserialize(buffer.data(), buffer.size());
-
+    winnerID = pkt.winnerId;
     std::cout << pkt.winnerId << std::endl;
 
     // 플레이어 데이터 업데이트
