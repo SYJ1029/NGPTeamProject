@@ -35,8 +35,7 @@ bool WriteFrameState(Game_State& state)
 
 int CheckGameEnd()
 {
-	static bool game_end = false;
-	if (game_end) return true;
+	if (!game_end) return -1;
 	for (int i = 0; i < MAX_CLIENTS; ++i)
 	{
 		if (players[i].GetPosY() >= 50.0f)
@@ -57,7 +56,6 @@ void ServerMainLoop()
 	float deltaTime = 2.4f;
 	while (1)
 	{
-
 		auto timerStart = std::chrono::high_resolution_clock::now();
 		if (deltaTime > frameTime);
 		else
@@ -74,14 +72,20 @@ void ServerMainLoop()
 			}
 
 
-			winnerId = CheckGameEnd();
+			//winnerId = CheckGameEnd();
 			if (-1 != winnerId) {
 				state = GAME_STATE_FINISHED;
 			}
 
 			frameTime = 0;
-			if (false == WriteFrameState(state))
+			WriteFrameState(state);
+
+			if (state == GAME_STATE_FINISHED
+				&& clientQuitFlags[0] && clientQuitFlags[1] && clientQuitFlags[2])
+			{
+				std::cout << "All clients have quit. Server is shutting down.\n";
 				break;
+			}
 		}
 
 
@@ -95,21 +99,5 @@ void ServerMainLoop()
 		WriteFrameState(state);
 	}
 
-	// 게임 종료 처리
-	while (1)
-	{
-		if (clientQuitFlags[0] & clientQuitFlags[1] & clientQuitFlags[2])
-		{
-			std::cout << "All clients have quit. Server is shutting down.\n";
-
-			break;
-		}
-		else
-		{
-			std::cout << "Server is shutting down. Notifying clients...\n";
-			state = GAME_STATE_FINISHED;
-			WriteFrameState(state);
-			Sleep(2000); // Give clients time to process the final state
-		}
-	}
+	
 }

@@ -119,10 +119,10 @@ bool RecvInputChange(SOCKET sock, uint32_t clientId)
         LeaveCriticalSection(&players[clientId].pInputCS);
 
         // 치트 쓴다면 알려야 한다
-        if (input.jumpCheat)
-        {
-            std::cout << "Player " << clientId << "using cheat!!!.\n";
-        }
+        //if (input.jumpCheat)
+        //{
+        //    std::cout << "Player " << clientId << "using cheat!!!.\n";
+        //}
     }
     // 디버그용 출력
     //if (input.playerid != 0) {
