@@ -287,3 +287,9 @@ Q 누른 플레이어 종료 처리 개선
 1. 서버 송수신 쓰레드에서 while문을 빠져나오면 closesocket(clientSock); 하도록 추가
 
 2. 클라이언트에서 exit(0)을 메인쓰레드의 q가 눌렸을 때가 아닌, 송수신 쓰레드의 SendInputChange()에서 send 직후에 input.quit이 true면 exit(0).
+
+<<<2021184008 김준호 2025-11-28>>>
+
+1. 게임에 승리한 player의 id를 서버로부터 winnerId로 받아 다른 클라이언트의 화면을 승리한 player의 카메라로 변경.
+
+2. player의 카메라를 승리한 player의 카메라의 좌표로 보간하여 점진적으로 이동.
