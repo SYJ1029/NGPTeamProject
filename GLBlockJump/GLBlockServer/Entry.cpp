@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "InitWorld.h"
+#include "ServerMainLoop.h"
 
 #include "Object.h"
 #include "Player.h"
@@ -20,7 +20,6 @@
 
 #include <chrono>
 
-#include "ServerMainLoop.h"
 
 bool game_end = false;
 

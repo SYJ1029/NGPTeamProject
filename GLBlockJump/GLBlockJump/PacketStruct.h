@@ -17,6 +17,7 @@ struct PlayerInputs {
     float deltax, deltay;
     bool quit;
     bool jumpCheat;
+	bool restart;
 
     void clear() {
         updown = 0;
@@ -26,6 +27,7 @@ struct PlayerInputs {
         deltay = 0.0f;
         quit = false;
         jumpCheat = false;
+		restart = false;
 	}
 };
 

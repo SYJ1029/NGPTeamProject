@@ -94,6 +94,26 @@ void ServerMainLoop()
 			frameTime = 0;
 			WriteFrameState(state);
 
+			if (clientRestartFlags[0] && clientRestartFlags[1] && clientRestartFlags[2]
+				&& !clientQuitFlags[0] && !clientQuitFlags[1] && !clientQuitFlags[2])
+			{
+				// 모든 클라이언트가 리스타트를 눌렀다면 월드와 플레이어들을 초기화한다
+				std::cout << "All clients requested restart. Resetting world and players.\n";
+				InitWorld(staticObjects, MoveObjects, players);
+				winnerId = -1;
+				game_end = false;
+				for (int i = 0; i < MAX_CLIENTS; ++i)
+				{
+					clientRestartFlags[i] = false;
+
+					// input도 초기화
+					players[i].inputs.clear();
+				}
+
+				state = GAME_STATE_RUNNING;
+				continue;
+			}
+
 			if (state == GAME_STATE_FINISHED
 				&& clientQuitFlags[0] && clientQuitFlags[1] && clientQuitFlags[2])
 			{
