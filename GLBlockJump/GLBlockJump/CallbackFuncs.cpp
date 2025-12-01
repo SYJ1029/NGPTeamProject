@@ -83,6 +83,13 @@ void Keyboard(unsigned char key, int x, int y)
         if (players[MyID].inputs.rightleft <= 0)
         players[MyID].inputs.rightleft += 1;
         break;
+    case '\r':
+        if (winnerID == -1)
+            players[MyID].inputs.restart = false;
+        else
+			players[MyID].inputs.restart = true;
+        
+        break;
     }
 
     LeaveCriticalSection(&InputCS);

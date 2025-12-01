@@ -104,12 +104,13 @@ bool RecvInputChange(SOCKET sock, uint32_t clientId)
         return false;
     }
 
-	// 승자가 정해졌다면 다른 클라이언트의 입력은 quit만을 받는다    
+	// 승자가 정해졌다면 다른 클라이언트의 입력은 quit, restart만 받는다.  
 	// 승자가 정해지지 않았거나, 혹은 승자라면  모든 입력을 읽어들인다.
     if (winnerId != -1 && winnerId != clientId)
     {
         EnterCriticalSection(&players[clientId].pInputCS);
         players[clientId].inputs.quit = input.quit;
+		players[clientId].inputs.restart = input.restart;
         LeaveCriticalSection(&players[clientId].pInputCS);
     }
     else {
@@ -124,6 +125,13 @@ bool RecvInputChange(SOCKET sock, uint32_t clientId)
         //    std::cout << "Player " << clientId << "using cheat!!!.\n";
         //}
     }
+
+    if (players[clientId].inputs.restart && Fs.gameState == GAME_STATE_FINISHED)
+    {
+        clientRestartFlags[clientId] = true;
+
+    }
+
     // 디버그용 출력
     //if (input.playerid != 0) {
     //    printf("[RecvInputChange] Client %d Input Accepted: up=%d, rl=%d, jump=%d, dx=%.2f, dy=%.2f, quit=%d\n",
