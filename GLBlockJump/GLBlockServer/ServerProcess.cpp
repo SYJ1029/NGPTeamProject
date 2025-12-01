@@ -128,8 +128,8 @@ bool RecvInputChange(SOCKET sock, uint32_t clientId)
 
     if (players[clientId].inputs.restart && Fs.gameState == GAME_STATE_FINISHED)
     {
-        clientRestartFlags[clientId] = true;
 
+        clientRestartFlags[clientId] = true;
     }
 
     // 디버그용 출력

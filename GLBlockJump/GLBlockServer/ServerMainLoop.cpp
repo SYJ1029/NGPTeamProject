@@ -102,7 +102,6 @@ void ServerMainLoop()
 				InitWorld(staticObjects, MoveObjects, players);
 				winnerId = -1;
 				game_end = false;
-				state = GAME_STATE_RUNNING;
 				for (int i = 0; i < MAX_CLIENTS; ++i)
 				{
 					clientRestartFlags[i] = false;
@@ -111,6 +110,7 @@ void ServerMainLoop()
 					players[i].inputs.clear();
 				}
 
+				state = GAME_STATE_RUNNING;
 				continue;
 			}
 

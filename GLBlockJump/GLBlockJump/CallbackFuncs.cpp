@@ -119,6 +119,9 @@ void KeyboardUp(unsigned char key, int x, int y)
     case ' ':
 		players[MyID].inputs.jump = false;
 		break;
+    case '\r':
+        players[MyID].inputs.restart = false;
+        break;
     }
     LeaveCriticalSection(&InputCS);
 }
