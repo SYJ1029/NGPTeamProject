@@ -5,6 +5,7 @@
 #include <WinSock2.h>
 #include <WS2tcpip.h>
 #include "StateEnums.h"
+#include "StateMacro.h"
 
 /* -----------------------------------------
 플레이어 입출력 관리 구조체
@@ -55,11 +56,9 @@ struct PlayerInitInfo {
 
 struct PktInitPlayers {
     int myPlayerId;
-    PlayerInitInfo players[3]; // 모든 플레이어의 초기 위치
-
+    PlayerInitInfo players[MAX_PLAYER]; // 모든 플레이어의 초기 위치
     PktInitPlayers() {}
     ~PktInitPlayers() {}
-
 };
 
 /*-----------------------
@@ -77,7 +76,7 @@ struct PlayerSyncData {
 };
 struct PktFrameState {
     Game_State gameState; // 지금 게임이 RUNNING인지 FINISHED인지도 함께 보냄  
-    PlayerSyncData players[3];
+    PlayerSyncData players[MAX_PLAYER];
     int winnerId = -1;
 
     int move_block_size;
