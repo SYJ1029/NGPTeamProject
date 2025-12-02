@@ -114,8 +114,7 @@ void ServerMainLoop()
 				continue;
 			}
 
-			if (state == GAME_STATE_FINISHED
-				&& clientQuitFlags[0] && clientQuitFlags[1] && clientQuitFlags[2])
+			if (clientQuitFlags[0] && clientQuitFlags[1] && clientQuitFlags[2])
 			{
 				std::cout << "All clients have quit. Server is shutting down.\n";
 				break;
@@ -133,5 +132,4 @@ void ServerMainLoop()
 		WriteFrameState(state);
 	}
 
-	
 }

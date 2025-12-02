@@ -81,17 +81,21 @@ int main()
 
 	ThreadParam client_param[MAX_CLIENTS];
 
-
+	HANDLE hThreads[MAX_CLIENTS];
 
 	for (int i = 0; i < MAX_CLIENTS; ++i)
 	{
 		client_param[i].id = i;
 		client_param[i].sock = client_sock[i];
-		CreateThread(NULL, 0, ServerProcess, (LPVOID)&client_param[i], 0, NULL);
+		hThreads[i] = CreateThread(NULL, 0, ServerProcess, (LPVOID)&client_param[i], 0, NULL);
 	}
 
 	ServerMainLoop();
 
+	for (int i = 0; i < MAX_CLIENTS; ++i)
+	{
+		WaitForSingleObject(hThreads[i], INFINITE);
+	}
 
 	// ¼ÒÄÏ ´Ý±â
 	closesocket(listen_sock);
