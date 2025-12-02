@@ -60,8 +60,6 @@ struct PktInitPlayers {
     PktInitPlayers() {}
     ~PktInitPlayers() {}
 
-    std::vector<uint8_t> Serialize();
-    void Deserialize(const uint8_t* data, int size);
 };
 
 /*-----------------------
