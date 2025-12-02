@@ -15,8 +15,7 @@ static float transitionDuration = 4.0f;
 std::chrono::system_clock::time_point prevTime;
 
 glm::vec3 startCameraPos;
-glm::vec3 endCameraPos;
-glm::vec3 endCameraTarget;
+glm::vec3 startCameraTarget;
 
 void UpdateCamera()
 {
@@ -36,8 +35,8 @@ void UpdateCamera()
             transitionRatio = 0.0f;
             prevTime = std::chrono::system_clock::now();
 
-            // Lerp 시작점은 "지금 카메라 위치"로 고정
             startCameraPos = cameraPos;
+            startCameraTarget = cameraTarget;
         }
     }
 
@@ -57,7 +56,6 @@ void UpdateCamera()
             isLerping = false;
         }
 
-        // 1) 매 프레임 winner 기준 카메라 위치 계산
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, players[winnerID].GetPosVec3());
         model = glm::rotate(model, glm::radians(players[winnerID].GetRotationY()), glm::vec3(0.0, -1.0, 0.0));
@@ -69,9 +67,8 @@ void UpdateCamera()
         glm::vec3 currentWinnerCamPos = glm::vec3(model * initialPoint);
         glm::vec3 currentWinnerCamTarget = glm::vec3(model * targetPoint);
 
-        // 2) Lerp 진행 (start는 고정, end는 매 프레임 변함)
         cameraPos = glm::mix(startCameraPos, currentWinnerCamPos, transitionRatio);
-        cameraTarget = currentWinnerCamTarget;
+        cameraTarget = glm::mix(startCameraTarget, currentWinnerCamTarget, transitionRatio);
 
         return;
     }
