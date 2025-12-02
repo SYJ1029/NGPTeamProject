@@ -49,6 +49,40 @@ bool ChecKCollisionLoop(Player& player)
             break;
         }
     }
+
+    for(int i = 0; i < MAX_PLAYER; i++) {
+        if (&player != &players[i] && players[i].inputs.playerid != player.inputs.playerid) {
+            if (player.CheckCollision(players[i])) {
+                // 충돌 시 처리 (예: 위치 조정)
+ 
+                // 간단히 충돌한 플레이어를 밀어내자
+                // 단, 위에서 올라타는 경우는 제외
+                if (player.GetPosY() > players[i].GetPosY() + 1.0f) {
+                    player.SetPosY(players[i].GetPosY() + 1.0f);
+                    player.SetMoveSpeedY(0);
+                    isGrounded = true;
+                }
+                else if (player.GetPosY() + 1.0f < players[i].GetPosY()) {
+                    // 아래에서 충돌하는 경우
+                    player.SetPosY(players[i].GetPosY() - 1.0f);
+                    player.SetMoveSpeedY(0);
+                }
+                else {
+                    // 수평 충돌 처리 (간단히 뒤로 밀기)
+                    float dx = player.GetPosX() - players[i].GetPosX();
+                    float dz = player.GetPosZ() - players[i].GetPosZ();
+                    float length = std::sqrt(dx * dx + dz * dz);
+                    if (length != 0) {
+                        dx /= length;
+                        dz /= length;
+                        player.SetPosX(player.GetPosX() + dx * 0.1f);
+                        player.SetPosZ(player.GetPosZ() + dz * 0.1f);
+                    }
+				}
+                
+            }
+        }
+	}
     player.isGrounded = isGrounded;
     return false;
 }
