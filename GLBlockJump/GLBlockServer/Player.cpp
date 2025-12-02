@@ -35,8 +35,8 @@ void Player::Update()
    // 각도 범위 제한 (360도 이상, -360도 이하로 가지 않도록 처리)
    if (GetRotationX() > 360.0f) SetRotationX(GetRotationX() - 360.0f);
    if (GetRotationX() < -360.0f) SetRotationX(GetRotationX() + 360.0f);
-   if (GetRotationY() > 360.0f) SetRotationY(360.0f);
-   if (GetRotationY() < -360.0f) SetRotationY(-360.0f);
+   if (GetRotationY() > 360.0f) SetRotationY(GetRotationY() - 360.0f); // corrected
+   if (GetRotationY() < -360.0f) SetRotationY(GetRotationY() + 360.0f); // corrected
 
 
     //전후좌우 이동
