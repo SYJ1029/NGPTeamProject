@@ -78,13 +78,11 @@ void RecvInitPlayers(SOCKET sock, UINT &MyID)
 
 
   
-
-    std::vector<uint8_t> buffer(sizeof(PktInitPlayers));
-    retval = recv(sock, (char*)buffer.data(), buffer.size() * sizeof(uint8_t), MSG_WAITALL);
+    PktInitPlayers pkt;
+    retval = recv(sock, (char*)&pkt, sizeof(pkt), MSG_WAITALL);
     if (retval <= 0) return;
 
-    PktInitPlayers pkt;
-    pkt.Deserialize(buffer.data(), buffer.size());
+    
     MyID = pkt.myPlayerId;
 
     for (int i = 0; i < 3; ++i) {

@@ -86,16 +86,14 @@ void SendInitPlayers(SOCKET* sock)
         pkt.players[i] = SendInitOnePlayer(sock[i], i);
     }
 
-    std::vector<uint8_t> buffer;
 
     for (int i = 0; i < MAX_CLIENTS; ++i) {
 
         // 클라이언트가 컨트롤하게 될 플레이어 ID를 전송 직전에 지정
         pkt.myPlayerId = i;
-        buffer = pkt.Serialize();
 
         //ID와 주소를 한꺼번에 전송
-        retval = send(sock[i], (char*)buffer.data(), buffer.size() * sizeof(uint8_t), 0);
+        retval = send(sock[i], (char*)&pkt, sizeof(pkt), 0);
 
     }
   
