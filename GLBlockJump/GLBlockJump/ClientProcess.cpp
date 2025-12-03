@@ -43,12 +43,8 @@ void SendInputChange(SOCKET sock, PlayerInputs& input)
         return;
     }
     if (input.quit) exit(0);
-    //input.clear();
     LeaveCriticalSection(&InputCS);
 
-    // 디버그용
-    //printf("[SendInputChange] playerid=%d jump=%d updown=%d rightleft=%d dx=%.2f dy=%.2f\n",
-    //    input.playerid, input.jump, input.updown, input.rightleft, input.deltax, input.deltay);
 }
 
 void RecvWorld(SOCKET sock)
