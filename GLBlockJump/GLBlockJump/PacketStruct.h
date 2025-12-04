@@ -56,7 +56,7 @@ struct PlayerInitInfo {
 
 struct PktInitPlayers {
     int myPlayerId;
-    PlayerInitInfo players[MAX_PLAYER]; // 모든 플레이어의 초기 위치
+    PlayerInitInfo players[3]; // 모든 플레이어의 초기 위치
     PktInitPlayers() {}
     ~PktInitPlayers() {}
 };
@@ -76,7 +76,7 @@ struct PlayerSyncData {
 };
 struct PktFrameState {
     Game_State gameState; // 지금 게임이 RUNNING인지 FINISHED인지도 함께 보냄  
-    PlayerSyncData players[MAX_PLAYER];
+    PlayerSyncData players[3];
     int winnerId = -1;
 
     int move_block_size;
