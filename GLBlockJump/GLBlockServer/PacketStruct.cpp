@@ -1,9 +1,6 @@
 #include "PacketStruct.h"
 
 
-
-
-
 CRITICAL_SECTION FrameCS;
 CRITICAL_SECTION InputCS;
 
@@ -32,13 +29,13 @@ std::vector<uint8_t> PktFrameState::Serialize()
         writeInt(players[i].playerId);
 
         // players
-        for (int i = 0; i < 3; i++) {
-            writeInt(players[i].playerId);
-            for (int j = 0; j < 3; j++) {
-                writeFloat(players[i].position[j]);
+        for (int j = 0; j < 3; j++) {
+            writeInt(players[j].playerId);
+            for (int r = 0; r < 3; r++) {
+                writeFloat(players[j].position[r]);
             }
-            for (int j = 0; j < 3; j++) {
-                writeFloat(players[i].rotation[j]);
+            for (int r = 0; r < 3; r++) {
+                writeFloat(players[j].rotation[r]);
             }
 
         }
@@ -81,19 +78,19 @@ void PktFrameState::Deserialize(const uint8_t* data, int size)
         readInt(players[i].playerId);
 
         // players
-        for (int i = 0; i < 3; i++) {
-            readInt(players[i].playerId);
-            for (int j = 0; j < 3; j++) {
-                readFloat(players[i].position[j]);
+        for (int j = 0; j < 3; j++) {
+            readInt(players[j].playerId);
+            for (int r = 0; r < 3; r++) {
+                readFloat(players[j].position[r]);
             }
-            for (int j = 0; j < 3; j++) {
-                readFloat(players[i].rotation[j]);
+            for (int r = 0; r < 3; r++) {
+                readFloat(players[j].rotation[r]);
             }
 
         }
     }
 
-	readInt(winnerId);
+    readInt(winnerId);
     readInt(move_block_size);
     for (int i = 0; i < move_block_size; i++) {
         for (int j = 0; j < 3; j++) {
@@ -103,6 +100,3 @@ void PktFrameState::Deserialize(const uint8_t* data, int size)
     }
 
 }
-
-
-
