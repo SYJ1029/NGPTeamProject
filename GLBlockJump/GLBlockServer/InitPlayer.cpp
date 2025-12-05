@@ -2,8 +2,8 @@
 
 const std::array<std::array<float, 3>, 3> player_start_pos = {
    0.0f, 10.0f, 0.0f, 
-   1.0f, 10.0f, 0.0f, 
-   2.0f, 10.0f, 0.0f
+   0.0f, 10.0f, 2.0f, 
+   0.0f, 10.0f, 4.0f
 };
 
 void InitPlayer(std::array<Player, MAX_PLAYER>& players)

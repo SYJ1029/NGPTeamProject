@@ -9,7 +9,7 @@ class Player :
 private:
 	int ID = 0;
 	float moveSpeed[3]{ 0.0f };
-	float rotation[3]{ 0.0f };
+	float rotation[3]{ 0.0f, -90.0f};
 	float jumpSpeed{ 0.3f };
 public:
 	bool isGrounded{ true };
