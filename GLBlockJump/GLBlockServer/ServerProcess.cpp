@@ -17,13 +17,13 @@ void SendWorld(ThreadParam* param)
     pkHeader.type = PACK_FRAME_STATE;
 	// 전송할 패킷의 크기를 계산한다
     
-    std::vector<uint8_t> tempData = Fs.Serialize();
-	pkHeader.size = tempData.size();
+    std::vector<uint8_t> serializedData = Fs.Serialize();
+	pkHeader.size = serializedData.size();
 
 	// 패킷 헤더 전송
     send(param->sock, (char*)&pkHeader, sizeof(PacketParam), 0);
     // 패킷 본문 전송
-    std::vector<uint8_t> serializedData = Fs.Serialize();
+    //std::vector<uint8_t>  serializedData = Fs.Serialize();
 	send(param->sock, (char*)serializedData.data(), serializedData.size(), 0);
 }
 

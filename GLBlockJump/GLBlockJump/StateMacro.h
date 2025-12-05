@@ -1,4 +1,4 @@
 #pragma once
 
-#define MAX_PLAYER 3
-#define GRAVITY 0.01f
+constexpr int MAX_PLAYER = 3;
+constexpr int GRAVITY = 0.01f;
